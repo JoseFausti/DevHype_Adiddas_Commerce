@@ -30,7 +30,7 @@ const Shopcart = () => {
                 <h2>Tu carrito</h2>
                 {cart.map((product) => {
                     return (
-                    <ProductShopcartCard key={product.id} product={product} />
+                    <ProductShopcartCard key={product.id} productVariant={product} />
                   )
                 })}
               </div>

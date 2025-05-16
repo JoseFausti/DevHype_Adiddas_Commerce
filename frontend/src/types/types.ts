@@ -8,6 +8,7 @@ interface Base{
 }
 
 export interface IProductVariant extends Base {
+    product: IProduct;
     color: IColor;
     size: ISize;
     stock: number;
