@@ -1,4 +1,3 @@
-import { useState, useMemo } from 'react';
 import { IProductVariant } from '../../../types/types';
 import ColorSelector from './ColorSelector';
 import SizeSelector from './SizeSelector';
