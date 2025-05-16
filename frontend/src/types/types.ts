@@ -100,7 +100,7 @@ export interface ChildrenProps {
 
 // Http props
 export interface IHttpResponse<E> {
-    data: E | Partial<E>;
+    data: E;
     error: string;
     status: number;
 }

@@ -1,44 +1,35 @@
-import { useEffect, useState } from 'react';
-import { getAllColors } from '../../../data/ColorsController';
-import { useColorSelection } from './hooks/useColorSelection';
-import { IColor } from '../../../types/types';
+interface ColorSelectorProps {
+    colors: string[];
+    selectedColor: string | undefined;
+    toggleColor: (color: string) => void;
+}
 
-const ColorSelector = () => {
-    const { selectedColorsArray, toggleColor } = useColorSelection();
-    const [colors, setColors] = useState<IColor[]>([]);
-
-    useEffect(() => {
-        try {
-           const fetchColors = async () => {
-                const response = await getAllColors();
-                if (response.status === 200) {
-                    setColors(response.data);
-                } else {
-                    throw new Error(response.error);
-                }
-            }
-            fetchColors();
-        } catch (error) {
-            console.error('Error fetching colors:', error);
-        }
-    }, []);
-      
-
+const ColorSelector = ({
+    colors,
+    selectedColor,
+    toggleColor,
+    }: ColorSelectorProps 
+) => {
     return (
         <div>
-        {colors.map(color => (
-            <button
-            key={color}
-            style={{
-                backgroundColor: selectedColorsArray.includes(color) ? color : 'gray',
-                color: 'white',
-                margin: '5px',
-            }}
-            onClick={() => toggleColor(color)}
-            >
-            {color}
-            </button>
-        ))}
+            {colors.map(color => (
+                <button
+                    key={color}
+                    style={{
+                        backgroundColor: color,
+                        border: selectedColor === color ? '2px solid black' : 'none',
+                        borderRadius: '3px',
+                        color: 'white',
+                        margin: '5px',
+                        cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                        toggleColor(color); 
+                    }}
+                    >
+                    {color}
+                </button>
+            ))}
         </div>
     );
 };

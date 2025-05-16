@@ -1,48 +1,67 @@
-import { IProductVariant } from '../../../types/types'
-import Styles  from './ProductShopcartCard.module.css';
+import { useState, useMemo } from 'react';
+import { IProductVariant } from '../../../types/types';
+import ColorSelector from './ColorSelector';
+import SizeSelector from './SizeSelector';
+import Styles from './ProductShopcartCard.module.css';
+import useCartFunctions from '../../../hooks/useCartFunctions';
+import QuantitySelector from './QuantitySelector';
 
 interface ProductShopcartCardProps {
-    productVariant: IProductVariant;
+  productVariant: IProductVariant;
 }
 
-const ProductShopcartCard = ({productVariant}: ProductShopcartCardProps) => {
-
-    const {product} = productVariant
-
-    // Colores con stock
-    const colorsWithStock = Array.from(new Set(product.variants.filter((variant) => variant.stock > 0).map((variant) => variant.color.colorImg))) as Array<string> 
+const ProductShopcartCard = ({ productVariant }: ProductShopcartCardProps) => {
     
-    // Talles segun color con stock
-    const sizesWithStock = (selectedColor: string) => Array.from(new Set(product.variants.filter((variant) => variant.color.colorImg === selectedColor && variant.stock > 0).map((variant) => variant.size.size))) as Array<number>
+  const { product } = productVariant;
+  const {availableColors, availableSizes, quantity, selectedColor, selectedSize, maxQuantity, handleColorSelect, handleSizeSelect, handleQuantityChange} = useCartFunctions({ product });
 
-    return (
-        <div key={product.id} className={Styles.productShopcartCard}>
-            <div className={Styles.productShopcartCard__details}>
-                <img src={product.image} alt={product.name} className={Styles.productShopcartCard__image}/>
-                <h3>{product.name}</h3>
-                <p>{product.brand}</p>
-            </div>
-            <div>
-                <select name="color" id="color">
-                    {product.colorImg.map((color) => {
-                    const {colorImg} = color
-                    return (
-                        <option value={colorImg}><img src={colorImg} alt={colorImg} /></option>
-                    )
-                    })}
-                </select>
-            </div>
-            <div>
-                {/* Logica para la cantidad de productos dependiendo del stock */}
-            </div>
-            <div>
-                <p>${product.price}</p>
-            </div>
-            <div>
-                <button>X</button>
-            </div>
+  return (
+    <div key={product.id} className={Styles.productShopcartCard}>
+      <div className={Styles.productShopcartCard__details}>
+        <img
+          src={product.image}
+          alt={product.name}
+          className={Styles.productShopcartCard__image}
+        />
+        <h3>{product.name}</h3>
+        <p>{product.brand}</p>
+      </div>
+
+      <div>
+        <ColorSelector
+          colors={availableColors}
+          selectedColor={selectedColor}
+          toggleColor={handleColorSelect}
+        />
+      </div>
+
+      <div>
+        {selectedColor && (
+          <SizeSelector
+            sizes={availableSizes}
+            selectedSize={selectedSize}
+            toggleSize={handleSizeSelect}
+          />
+        )}
+      </div>
+
+    <div>
+        {selectedColor && selectedSize && (
+        <QuantitySelector
+            quantity={quantity}
+            maxQuantity={maxQuantity}
+            onChange={handleQuantityChange}
+        />
+        )}
+    </div>
+        <div>
+            <p>${product.price}</p>
         </div>
-    )
-}
+        <div>
+            <button>X</button>
+        </div>
+    </div>
+  );
+};
 
-export default ProductShopcartCard
+export default ProductShopcartCard;
