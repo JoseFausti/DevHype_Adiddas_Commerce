@@ -14,8 +14,8 @@ public class Details extends Base {
     
     // Se relaciona con la tabla products y purchase_orders 
 
-    @Column(name="cuantity")
-    private int cuantity;
+    @Column(name="quantity")
+    private int quantity;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "product_id")

@@ -41,8 +41,8 @@ public class Products extends Base{
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "cuantity")
-    private int cuantity;
+    @Column(name = "quantity")
+    private int quantity;
 
     @Column(name = "price")
     private double price;

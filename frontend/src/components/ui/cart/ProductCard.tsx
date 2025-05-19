@@ -1,33 +1,67 @@
-import React from "react";
-import { IProduct } from "../../../types/types";
-import Styles from "./ProductCard.module.css";
+import { IProductVariant } from '../../../types/types';
+import ColorSelector from './ColorSelector';
+import SizeSelector from './SizeSelector';
+import Styles from './ProductShopcartCard.module.css';
+import useCartFunctions from '../../../hooks/useCartFunctions';
+import QuantitySelector from './QuantitySelector';
 
-
-interface ProductCardProps{
-    carrousel: IProduct[];
+interface ProductCardProps {
+  productVariant: IProductVariant;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({carrousel}) => {
+const ProductCard = ({ productVariant }: ProductCardProps) => {
+    
+  const { product } = productVariant;
+  const {availableColors, availableSizes, quantity, selectedColor, selectedSize, maxQuantity, handleColorSelect, handleSizeSelect, handleQuantityChange} = useCartFunctions({ product });
+
   return (
-    <div className={Styles.productCard}>
-        {carrousel.map((product) => (
-            <div key={product.id} className={Styles.productCardItem}>
-                <img src={product.image} alt={product.name} />
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <p>${product.price}</p>
-                {product.discount.length > 3 
-                    ? product.discount.slice(0, 3).map((discount) => (
-                        <p key={discount.id} className={Styles.discount}>Discount: {discount.percentage}%</p>
-                    ))
-                    : product.discount.map((discount) => (
-                        <p key={discount.id} className={Styles.discount}>Discount: {discount.percentage}%</p>
-                    )
-                )}
-            </div>
-        ))}
-    </div>
-  )
-}
+    <div key={product.id} className={Styles.productShopcartCard}>
+      <div className={Styles.productShopcartCard__details}>
+        <img
+          src={product.image}
+          alt={product.name}
+          className={Styles.productShopcartCard__image}
+        />
+        <h3>{product.name}</h3>
+        <p>{product.brand}</p>
+      </div>
 
-export default ProductCard
+      <div>
+        <ColorSelector
+          colors={availableColors}
+          selectedColor={selectedColor}
+          toggleColor={handleColorSelect}
+        />
+      </div>
+
+      <div>
+        {selectedColor && (
+          <SizeSelector
+            sizes={availableSizes}
+            selectedSize={selectedSize}
+            toggleSize={handleSizeSelect}
+          />
+        )}
+      </div>
+
+    <div>
+        {selectedColor && selectedSize && (
+        <QuantitySelector
+            quantity={quantity}
+            maxQuantity={maxQuantity}
+            onChange={handleQuantityChange}
+        />
+        )}
+    </div>
+        <div>
+            <p>${product.price}</p>
+        </div>
+        <div>
+            <p>Agregar al carrito</p>
+            <button>Agregar</button>
+        </div>
+    </div>
+  );
+};
+
+export default ProductCard;

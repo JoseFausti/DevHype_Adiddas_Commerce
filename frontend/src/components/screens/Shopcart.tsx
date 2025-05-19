@@ -3,7 +3,6 @@ import { useAppSelector } from "../../hooks/redux"
 import ProductSummary from "../ui/cart/ProductSummary"
 import { ArrowRight } from "lucide-react"
 import Styles from './Shopcart.module.css'
-import ProductShopcartCard from "../ui/cart/ProductShopcartCard"
 
 const Shopcart = () => {
 
@@ -27,10 +26,10 @@ const Shopcart = () => {
             <div>
               {/* Main Carrito con productos */}
               <div>
-                <h2>Tu carrito</h2>
+                <h2>Tu carrito</h2> {/* Vista del carrito con productos */ }
                 {cart.map((product) => {
                     return (
-                    <ProductShopcartCard key={product.id} productVariant={product} />
+                    <div></div> 
                   )
                 })}
               </div>

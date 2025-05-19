@@ -20,7 +20,7 @@ export interface IProduct extends Base{
     description: string;
     category: string;
     gender: string;
-    cuantity: number;
+    quantity: number;
     brand: string;
     price: number;
     finalPrice: number;
@@ -47,7 +47,7 @@ export interface IPurchaseOrder extends Base{
 }
 
 export interface IDetail extends Base{
-    cuantity: number;
+    quantity: number;
     product: IProduct;
     purchase_order: IPurchaseOrder;
 }
