@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosInstance from "../config/axiosConfig";
 import { IUser } from "../types/types";
 import { API_USERS_URL } from "../utils/consts";
@@ -49,7 +50,7 @@ export const deleteUser = async (id: string): Promise<IUser | {error: string}> =
 
 export const login = async (username: string, password: string): Promise<{token: string} | {error: string}> => {
     try {
-        const {data} = await axiosInstance.post(`${API_USERS_URL}/login`, {username, password});
+        const {data} = await axios.post(`${API_USERS_URL}/login`, {username, password});
         return data;
     } catch (err) {
         return {
@@ -60,7 +61,7 @@ export const login = async (username: string, password: string): Promise<{token:
 
 export const register = async (user: Omit<IUser, 'role' | 'address'>): Promise<{token: string} | {error: string}> => {
     try {
-        const {data} = await axiosInstance.post(`${API_USERS_URL}/register`, user);
+        const {data} = await axios.post(`${API_USERS_URL}/register`, user);
         return data;
     } catch (err) {
         return {
