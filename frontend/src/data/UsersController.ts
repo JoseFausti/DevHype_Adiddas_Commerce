@@ -162,7 +162,7 @@ export const loginUser = async (username: string, password: string): Promise<IHt
     }
 }
 
-export const registerUser = async (newUser: Omit<IUser, 'role' | 'address'>): Promise<IHttpResponse<{token: string} | null>> => {
+export const registerUser = async (newUser: Omit<IUser, 'id' | 'deleted' | 'role' | 'address'>): Promise<IHttpResponse<{token: string} | null>> => {
     try {
         const data = await register(newUser);
         if ('error' in data) {

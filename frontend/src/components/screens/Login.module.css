@@ -87,6 +87,12 @@
   padding: 0.5rem;
 }
 
+.login_formError{
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}
+
 /* Botón alineado a la izquierda */
 .login_formButton {
   align-self: flex-start;

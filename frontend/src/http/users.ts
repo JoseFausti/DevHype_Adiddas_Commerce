@@ -1,7 +1,7 @@
 import axios from "axios";
 import axiosInstance from "../config/axiosConfig";
 import { IUser } from "../types/types";
-import { API_USERS_URL } from "../utils/consts";
+import { API_AUTH_URL, API_USERS_URL } from "../utils/consts";
 
 
 export const getUsers = async (): Promise<IUser[] | {error: string}> => {
@@ -50,7 +50,7 @@ export const deleteUser = async (id: string): Promise<IUser | {error: string}> =
 
 export const login = async (username: string, password: string): Promise<{token: string} | {error: string}> => {
     try {
-        const {data} = await axios.post(`${API_USERS_URL}/login`, {username, password});
+        const {data} = await axios.post(`${API_AUTH_URL}/login`, {username, password});
         return data;
     } catch (err) {
         return {
@@ -59,9 +59,9 @@ export const login = async (username: string, password: string): Promise<{token:
     }
 }
 
-export const register = async (user: Omit<IUser, 'role' | 'address'>): Promise<{token: string} | {error: string}> => {
+export const register = async (user: Omit<IUser, 'id' | 'deleted' | 'role' | 'address'>): Promise<{token: string} | {error: string}> => {
     try {
-        const {data} = await axios.post(`${API_USERS_URL}/register`, user);
+        const {data} = await axios.post(`${API_AUTH_URL}/register`, user);
         return data;
     } catch (err) {
         return {

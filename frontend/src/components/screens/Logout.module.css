@@ -1,0 +1,56 @@
+.logoutForm {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1000; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoutForm__container {
+  background-color: white; /* Modal blanco */
+  color: #000;
+  font-family:'Montserrat', sans-serif;
+  padding: 2rem;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 400px;
+  height: 50%;
+  max-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.logout_formTitle {
+  text-transform: uppercase;
+  text-align: center;
+  align-self: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  width: 100%;
+}
+
+.logout_formButton {
+  align-self: center;
+  padding: 0.8rem 1.2rem;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+}
+
+.logout_formButton:hover {
+  background-color: #333;
+}

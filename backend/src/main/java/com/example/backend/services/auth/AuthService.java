@@ -33,8 +33,8 @@ public class AuthService {
     public AuthResponse register (RegisterRequest registerRequest) {
         Users user = Users.builder()
             .username(registerRequest.getUsername())
-            .name(registerRequest.getFirstName())
-            .surname(registerRequest.getLastName())
+            .name(registerRequest.getName())
+            .surname(registerRequest.getSurname())
             .email(registerRequest.getEmail())
             .password(passwordEncoder.encode(registerRequest.getPassword()))
             .role(Role.USER)

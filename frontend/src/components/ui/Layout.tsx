@@ -69,12 +69,14 @@ const Layout: React.FC = () => {
                             {displayUserMenu && (
                                 <div className={styles.userMenu} ref={menuRef}>
                                     {token ? (
-                                        <div className={styles.userMenu__options}>
+                                        <div>
                                             <h5>{token.username}</h5>
-                                            {token.role === Role.ADMIN && (
-                                                <Link to="/admin" className={styles.userMenu__option}>Admin</Link>
-                                            )}
-                                            <Link to="/logout" className={styles.userMenu__option}>Logout</Link>
+                                            <div className={styles.userMenu__options}>
+                                                {token.role === Role.ADMIN && (
+                                                    <Link to="/admin" className={styles.userMenu__option}>Admin</Link>
+                                                )}
+                                                <Link to="/logout" className={styles.userMenu__option}>Logout</Link>
+                                            </div>
                                         </div>
                                     ) : (
                                         <div className={styles.userMenu__options}>
