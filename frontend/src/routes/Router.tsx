@@ -7,6 +7,7 @@ import Products from "../components/screens/Products"
 import Logout from "../components/screens/Logout"
 import Admin from "../components/screens/Admin"
 import Layout from "../components/ui/Layout"
+import ProductDetail from "../components/screens/ProductDetail"
 
 const Router = () => {
   return (
@@ -17,6 +18,7 @@ const Router = () => {
               <Route path="/" element={<App/>} />
               <Route path="/admin" element={<Admin/>} />
               <Route path="/products" element={<Products/>} />
+              <Route path="/products/:id" element={<ProductDetail />} />
               <Route path="/shopcart" element={<Shopcart/>} />
             </Route>
 

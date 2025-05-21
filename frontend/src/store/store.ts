@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from './slices/cartSlice';
 import userReducer from './slices/userSlice';
+import productReducer from './slices/productSlice';
 
 export const store = configureStore({
     // Reducers are used to manage the state of the application
     reducer: {
         cart: cartReducer,
-        user: userReducer
+        user: userReducer,
+        product: productReducer
     },
     // Middleware are used to intercept actions and modify them before they reach the reducer
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([]),
@@ -19,6 +21,10 @@ export const store = configureStore({
         user: {
             users: [],
             userActive: null
+        },
+        product: {
+            products: [],
+            productActive: null
         }
     },
 });

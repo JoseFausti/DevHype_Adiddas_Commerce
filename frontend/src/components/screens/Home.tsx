@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import Styles from './Home.module.css'
 import { useAppSelector } from '../../hooks/redux'
-import ProductCard from '../ui/cart/ProductLandingCard'
+import ProductCard from '../ui/product/landing/ProductLandingCard'
 import { IProduct } from '../../types/types'
 import { useCarrousel } from '../../hooks/useCarrousel'
 

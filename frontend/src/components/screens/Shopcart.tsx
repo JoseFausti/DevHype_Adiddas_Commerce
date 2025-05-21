@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { useAppSelector } from "../../hooks/redux"
-import ProductSummary from "../ui/cart/ProductSummary"
+import ProductSummary from "../ui/product/cart/ProductSummary"
 import { ArrowRight } from "lucide-react"
 import Styles from './Shopcart.module.css'
 
@@ -29,7 +29,7 @@ const Shopcart = () => {
                 <h2>Tu carrito</h2> {/* Vista del carrito con productos */ }
                 {cart.map((product) => {
                     return (
-                    <div></div> 
+                    <ProductCart key={product.id} product={product} />
                   )
                 })}
               </div>

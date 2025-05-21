@@ -1,9 +1,9 @@
 import { IProductVariant } from '../../../types/types';
-import ColorSelector from './ColorSelector';
-import SizeSelector from './SizeSelector';
-import Styles from './ProductShopcartCard.module.css';
+import ColorSelector from './selectors/ColorSelector';
+import SizeSelector from './selectors/SizeSelector';
+import Styles from './ProductCard.module.css';
 import useCartFunctions from '../../../hooks/useCartFunctions';
-import QuantitySelector from './QuantitySelector';
+import QuantitySelector from './selectors/QuantitySelector';
 
 interface ProductCardProps {
   productVariant: IProductVariant;

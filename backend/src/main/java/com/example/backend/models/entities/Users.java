@@ -38,7 +38,8 @@ public class Users extends Base implements UserDetails {
     @Column( name = "password")
     private String password;
 
-    @Column( name = "role")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role;
 
     @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.MERGE})
@@ -49,7 +50,8 @@ public class Users extends Base implements UserDetails {
         )
     private List<Directions> directions;
 
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 }

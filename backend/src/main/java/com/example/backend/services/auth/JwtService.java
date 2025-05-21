@@ -8,6 +8,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.example.backend.models.entities.Users;
+
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -24,11 +26,15 @@ public class JwtService {
     }
 
     private String getToken(HashMap<String, Object> extraClaims, UserDetails user){
+        if(user instanceof Users){
+            Users u = (Users) user;
+            extraClaims.put("role", u.getRole().name());
+        }
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -42,7 +48,7 @@ public class JwtService {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
     }
 
@@ -53,6 +59,10 @@ public class JwtService {
 
     public String getUsernameFromToken(String token){
         return getClaim(token, Claims::getSubject);
+    }
+
+    public String getRoleFromToken(String token) {
+        return getClaim(token, claims -> claims.get("role", String.class));
     }
 
     private Date getExpirationDateFromToken(String token){
