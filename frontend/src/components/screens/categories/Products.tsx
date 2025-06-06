@@ -1,0 +1,112 @@
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { useEffect, useState } from "react";
+import { setProductActive, setProducts } from "../../../store/slices/productSlice";
+import styles from "./Products.module.css";
+import { getAllProducts } from "../../../data/ProductsController";
+
+const Products: React.FC = () => {
+
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
+
+  const navigate = useNavigate();
+  
+  const { products } = useAppSelector((state) => state.product);
+  const dispatch = useAppDispatch();
+
+  const [visibleCount, setVisibleCount] = useState(12);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        if (products.length === 0) {
+          const res = await getAllProducts();
+          if (res.status === 200) {
+            dispatch(setProducts(res.data));
+          }else{
+            setError(res.error);
+          }
+        }          
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setError('Error fetching products');
+        setLoading(false);
+      }  
+    }
+    initialize();
+  }, []);
+
+  const filtered = category
+    ? products.filter((p) => p.category.name === category)
+    : products;
+
+  const visibleProducts = filtered.slice(0, (visibleCount < filtered.length) ? visibleCount : filtered.length);
+
+  const handleLoadMore = () => {
+    setLoading(true);
+    setVisibleCount((prev) => prev + 12);
+  };
+
+  
+
+  if (loading) return <p className="text-center mt-10">Cargando productos...</p>;
+  if (error) return <p className="text-center mt-10 text-red-600">Error: {error}</p>;
+
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <h1 className={styles.title}>{category}</h1>
+
+        <div className={styles.grid}>
+          {visibleProducts.map((product) => (
+            <div
+              key={product.id}
+              className={styles.card}
+              onClick={() => {
+                dispatch(setProductActive(product));
+                navigate(`/products/${product.id}`);
+              }}
+            >
+              <div className={styles.imageContainer}>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className={styles.image}
+                />
+              </div>
+
+              <div className={styles.info}>
+                <div className={styles.left}>
+                  <h2 className={styles.name}>{product.name}</h2>
+                  <p className={styles.price}>${product.price}</p>
+                </div>
+                <button className={styles.readMore}>
+                  Read More
+                </button>
+              </div>
+            </div>
+          ))}
+
+        </div>
+
+        {visibleCount < filtered.length && (
+          <div className={styles.buttonContainer}>
+            <button
+              onClick={handleLoadMore}
+              className={styles.loadMoreButton}
+            >
+              Ver más
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Products;
+

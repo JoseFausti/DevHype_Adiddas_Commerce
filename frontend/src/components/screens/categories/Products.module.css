@@ -1,0 +1,152 @@
+.wrapper {
+    background-color: #f6f6f6;
+    min-height: 100vh;
+    width: 100%;
+    color: black;
+}
+
+.container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+}
+
+/* Fuerza 4 columnas en desktop */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    border-radius: 0.2rem;
+    overflow: hidden;
+    padding: 1rem;
+    transition: transform 0.2s ease;
+    background-color: #fff;
+  }
+  
+  .card:hover {
+    transform: scale(1.01);
+    border: 1px solid black;
+  }
+  
+  .imageContainer {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+  
+  .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    gap: 1rem;
+  }
+  
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  
+  .name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .price {
+    color: #000000;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .description {
+    font-size: 0.9rem;
+    color: #000000;
+    line-height: 1.4;
+    margin: 0.5rem 0 0;
+  }
+  
+  .readMore {
+    background: none;
+    border: none;
+    color: #000000;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+    padding: 0;
+    outline: none;
+  }
+  
+  .readMore:focus {
+    outline: none;
+  }
+  
+  .readMore:hover {
+    color: #1f1f1f;
+  }
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+}
+
+.loadMoreButton {
+    background-color: black;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 999px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+.loadMoreButton:hover {
+    background-color: #333;
+}

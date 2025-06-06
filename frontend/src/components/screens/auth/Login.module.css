@@ -1,0 +1,162 @@
+/* ======================================================
+   CONTENEDOR DEL MODAL
+====================================================== */
+
+/* Contenedor principal donde se ubica el modal (debe tener posición relative) */
+.home_container {
+  position: relative;
+}
+
+/* Overlay oscuro con desenfoque (fondo del modal) */
+.loginForm {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ======================================================
+   MODAL (CONTENEDOR INTERNO)
+====================================================== */
+
+.loginForm__container {
+  background-color: #fff;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  padding: 2rem;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 400px;
+  height: 50%;
+  max-height: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* ======================================================
+   HEADER DEL MODAL
+====================================================== */
+
+.login_formHeader {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo pequeño en la esquina superior izquierda */
+.login_formImage {
+  width: 35px;
+  height: 35px;
+}
+
+/* Título del modal: centrado horizontalmente */
+.login_formTitle {
+  width: 100%;
+  text-align: center;
+  align-self: center;
+  margin-right: 1.5rem;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Botón de cerrar (generalmente en el header) */
+.login_formCloseButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* ======================================================
+   CONTENEDOR DE INPUTS Y FORMULARIO
+====================================================== */
+
+.login_formInputContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Estilos para labels e inputs */
+.login_formInputContainer label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 1rem 0;
+}
+
+.login_formInputContainer input {
+  width: 370px;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 0.4rem;
+  padding: 0.5rem;
+}
+
+/* Error en el formulario (por ejemplo, validación) */
+.login_formError {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* ======================================================
+   BOTONES Y TEXTOS ADICIONALES
+====================================================== */
+
+/* Botón del formulario: alineado a la izquierda */
+.login_formButton {
+  align-self: flex-start;
+  padding: 0.8rem 1.2rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.login_formButton:hover {
+  background-color: #333;
+}
+
+/* Contenedor para mensaje de textos adicionales o links */
+.login_formTextContainer {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* Estilo para textos complementarios (por ejemplo, registro) */
+.login_formText {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Enlaces dentro de textos adicionales */
+.login_formText span a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login_formText span a:hover {
+  text-decoration: underline;
+}
