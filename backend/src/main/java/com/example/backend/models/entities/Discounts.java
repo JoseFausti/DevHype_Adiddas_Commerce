@@ -11,6 +11,10 @@ import lombok.*;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import jakarta.persistence.FetchType;
 
 @Entity
 @Table(name = "discounts")
@@ -19,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Getter
 @Setter
 @Builder
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Discounts extends Base {
 
     @Column(name = "initial_date")
@@ -30,7 +35,6 @@ public class Discounts extends Base {
     @Column(name = "percentage")
     private double percentage;
 
-    @ManyToMany(mappedBy = "discounts")
-    @JsonBackReference(value = "discount-product")
+    @ManyToMany(mappedBy = "discounts", fetch = FetchType.LAZY)
     private List<Products> products;
 }

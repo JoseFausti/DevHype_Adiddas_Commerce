@@ -4,12 +4,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.backend.models.entities.Directions;
-import com.example.backend.models.entities.Purchase_orders;
+import com.example.backend.dtos.UserDTO;
+import com.example.backend.mappers.UserMapper;
 import com.example.backend.models.entities.Users;
 import com.example.backend.repositories.BaseRepository;
-import com.example.backend.repositories.DirectionsRepository;
-import com.example.backend.repositories.Purchase_ordersRepository;
 import com.example.backend.repositories.UserRepository;
 
 import java.util.List;
@@ -21,82 +19,62 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Long> implements Use
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private DirectionsRepository directionsRepository;
-
-    @Autowired
-    private Purchase_ordersRepository purchaseOrdersRepository;
-
     public UserServiceImpl(BaseRepository<Users, Long> baseRepository) {
         super(baseRepository);
     }
 
-    @Override
     @Transactional
-    public List<Users> findAll() throws Exception {
-        List<Users> users = super.findAll();
-        for (Users user : users) {
-            user.setDirections(directionsRepository.findByUsers(user));
-            user.setPurchaseOrders(purchaseOrdersRepository.findByUser(user));
-        }
-        return users;
-    }
-
-    @Override
-    @Transactional
-    public Users findById(Long id) throws Exception {
-        Users user = super.findById(id);
-        user.setDirections(directionsRepository.findByUsers(user));
-        user.setPurchaseOrders(purchaseOrdersRepository.findByUser(user));
-        return user;
-    }
-
-    @Override
-    @Transactional
-    public Users save(Users user) throws Exception {
+    public UserDTO save(UserDTO userDTO) throws Exception {
         try {
-            if (userRepository.existsByUsername(user.getUsername())) {
-                throw new Exception("Ya existe un usuario con el username: " + user.getUsername());
+            if (userRepository.existsByUsername(userDTO.getUsername())) {
+                throw new Exception("Ya existe un usuario con el username: " + userDTO.getUsername());
             }
-            if (userRepository.existsByEmail(user.getEmail())) {
-                throw new Exception("Ya existe un usuario con el email: " + user.getEmail());
+            if (userRepository.existsByEmail(userDTO.getEmail())) {
+                throw new Exception("Ya existe un usuario con el email: " + userDTO.getEmail());
             }
 
+            Users user = UserMapper.toEntity(userDTO);
             user = userRepository.save(user);
-            user.setDirections(directionsRepository.findByUsers(user));
-            user.setPurchaseOrders(purchaseOrdersRepository.findByUser(user));
-            return user;
-
+            return UserMapper.toDto(user);
         } catch (Exception e) {
             throw new Exception("Error al guardar usuario: " + e.getMessage());
         }
     }
 
-    @Override
     @Transactional
-    public Users update(Users user, Long id) throws Exception {
+    public UserDTO update(UserDTO userDTO, Long id) throws Exception {
         try {
             Optional<Users> userOptional = userRepository.findById(id);
             if (!userOptional.isPresent()) {
                 throw new Exception("Usuario no encontrado con ID: " + id);
             }
 
-            if (userRepository.existsByUsernameAndIdNot(user.getUsername(), id)) {
-                throw new Exception("Ya existe otro usuario con el username: " + user.getUsername());
+            if (userRepository.existsByUsernameAndIdNot(userDTO.getUsername(), id)) {
+                throw new Exception("Ya existe otro usuario con el username: " + userDTO.getUsername());
             }
 
-            if (userRepository.existsByEmailAndIdNot(user.getEmail(), id)) {
-                throw new Exception("Ya existe otro usuario con el email: " + user.getEmail());
+            if (userRepository.existsByEmailAndIdNot(userDTO.getEmail(), id)) {
+                throw new Exception("Ya existe otro usuario con el email: " + userDTO.getEmail());
             }
 
+            Users user = UserMapper.toEntity(userDTO);
             user.setId(id);
-            Users updatedUser = userRepository.save(user);
-            updatedUser.setDirections(directionsRepository.findByUsers(updatedUser));
-            updatedUser.setPurchaseOrders(purchaseOrdersRepository.findByUser(updatedUser));
-            return updatedUser;
-
+            user = userRepository.save(user);
+            return UserMapper.toDto(user);
         } catch (Exception e) {
             throw new Exception("Error al actualizar usuario: " + e.getMessage());
         }
+    }
+
+    @Transactional
+    public UserDTO getById(Long id) throws Exception {
+        Users user = super.findById(id);
+        return UserMapper.toDto(user);
+    }
+
+    @Transactional
+    public List<UserDTO> getAll() throws Exception {
+        List<Users> users = super.findAll();
+        return users.stream().map(UserMapper::toDto).toList();
     }
 }

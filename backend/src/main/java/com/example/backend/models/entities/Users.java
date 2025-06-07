@@ -15,7 +15,9 @@ import com.example.backend.models.enums.Role;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
@@ -25,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Getter
 @Setter
 @Builder
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Users extends Base implements UserDetails {
 
     @Column( name = "username", unique = true)
@@ -46,7 +49,6 @@ public class Users extends Base implements UserDetails {
     @Column(name = "role")
     private Role role;
 
-    @JsonManagedReference(value = "user-directions")
     @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "users_directions",
@@ -60,7 +62,6 @@ public class Users extends Base implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
-    @JsonBackReference(value = "order-user")
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch= FetchType.LAZY)
     private List<Purchase_orders> purchaseOrders;
 }
