@@ -3,6 +3,8 @@ package com.example.backend.models.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +23,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Directions extends Base {
 
     @Column(name = "street")
@@ -41,7 +44,6 @@ public class Directions extends Base {
     @Column(name = "postal_code")
     private int postalCode;
 
-    @JsonBackReference(value = "user-directions")
-    @ManyToMany(mappedBy = "directions")
+    @ManyToMany(mappedBy = "directions", fetch= FetchType.LAZY)
     private List<Users> users;
 }

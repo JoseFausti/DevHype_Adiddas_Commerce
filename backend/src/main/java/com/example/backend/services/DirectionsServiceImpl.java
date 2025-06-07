@@ -1,12 +1,12 @@
 package com.example.backend.services;
 
-import com.example.backend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.backend.dtos.DirectionsDTO;
+import com.example.backend.mappers.DirectionsMapper;
 import com.example.backend.models.entities.Directions;
-import com.example.backend.models.entities.Users;
 import com.example.backend.repositories.BaseRepository;
 import com.example.backend.repositories.DirectionsRepository;
 
@@ -19,59 +19,34 @@ public class DirectionsServiceImpl extends BaseServiceImpl<Directions, Long> imp
     @Autowired
     private DirectionsRepository directionsRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     public DirectionsServiceImpl(BaseRepository<Directions, Long> baseRepository) {
         super(baseRepository);
     }
 
-    @Override
     @Transactional
-    public List<Directions> findAll() throws Exception {
-        List<Directions> directions = super.findAll();
-        for (Directions direction : directions) {
-            List<Users> users = userRepository.findByDirections(direction);
-            direction.setUsers(users);
-        }
-        return directions;
-    }
-
-    @Override
-    @Transactional
-    public Directions findById(Long id) throws Exception {
-        Directions direction = super.findById(id);
-        List<Users> users = userRepository.findByDirections(direction);
-        direction.setUsers(users);
-        return direction;
-    }
-
-    @Override
-    @Transactional
-    public Directions save(Directions direction) throws Exception {
+    public DirectionsDTO save(DirectionsDTO directionsDTO) throws Exception {
         try {
             if (directionsRepository.existsByStreetAndNumberAndLocalityAndCityAndCountryAndPostalCode(
-                    direction.getStreet(),
-                    direction.getNumber(),
-                    direction.getLocality(),
-                    direction.getCity(),
-                    direction.getCountry(),
-                    direction.getPostalCode()
+                    directionsDTO.getStreet(),
+                    directionsDTO.getNumber(),
+                    directionsDTO.getLocality(),
+                    directionsDTO.getCity(),
+                    directionsDTO.getCountry(),
+                    directionsDTO.getPostalCode()
             )) {
                 throw new Exception("Ya existe una dirección con esos datos.");
             }
 
-            Directions saved = directionsRepository.save(direction);
-            saved.setUsers(userRepository.findByDirections(saved));
-            return saved;
+            Directions direction = DirectionsMapper.toEntity(directionsDTO);
+            direction = directionsRepository.save(direction);
+            return DirectionsMapper.toDto(direction);
         } catch (Exception e) {
             throw new Exception("Error al guardar dirección: " + e.getMessage());
         }
     }
 
-    @Override
     @Transactional
-    public Directions update(Directions direction, Long id) throws Exception {
+    public DirectionsDTO update(DirectionsDTO directionsDTO, Long id) throws Exception {
         try {
             Optional<Directions> directionOptional = directionsRepository.findById(id);
             if (!directionOptional.isPresent()) {
@@ -79,23 +54,35 @@ public class DirectionsServiceImpl extends BaseServiceImpl<Directions, Long> imp
             }
 
             if (directionsRepository.existsByStreetAndNumberAndLocalityAndCityAndCountryAndPostalCodeAndIdNot(
-                    direction.getStreet(),
-                    direction.getNumber(),
-                    direction.getLocality(),
-                    direction.getCity(),
-                    direction.getCountry(),
-                    direction.getPostalCode(),
+                    directionsDTO.getStreet(),
+                    directionsDTO.getNumber(),
+                    directionsDTO.getLocality(),
+                    directionsDTO.getCity(),
+                    directionsDTO.getCountry(),
+                    directionsDTO.getPostalCode(),
                     id
             )) {
                 throw new Exception("Ya existe otra dirección con esos datos.");
             }
 
+            Directions direction = DirectionsMapper.toEntity(directionsDTO);
             direction.setId(id);
-            Directions updated = directionsRepository.save(direction);
-            updated.setUsers(userRepository.findByDirections(updated));
-            return updated;
+            direction = directionsRepository.save(direction);
+            return DirectionsMapper.toDto(direction);
         } catch (Exception e) {
             throw new Exception("Error al actualizar dirección: " + e.getMessage());
         }
+    }
+
+    @Transactional
+    public DirectionsDTO getById(Long id) throws Exception {
+        Directions direction = super.findById(id);
+        return DirectionsMapper.toDto(direction);
+    }
+
+    @Transactional
+    public List<DirectionsDTO> getAll() throws Exception {
+        List<Directions> directions = super.findAll();
+        return directions.stream().map(DirectionsMapper::toDto).toList();
     }
 }

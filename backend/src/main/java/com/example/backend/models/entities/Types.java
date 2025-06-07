@@ -1,7 +1,9 @@
 package com.example.backend.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,12 +18,12 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Types extends Base {
 
     @Column(name = "name")
     private String name;
 
-    @JsonManagedReference(value = "category-type")
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Categories category;

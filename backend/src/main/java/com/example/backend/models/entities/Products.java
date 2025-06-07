@@ -3,7 +3,9 @@ package com.example.backend.models.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Products extends Base {
 
     @Column(name = "name")
@@ -36,12 +39,10 @@ public class Products extends Base {
     @Column(name = "price")
     private double price;
 
-    @JsonManagedReference(value = "category-product")
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Categories category;
 
-    @JsonManagedReference(value = "discount-product")
     @ManyToMany
     @JoinTable(
             name = "product_discounts",
@@ -50,8 +51,7 @@ public class Products extends Base {
     )
     private List<Discounts> discounts;
 
-    @JsonBackReference(value = "variant-product")
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductVariants> productVariants;
 }
 
