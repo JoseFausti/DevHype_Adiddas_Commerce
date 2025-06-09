@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.backend.dtos.ProductDTO;
+import com.example.backend.dtos.products.ProductDTO;
 import com.example.backend.mappers.ProductMapper;
 import com.example.backend.models.entities.Products;
 import com.example.backend.repositories.BaseRepository;

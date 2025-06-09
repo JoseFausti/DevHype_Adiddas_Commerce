@@ -2,7 +2,7 @@
 package com.example.backend.mappers;
 
 import com.example.backend.models.entities.*;
-import com.example.backend.dtos.*;
+import com.example.backend.dtos.products.ProductDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
