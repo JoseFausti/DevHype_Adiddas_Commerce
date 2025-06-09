@@ -10,14 +10,14 @@ public class PurchaseOrderMapper {
     public static PurchaseOrderDTO toDto(Purchase_orders purchaseOrder) {
         if (purchaseOrder == null) return null;
 
-        return PurchaseOrdersDTO.builder()
+        return PurchaseOrderDTO.builder()
                 .id(purchaseOrder.getId())
                 .date(purchaseOrder.getDate())
                 .totalPrice(purchaseOrder.getTotalPrice())
                 .paymentMethod(purchaseOrder.getPaymentMethod())
                 .status(purchaseOrder.getStatus())
                 .user(UserMapper.toDto(purchaseOrder.getUser()))
-                .details(purchaseOrder.getDetails() != null ? purchaseOrder.getDetails().stream().map(DetailsMapper::toDto).collect(Collectors.toList()) : null)
+                .details(purchaseOrder.getDetails() != null ? purchaseOrder.getDetails().stream().map(DetailMapper::toDto).collect(Collectors.toList()) : null)
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class PurchaseOrderMapper {
                 .paymentMethod(dto.getPaymentMethod())
                 .status(dto.getStatus())
                 .user(UserMapper.toEntity(dto.getUser()))
-                .details(dto.getDetails() != null ? dto.getDetails().stream().map(DetailsMapper::toEntity).collect(Collectors.toList()) : null)
+                .details(dto.getDetails() != null ? dto.getDetails().stream().map(DetailMapper::toEntity).collect(Collectors.toList()) : null)
                 .build();
         purchaseOrder.setId(dto.getId());
 

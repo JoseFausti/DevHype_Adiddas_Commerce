@@ -1,0 +1,41 @@
+/* Contenedor principal del sidebar */
+.sidebar {
+  width: 180px;              /* Ancho fijo */
+  background-color: rgb(249, 249, 249);
+  border-right: 1px solid rgb(194, 194, 194);    /* Borde gris */
+  color: rgb(0, 0, 0);              /* Color del texto en blanco */
+  padding: 1rem;             /* Padding interno */
+  min-height: 110vh;         /* Ocupa toda la altura de la ventana */
+}
+
+/* Título del sidebar */
+.title {
+  font-size: 20px;         /* Tamaño de fuente */
+  margin-bottom: 2rem;       /* Espacio inferior */
+  text-align: center;        /* Centrado horizontal */
+}
+
+/* Lista de navegación: removemos la lista por defecto */
+.nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Cada elemento de la lista */
+.nav li {
+  margin-bottom: 1rem;       /* Espacio entre elementos */
+}
+
+/* Enlaces de navegación */
+.nav a {
+  color: rgb(0, 0, 0);              /* Color del texto */
+  text-decoration: none;     /* Sin subrayado */
+  padding: 8px 12px;         /* Espaciado interno para mejorar el click */
+  display: block;            /* Permite que el área de hover se expanda a todo el ancho */
+  border-radius: 4px;        /* Bordes suavizados */
+}
+
+/* Efecto hover: background blanco con transparencia */
+.nav a:hover {
+  background-color: rgba(0, 0, 0, 0.2);  /* Fondo blanco transparente */
+}

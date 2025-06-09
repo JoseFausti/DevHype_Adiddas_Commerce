@@ -23,12 +23,12 @@ public class SizesController {
         return ResponseEntity.ok(sizesService.getById(id));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<SizeDTO>> getAllSizes() throws Exception {
         return ResponseEntity.ok(sizesService.getAll());
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<SizeDTO> createSize(@RequestBody SizeDTO sizeDTO) throws Exception {
         return ResponseEntity.ok(sizesService.save(sizeDTO));
     }

@@ -24,13 +24,13 @@ public class ProductsController {
         return ResponseEntity.ok(productDTO);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts() throws Exception {
         List<ProductDTO> productDTOs = productsService.getAll();
         return ResponseEntity.ok(productDTOs);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) throws Exception {
         ProductDTO createdProduct = productsService.save(productDTO);
         return ResponseEntity.ok(createdProduct);

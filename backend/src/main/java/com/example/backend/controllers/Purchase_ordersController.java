@@ -15,39 +15,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend.dtos.PurchaseOrdersDTO;
+import com.example.backend.dtos.PurchaseOrderDTO;
 import com.example.backend.models.entities.Purchase_orders;
 import com.example.backend.services.Purchase_ordersServiceImpl;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/purchase_orders")
-public class Purchase_ordersController extends BaseControllerImpl<Purchase_orders, Purchase_ordersServiceImpl> {
+public class Purchase_ordersController {
     
     @Autowired
     private Purchase_ordersServiceImpl purchaseOrdersService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseOrdersDTO> getPurchaseOrderById(@PathVariable Long id) throws Exception {
-        PurchaseOrdersDTO purchaseOrdersDTO = purchaseOrdersService.getById(id);
+    public ResponseEntity<PurchaseOrderDTO> getPurchaseOrderById(@PathVariable Long id) throws Exception {
+        PurchaseOrderDTO purchaseOrdersDTO = purchaseOrdersService.getById(id);
         return ResponseEntity.ok(purchaseOrdersDTO);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<PurchaseOrdersDTO>> getAllPurchaseOrders() throws Exception {
-        List<PurchaseOrdersDTO> purchaseOrdersDTOs = purchaseOrdersService.getAll();
+    @GetMapping
+    public ResponseEntity<List<PurchaseOrderDTO>> getAllPurchaseOrders() throws Exception {
+        List<PurchaseOrderDTO> purchaseOrdersDTOs = purchaseOrdersService.getAll();
         return ResponseEntity.ok(purchaseOrdersDTOs);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<PurchaseOrdersDTO> createPurchaseOrder(@RequestBody PurchaseOrdersDTO purchaseOrdersDTO) throws Exception {
-        PurchaseOrdersDTO createdPurchaseOrder = purchaseOrdersService.save(purchaseOrdersDTO);
+    @PostMapping
+    public ResponseEntity<PurchaseOrderDTO> createPurchaseOrder(@RequestBody PurchaseOrderDTO purchaseOrdersDTO) throws Exception {
+        PurchaseOrderDTO createdPurchaseOrder = purchaseOrdersService.save(purchaseOrdersDTO);
         return ResponseEntity.ok(createdPurchaseOrder);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PurchaseOrdersDTO> updatePurchaseOrder(@PathVariable Long id, @RequestBody PurchaseOrdersDTO purchaseOrdersDTO) throws Exception {
-        PurchaseOrdersDTO updatedPurchaseOrder = purchaseOrdersService.update(purchaseOrdersDTO, id);
+    public ResponseEntity<PurchaseOrderDTO> updatePurchaseOrder(@PathVariable Long id, @RequestBody PurchaseOrderDTO purchaseOrdersDTO) throws Exception {
+        PurchaseOrderDTO updatedPurchaseOrder = purchaseOrdersService.update(purchaseOrdersDTO, id);
         return ResponseEntity.ok(updatedPurchaseOrder);
     }
 

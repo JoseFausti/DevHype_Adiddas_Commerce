@@ -41,12 +41,17 @@ const Home: React.FC = () => {
   const productsWithDiscount = products.filter(
     (product) => product.discounts.length > 0
   );
+<<<<<<< HEAD
+=======
+
+>>>>>>> recuperacion-local
   const {
     activeIndex: discountActiveIndex,
     next: nextDiscount,
     prev: prevDiscount,
   } = useCarrousel<IProduct>(productsWithDiscount, 1);
 
+<<<<<<< HEAD
   // Productos interesantes
   const interestingProducts = products.filter(
     (product) => product.category.name === 'interesting'
@@ -56,6 +61,32 @@ const Home: React.FC = () => {
     next: nextInteresting,
     prev: prevInteresting,
   } = useCarrousel<IProduct>(interestingProducts, 1);
+=======
+
+  // Blog Most Interesting
+  const placeholderBlogPosts = [
+    {
+      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771785/MI_Messi_bacryp.jpg",
+      link: "/blog/interesting1",
+      alt: "Interesting Product Messi",
+    },
+    {
+      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771763/MI1_lvntd1.jpg",
+      link: "/blog/interesting3",
+      alt: "Interesting Product Shoes",
+    },
+    {
+      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771777/MI_Skate_d8plx4.jpg",
+      link: "/blog/interesting2",
+      alt: "Interesting Product Skate",
+    },
+    {
+      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771759/MI4_l1a1hc.jpg",
+      link: "/blog/interesting4",
+      alt: "Interesting Product jacket",
+    },
+  ];
+>>>>>>> recuperacion-local
 
   return (
     <div className={Styles.home__container}>
@@ -168,6 +199,7 @@ const Home: React.FC = () => {
         >
           <h2 className={Styles.interesting__title}>MOST INTERESTING</h2>
         </Link>
+<<<<<<< HEAD
         <div className={Styles.home__products}>
           {interestingProducts.length > 0 ? (
             <ProductLandingCard
@@ -179,6 +211,14 @@ const Home: React.FC = () => {
           ) : (
             <p>There are no interesting products at the moment</p>
           )}
+=======
+        <div className={Styles.placeholder__container}>
+          {placeholderBlogPosts.map((post, index) => (
+            <Link key={index} to={post.link} className={Styles.placeholder__link}>
+              <img src={post.img} alt={post.alt} className={Styles.placeholder__image} />
+            </Link>
+          ))}
+>>>>>>> recuperacion-local
         </div>
       </div>
     </div>

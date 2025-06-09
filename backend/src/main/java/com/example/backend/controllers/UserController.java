@@ -22,7 +22,7 @@ import com.example.backend.services.UserServiceImpl;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/users")
-public class UserController extends BaseControllerImpl<Users, UserServiceImpl> {
+public class UserController {
     
     @Autowired
     private UserServiceImpl userService;
@@ -33,13 +33,13 @@ public class UserController extends BaseControllerImpl<Users, UserServiceImpl> {
         return ResponseEntity.ok(userDTO);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() throws Exception {
         List<UserDTO> userDTOs = userService.getAll();
         return ResponseEntity.ok(userDTOs);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) throws Exception {
         UserDTO createdUser = userService.save(userDTO);
         return ResponseEntity.ok(createdUser);

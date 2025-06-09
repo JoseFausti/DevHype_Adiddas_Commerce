@@ -1,0 +1,56 @@
+/* Contenedor principal del componente Usuarios */
+.usersContainer {
+    padding: 20px;
+    color: black;
+    background-color: #f1f1f1;
+    /* Puedes usar un fondo similar al dashboard si conviene */
+    min-height: 150vh;
+}
+  
+/* Título de la vista de Usuarios, centrado y con estilo similar al Dashboard */
+/* Estilo del título */
+.usersTitle {
+    font-size: 8px;
+    /* Ajustamos tamaño más visible */
+    font-family: "Montserrat ExtraBold", sans-serif;
+    margin-bottom: 10px;
+    /* Reducimos margen inferior */
+}
+
+/* Línea debajo del título */
+.usersTitle::after {
+    content: "";
+    display: block;
+    height: 1px;
+    /* Grosor de la línea */
+    background-color: #000000;
+    /* Color de la línea (ajústalo si es necesario) */
+    margin: 10px auto 0;
+    /* Centra la línea y le da separación */
+}
+
+/* Contenedor para centrar la tabla y asignarle un ancho máximo */
+.tableContainer {
+    margin: 0 auto;
+    max-width: 800px;
+    overflow-x: auto;
+    /* Permite scroll si la tabla es más ancha */
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Opcional: Si deseas personalizar aún más las celdas y filas, por ejemplo: */
+
+.tableContainer table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tableContainer th,
+.tableContainer td {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}

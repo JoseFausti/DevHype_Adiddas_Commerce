@@ -23,12 +23,12 @@ public class ProductVariantsController {
         return ResponseEntity.ok(productVariantsService.getById(id));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<ProductVariantDTO>> getAllProductVariants() throws Exception {
         return ResponseEntity.ok(productVariantsService.getAll());
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<ProductVariantDTO> createProductVariant(@RequestBody ProductVariantDTO variantDTO) throws Exception {
         return ResponseEntity.ok(productVariantsService.save(variantDTO));
     }

@@ -23,12 +23,12 @@ public class CategoriesController {
         return ResponseEntity.ok(categoriesService.getById(id));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategories() throws Exception {
         return ResponseEntity.ok(categoriesService.getAll());
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) throws Exception {
         return ResponseEntity.ok(categoriesService.save(categoryDTO));
     }

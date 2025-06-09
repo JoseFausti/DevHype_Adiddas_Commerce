@@ -24,13 +24,13 @@ public class DiscountsController {
         return ResponseEntity.ok(discountDTO);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<DiscountDTO>> getAllDiscounts() throws Exception {
         List<DiscountDTO> discountDTOs = discountsService.getAll();
         return ResponseEntity.ok(discountDTOs);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<DiscountDTO> createDiscount(@RequestBody DiscountDTO discountDTO) throws Exception {
         DiscountDTO createdDiscount = discountsService.save(discountDTO);
         return ResponseEntity.ok(createdDiscount);

@@ -9,6 +9,10 @@ import { getDecodedToken } from '../../utils/functions';
 import { Role } from '../../utils/enums';
 import { Box } from '@mui/material';
 import DiscountMarquee from './DiscountsMarquee/DiscountMarquee';
+<<<<<<< HEAD
+=======
+import { motion } from "framer-motion";
+>>>>>>> recuperacion-local
 
 const discountMessages = [
     '50% OFF en zapatillas',
@@ -23,6 +27,7 @@ const Layout: React.FC = () => {
     const menuRef = useRef<HTMLDivElement | null>(null);
     const token = getDecodedToken();
 
+<<<<<<< HEAD
     // Estado para controlar la visibilidad y movimiento del header
     const [showHeader, setShowHeader] = useState(true);
     const prevScrollPosRef = useRef(window.pageYOffset);
@@ -41,6 +46,33 @@ const Layout: React.FC = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+=======
+    // Estado del header
+    const [scrollDirection, setScrollDirection] = useState("up");
+    const prevScrollPosRef = useRef(window.scrollY);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollPos = document.documentElement.scrollTop;
+    
+            // Cambiar inmediatamente el estado sin suavizados
+            if (currentScrollPos > prevScrollPosRef.current) {
+                setScrollDirection("down");
+            } else {
+                setScrollDirection("up");
+            }
+    
+            prevScrollPosRef.current = currentScrollPos;
+        };
+    
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);    
+
+    useEffect(() => {
+        console.log("Nuevo valor de scrollDirection:", scrollDirection);
+    }, [scrollDirection]);
+>>>>>>> recuperacion-local
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -52,18 +84,37 @@ const Layout: React.FC = () => {
         return () => document.removeEventListener('click', handleClickOutside);
     }, []);
 
+<<<<<<< HEAD
     const handleToogleMenu = (e: React.MouseEvent) => {
+=======
+    const handleToggleMenu = (e: React.MouseEvent) => {
+>>>>>>> recuperacion-local
         e.stopPropagation();
         setDisplayUserMenu((prev) => !prev);
     };
 
     return (
         <div className={styles.layout__container}>
+<<<<<<< HEAD
             {/* Clase condicional que oculta/desplaza el header */}
             <header className={`${styles.header__container} ${!showHeader ? styles.hide : styles.show}`}>
                 <div className={styles.header__marquee}>
                     <DiscountMarquee messages={discountMessages} />
                 </div>
+=======
+            <motion.header
+                key={scrollDirection}
+                initial={{ y: 0 }}
+                animate={{ y: scrollDirection === "down" ? -100 : 0 }}
+                transition={{ duration: 0, ease: "linear" }} // Sin retrasos, cambio inmediato
+                className={styles.header__container}
+            >
+
+                <div className={styles.header__marquee}>
+                    <DiscountMarquee messages={discountMessages} />
+                </div>
+
+>>>>>>> recuperacion-local
                 <div className={styles.header__menu__container}>
                     <div className={styles.header__logo_and_links}>
                         <div className={styles.header__logo}>
@@ -76,10 +127,18 @@ const Layout: React.FC = () => {
                             <Link to={{ pathname: "/products", search: '?category=men' }}>MEN</Link>
                             <Link to={{ pathname: "/products", search: '?category=shoes' }}>SHOES</Link>
                             <Link to={{ pathname: "/products", search: '?category=discounts' }}>
+<<<<<<< HEAD
                                 <span className={styles.discount}>DISCOUNTS</span>
                             </Link>
                         </div>
                     </div>
+=======
+                                <span className={styles.discount}>INTERESTING</span>
+                            </Link>
+                        </div>
+                    </div>
+
+>>>>>>> recuperacion-local
                     <div className={styles.header__search_login_and_cart}>
                         <SearchBar />
                         <div className={styles.userMenu__container}>
@@ -87,7 +146,11 @@ const Layout: React.FC = () => {
                                 size={26}
                                 color="#000"
                                 style={{ cursor: 'pointer' }}
+<<<<<<< HEAD
                                 onClick={handleToogleMenu}
+=======
+                                onClick={handleToggleMenu}
+>>>>>>> recuperacion-local
                             />
                             {displayUserMenu && (
                                 <div className={styles.userMenu} ref={menuRef}>
@@ -128,8 +191,13 @@ const Layout: React.FC = () => {
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
             </header>
             {/* Content */}
+=======
+            </motion.header>
+
+>>>>>>> recuperacion-local
             <main>
                 <Outlet /> {/* Aca se renderizan las rutas hijas, funciona como un children para las rutas */}
             </main>

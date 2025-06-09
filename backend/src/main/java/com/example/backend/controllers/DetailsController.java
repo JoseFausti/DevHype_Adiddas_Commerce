@@ -22,7 +22,7 @@ import com.example.backend.services.DetailsServiceImpl;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/details")
-public class DetailsController extends BaseControllerImpl<Details, DetailsServiceImpl> {
+public class DetailsController {
     
     @Autowired
     private DetailsServiceImpl detailService;
@@ -33,13 +33,13 @@ public class DetailsController extends BaseControllerImpl<Details, DetailsServic
         return ResponseEntity.ok(detailDTO);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<DetailDTO>> getAllDetails() throws Exception {
         List<DetailDTO> detailDTOs = detailService.getAll();
         return ResponseEntity.ok(detailDTOs);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<DetailDTO> createDetail(@RequestBody DetailDTO detailDTO) throws Exception {
         DetailDTO createdDetail = detailService.save(detailDTO);
         return ResponseEntity.ok(createdDetail);

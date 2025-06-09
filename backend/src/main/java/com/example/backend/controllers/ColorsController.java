@@ -23,12 +23,12 @@ public class ColorsController {
         return ResponseEntity.ok(colorsService.getById(id));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<ColorDTO>> getAllColors() throws Exception {
         return ResponseEntity.ok(colorsService.getAll());
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<ColorDTO> createColor(@RequestBody ColorDTO colorDTO) throws Exception {
         return ResponseEntity.ok(colorsService.save(colorDTO));
     }

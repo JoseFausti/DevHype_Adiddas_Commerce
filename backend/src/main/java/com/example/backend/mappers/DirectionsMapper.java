@@ -17,7 +17,6 @@ public class DirectionsMapper {
                 .city(direction.getCity())
                 .country(direction.getCountry())
                 .postalCode(direction.getPostalCode())
-                .users(direction.getUsers() != null ? direction.getUsers().stream().map(UsersMapper::toDto).collect(Collectors.toList()) : null)
                 .build();
     }
 
@@ -31,7 +30,6 @@ public class DirectionsMapper {
                 .city(dto.getCity())
                 .country(dto.getCountry())
                 .postalCode(dto.getPostalCode())
-                .users(dto.getUsers() != null ? dto.getUsers().stream().map(UsersMapper::toEntity).collect(Collectors.toList()) : null)
                 .build();
         direction.setId(dto.getId());
 

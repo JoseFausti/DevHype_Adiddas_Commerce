@@ -27,10 +27,17 @@
 
 body, html, #root {
   width: 100%;
+<<<<<<< HEAD
   min-width: 550px;
   height: 100vh;
   overflow-x: hidden;
   min-width: 670px;
+=======
+  min-width: 670px;
+  height: auto; /* Deja que el contenido determine la altura */
+  min-height: 120vh; /* Asegura que haya espacio suficiente para el scroll */
+  overflow-x: hidden;
+>>>>>>> recuperacion-local
 }
 
 p{
@@ -48,6 +55,7 @@ a:hover {
 
 body {
   margin: 0;
+<<<<<<< HEAD
   display: flex;
   place-items: center;
   width: 100vw;
@@ -60,6 +68,20 @@ main{
   flex: 1;
 }
 
+=======
+  display: block; /* Evita que flexbox afecte el scroll */
+  width: 100vw;
+  min-height: 120vh; /* Garantiza que haya suficiente espacio para hacer scroll */
+}
+
+main {
+  margin-top: 90px; /* Ajusta según la altura de tu header */
+  width: 100%;
+  min-height: calc(100vh - 80px); /* Asegura que el contenido no se corte */
+}
+
+
+>>>>>>> recuperacion-local
 h1 {
   font-size: 3.2em;
   line-height: 1.1;

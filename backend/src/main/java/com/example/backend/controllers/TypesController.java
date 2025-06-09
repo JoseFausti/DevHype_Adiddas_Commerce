@@ -23,7 +23,7 @@ import com.example.backend.dtos.TypeDTO;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/types")
-public class TypesController extends BaseControllerImpl<Types, TypesServiceImpl> {
+public class TypesController {
 
      @Autowired
     private TypesServiceImpl typesService;
@@ -34,13 +34,13 @@ public class TypesController extends BaseControllerImpl<Types, TypesServiceImpl>
         return ResponseEntity.ok(typesDTO);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<TypeDTO>> getAllTypes() throws Exception {
         List<TypeDTO> typesDTOs = typesService.getAll();
         return ResponseEntity.ok(typesDTOs);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<TypeDTO> createType(@RequestBody TypeDTO typeDTO) throws Exception {
         TypeDTO createdType = typesService.save(typeDTO);
         return ResponseEntity.ok(createdType);

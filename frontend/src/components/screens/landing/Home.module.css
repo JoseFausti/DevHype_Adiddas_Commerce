@@ -20,7 +20,11 @@
 
 .home__image__container img {
     width: 100%;
+<<<<<<< HEAD
     max-height: 800px;
+=======
+    max-height: 1000px;
+>>>>>>> recuperacion-local
     object-fit: cover;
     object-position: center;
 }
