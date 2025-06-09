@@ -1,0 +1,324 @@
+.home__container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--color_claro_fondo);
+    padding-bottom: 1rem;
+
+}
+
+.home__image__container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.home__image__container img {
+    width: 100%;
+    max-height: 1000px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.home__content__container {
+    width: 94%;
+    margin: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.home__products_and_benefits {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.link_shoes {
+    display: block;
+    align-self: flex-start;
+    /* Hace que se ubique al inicio del eje horizontal */
+    text-align: left;
+    margin-left: 50px
+}
+
+.shoes__title {
+    color: black;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.shoes__title:hover {
+    text-decoration: underline;
+    color: rgb(35, 35, 35);
+}
+
+.shoes__title{
+    color: black;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+
+}
+.shoes__title:hover{
+    text-decoration: underline;
+    color: rgb(35, 35, 35);
+}
+.home__products {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+    justify-items: center;
+    color: var(--color_oscuro);
+}
+
+.home__benefits {
+    overflow: hidden;
+    width: 80%;
+    min-width: 510px;
+    max-width: 1000px;
+    height: 25rem;
+    border-radius: 2rem;
+    display: flex;
+    background-color: black;
+    position: relative;
+}
+
+.home__benefit_image {
+    width: 30%;
+    min-width: 200px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    object-position: center;
+
+}
+
+.home__benefit_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.home__benefit_text {
+    margin: 5rem 1rem 0 1rem;
+    min-width: 300px;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.home__benefit_text h2 {
+    position: absolute;
+    top: 0;
+    font-size: 2rem;
+    left: 12.5vw;
+}
+
+.home__benefit_text p {
+    color: white;
+}
+
+.home__benefit_text span {
+    color: var(--color_amarillo);
+}
+
+.home__discounts {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .2rem;
+}
+
+.link_discounts{
+    display: block;
+    align-self: flex-start;
+    /* Hace que se ubique al inicio del eje horizontal */
+    text-align: left;
+    margin-left: 50px
+}
+
+
+.discount__title {
+    color: black;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.discount__title:hover {
+    text-decoration: underline;
+    color: rgb(35, 35, 35);
+}
+
+.home__history_container {
+    position: relative;
+    width: 100%;
+    min-height: 500px;
+    height: 500px;
+    background: linear-gradient(to bottom, var(--color_naranja), #8D4600);
+    overflow: hidden;
+    /* evita que la imagen desborde el contenedor */
+}
+
+/* Imagen decorativa central */
+.home__history_image {
+    position: absolute;
+    top: 4rem;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    /* para que no bloquee clics */
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home__history_image img {
+    max-width: 800px;
+    min-width: 520px;
+    min-height: 450px;
+    max-height: 450px;
+    object-position: center;
+    object-fit: cover;
+}
+
+/* Título */
+.home__history_title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.home__history_title h2 {
+    margin: 2rem 0;
+    font-size: 3.8rem;
+    font-weight: 900;
+    color: white;
+}
+
+/* Texto */
+.home__history_text {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 3;
+    font-size: 20px;
+}
+
+.history__text {
+    color: white;
+    line-height: 1.2;
+}
+
+/* Primer y tercer párrafo (izquierda) */
+.history__text:nth-of-type(1),
+.history__text:nth-of-type(3) {
+    width: 60%;
+    justify-self: start;
+    /* alinea el bloque a la izquierda */
+    text-align: left;
+    /* alinea el contenido del párrafo a la izquierda */
+    margin-left: 2rem;
+    /* margen izquierdo para no pegarse al borde */
+}
+
+/* Segundo y cuarto párrafo (derecha) */
+.history__text:nth-of-type(2),
+.history__text:nth-of-type(4) {
+    width: 60%;
+    justify-self: end;
+    /* alinea el bloque a la derecha */
+    text-align: right;
+    /* alinea el contenido del párrafo a la derecha */
+    margin-right: 2rem;
+    /* margen derecho para no pegarse al borde */
+}
+
+/* Footer */
+.home__history_footer {
+    position: absolute;
+    top: 85%;
+    transform: translateX(-50%);
+    left: 50%;
+    z-index: 10;
+    /* más alto para estar por encima de todo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.text_footer {
+    text-align: center;
+    color: white;
+    font-size: 1rem;
+    max-width: 800px;
+}
+
+.carrousel__container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.carrousel__container h2 {
+    margin: 2rem 0;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--color_oscuro);
+}
+
+.link_interesting {
+    display: flex;
+    align-self: center;
+    /* Hace que se ubique al inicio del eje horizontal */
+    text-align: center;
+}
+
+
+.interesting__title {
+    color: black;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.interesting__title:hover {
+    text-decoration: underline;
+    color: rgb(35, 35, 35);
+}

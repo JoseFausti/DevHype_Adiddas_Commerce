@@ -1,0 +1,129 @@
+/* Contenedor global de la página */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f1f1;
+  /* Fondo claro y sutil */
+  color: black;
+  min-height: 150vh;
+}
+
+/* Área principal donde se muestran las estadísticas */
+/* Ajuste del área principal para que el contenido se muestre más arriba */
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 10px 20px;
+  /* Reducimos el padding superior */
+}
+
+/* Estilo del título */
+.mainTitle {
+  font-size: 8px;
+  /* Ajustamos tamaño más visible */
+  font-family: "Montserrat ExtraBold", sans-serif;
+  margin-bottom: 10px;
+  /* Reducimos margen inferior */
+}
+
+/* Línea debajo del título */
+.mainTitle::after {
+  content: "";
+  display: block;
+  height: 1px;
+  /* Grosor de la línea */
+  background-color: #000000;
+  /* Color de la línea (ajústalo si es necesario) */
+  margin: 10px auto 0;
+  /* Centra la línea y le da separación */
+}
+
+/* Grid para las tarjetas de métricas, ajustable para distintos tamaños de pantalla */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* ----------------------------
+   Estilos para las tarjetas
+------------------------------- */
+
+.card {
+  /* Fondo con un degradado suave para dar profundidad */
+  background: linear-gradient(135deg, #ffffff, #f2f4f8);
+  /* Bordes redondeados */
+  border-radius: 20px;
+  /* Sombra sutil para dar sensación de profundidad */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  /* Oculta cualquier contenido que se salga del contenedor */
+  overflow: hidden;
+  /* Transición suave para efectos al interactuar */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* -------------------------------------------
+   Animación al pasar el cursor sobre la tarjeta
+--------------------------------------------- */
+.card:hover {
+  /* Aumenta la sombra para efecto de elevación */
+  box-shadow: 0 5px 20px rgba(17, 17, 17, 0.12);
+}
+
+/* -------------------------------------------
+   Contenedor de contenido dentro de la tarjeta
+   Organiza los elementos en columna, con un padding reducido
+   para disminuir el espacio en la parte superior y entre el ícono y el nombre
+--------------------------------------------- */
+.cardContent {
+  display: flex;
+  flex-direction: column;   /* Organiza los elementos verticalmente */
+  align-items: center;      /* Centra horizontalmente todo el contenido */
+  padding: 5px;            /* Se reduce el padding global para disminuir el espacio superior */
+  gap: 1px;                 /* Se reduce el gap para acercar el ícono al texto */
+}
+
+/* -------------------------------------------
+   Estilo del ícono en la tarjeta
+   Se mantiene centrado en la parte superior
+--------------------------------------------- */
+.icon {
+  font-size: 3rem;          /* Tamaño del ícono */
+  padding: 5px;            /* Espaciado interno del ícono */
+  border-radius: 12px;      /* Bordes redondeados */
+  color: #000000;           /* Color del ícono */
+}
+
+/* -------------------------------------------
+   Estilos para el título (nombre) dentro de la tarjeta
+   Se centra horizontalmente ocupando todo el ancho
+--------------------------------------------- */
+.cardContent h6 {
+  font-size: 1.2rem;       /* Tamaño de fuente para el título */
+  font-weight: 600;        /* Peso para resaltar el título */
+  color: #000000;          /* Color del título */
+  text-align: center;      /* Centra el texto horizontalmente */
+  width: 100%;             /* Ocupa todo el ancho del contenedor */
+}
+
+/* -------------------------------------------
+   Estilos para el valor (o subtítulo) dentro de la tarjeta
+   Se centra horizontalmente ocupando todo el ancho
+--------------------------------------------- */
+.cardContent p {
+  font-size: 1rem;         /* Tamaño de fuente para el valor */
+  color: #212121;          /* Color del texto para el valor */
+  text-align: center;      /* Centra el texto horizontalmente */
+  width: 100%;             /* Ocupa todo el ancho del contenedor */
+}
+
+/* Contenedor para el gráfico debajo de las tarjetas */
+.chartContainer {
+  margin-top: 50px;           /* Espacio superior para separar del grid de tarjetas */
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
