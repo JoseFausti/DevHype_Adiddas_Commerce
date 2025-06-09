@@ -1,6 +1,6 @@
 package com.example.backend.controllers;
 
-import com.example.backend.dtos.ProductDTO;
+import com.example.backend.dtos.products.ProductDTO;
 import com.example.backend.services.ProductsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import com.example.backend.dtos.products.CreateUpdateProductDTO;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -31,14 +33,14 @@ public class ProductsController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) throws Exception {
-        ProductDTO createdProduct = productsService.save(productDTO);
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody CreateUpdateProductDTO createDTO) throws Exception {
+        ProductDTO createdProduct = productsService.save(createDTO);
         return ResponseEntity.ok(createdProduct);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) throws Exception {
-        ProductDTO updatedProduct = productsService.update(productDTO, id);
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody CreateUpdateProductDTO updateDTO) throws Exception {
+        ProductDTO updatedProduct = productsService.update(updateDTO, id);
         return ResponseEntity.ok(updatedProduct);
     }
 

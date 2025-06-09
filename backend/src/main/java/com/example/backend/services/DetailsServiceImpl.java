@@ -1,12 +1,13 @@
 package com.example.backend.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.example.backend.dtos.DetailDTO;
+import com.example.backend.dtos.detail.CreateUpdateDetailDTO;
+import com.example.backend.dtos.detail.DetailDTO;
 import com.example.backend.mappers.DetailMapper;
 import com.example.backend.models.entities.Details;
 import com.example.backend.repositories.BaseRepository;
@@ -20,14 +21,29 @@ public class DetailsServiceImpl extends BaseServiceImpl<Details, Long> implement
     @Autowired
     private DetailsRepository detailsRepository;
 
+    @Autowired
+    private ProductVariantsServiceImpl productVariantsService;
+
+    @Autowired
+    @Lazy // Lazy loading to avoid circular dependency issues
+    private Purchase_ordersServiceImpl purchaseOrdersService;
+
+
     public DetailsServiceImpl(BaseRepository<Details, Long> baseRepository) {
         super(baseRepository);
     }
 
     @Transactional
-    public DetailDTO save(DetailDTO detailDTO) throws Exception {
+    public DetailDTO save(CreateUpdateDetailDTO dto) throws Exception {
         try {
-            Details detail = DetailMapper.toEntity(detailDTO);
+            Details detail = new Details();
+            detail.setQuantity(dto.getQuantity());
+            detail.setVariant(productVariantsService.findById(dto.getVariantId()));
+
+            if (dto.getPurchaseOrderId() != null) {
+                detail.setPurchaseOrder(purchaseOrdersService.findById(dto.getPurchaseOrderId()));
+            }
+
             detail = detailsRepository.save(detail);
             return DetailMapper.toDto(detail);
         } catch (Exception e) {
@@ -36,21 +52,25 @@ public class DetailsServiceImpl extends BaseServiceImpl<Details, Long> implement
     }
 
     @Transactional
-    public DetailDTO update(DetailDTO detailDTO, Long id) throws Exception {
+    public DetailDTO update(CreateUpdateDetailDTO dto, Long id) throws Exception {
         try {
-            Optional<Details> detailOptional = detailsRepository.findById(id);
-            if (!detailOptional.isPresent()) {
-                throw new Exception("Detalle no encontrado con ID: " + id);
+            Details detail = detailsRepository.findById(id)
+                .orElseThrow(() -> new Exception("Detalle no encontrado con ID: " + id));
+
+            detail.setQuantity(dto.getQuantity());
+            detail.setVariant(productVariantsService.findById(dto.getVariantId()));
+
+            if (dto.getPurchaseOrderId() != null) {
+                detail.setPurchaseOrder(purchaseOrdersService.findById(dto.getPurchaseOrderId()));
             }
 
-            Details detail = DetailMapper.toEntity(detailDTO);
-            detail.setId(id);
             detail = detailsRepository.save(detail);
             return DetailMapper.toDto(detail);
         } catch (Exception e) {
             throw new Exception("Error al actualizar el detalle: " + e.getMessage());
         }
     }
+
 
     @Transactional
     public DetailDTO getById(Long id) throws Exception {

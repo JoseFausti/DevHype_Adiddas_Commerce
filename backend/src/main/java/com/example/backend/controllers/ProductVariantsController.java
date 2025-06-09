@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
-import com.example.backend.dtos.ProductVariantDTO;
+import com.example.backend.dtos.productVariants.CreateUpdateProductVariantDTO;
+import com.example.backend.dtos.productVariants.ProductVariantDTO;
 import com.example.backend.services.ProductVariantsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,12 @@ public class ProductVariantsController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductVariantDTO> createProductVariant(@RequestBody ProductVariantDTO variantDTO) throws Exception {
+    public ResponseEntity<ProductVariantDTO> createProductVariant(@RequestBody CreateUpdateProductVariantDTO  variantDTO) throws Exception {
         return ResponseEntity.ok(productVariantsService.save(variantDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductVariantDTO> updateProductVariant(@PathVariable Long id, @RequestBody ProductVariantDTO variantDTO) throws Exception {
+    public ResponseEntity<ProductVariantDTO> updateProductVariant(@PathVariable Long id, @RequestBody CreateUpdateProductVariantDTO  variantDTO) throws Exception {
         return ResponseEntity.ok(productVariantsService.update(variantDTO, id));
     }
 

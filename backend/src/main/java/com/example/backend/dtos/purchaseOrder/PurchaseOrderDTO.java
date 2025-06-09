@@ -1,4 +1,4 @@
-package com.example.backend.dtos;
+package com.example.backend.dtos.purchaseOrder;
 
 import com.example.backend.models.enums.PaymentMethod;
 import com.example.backend.models.enums.Status;
@@ -8,7 +8,8 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.example.backend.models.entities.Details;
+import com.example.backend.dtos.detail.DetailDTO;
+import com.example.backend.dtos.user.UserDTO;
 
 @Data
 @NoArgsConstructor

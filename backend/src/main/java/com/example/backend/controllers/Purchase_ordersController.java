@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend.dtos.PurchaseOrderDTO;
+import com.example.backend.dtos.purchaseOrder.CreateUpdatePurchaseOrderDTO;
+import com.example.backend.dtos.purchaseOrder.PurchaseOrderDTO;
 import com.example.backend.models.entities.Purchase_orders;
 import com.example.backend.services.Purchase_ordersServiceImpl;
 
@@ -40,13 +41,13 @@ public class Purchase_ordersController {
     }
 
     @PostMapping
-    public ResponseEntity<PurchaseOrderDTO> createPurchaseOrder(@RequestBody PurchaseOrderDTO purchaseOrdersDTO) throws Exception {
+    public ResponseEntity<PurchaseOrderDTO> createPurchaseOrder(@RequestBody CreateUpdatePurchaseOrderDTO purchaseOrdersDTO) throws Exception {
         PurchaseOrderDTO createdPurchaseOrder = purchaseOrdersService.save(purchaseOrdersDTO);
         return ResponseEntity.ok(createdPurchaseOrder);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PurchaseOrderDTO> updatePurchaseOrder(@PathVariable Long id, @RequestBody PurchaseOrderDTO purchaseOrdersDTO) throws Exception {
+    public ResponseEntity<PurchaseOrderDTO> updatePurchaseOrder(@PathVariable Long id, @RequestBody CreateUpdatePurchaseOrderDTO purchaseOrdersDTO) throws Exception {
         PurchaseOrderDTO updatedPurchaseOrder = purchaseOrdersService.update(purchaseOrdersDTO, id);
         return ResponseEntity.ok(updatedPurchaseOrder);
     }

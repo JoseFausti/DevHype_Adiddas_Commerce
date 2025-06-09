@@ -1,7 +1,7 @@
 package com.example.backend.mappers;
 
+import com.example.backend.dtos.detail.DetailDTO;
 import com.example.backend.models.entities.Details;
-import com.example.backend.dtos.DetailDTO;
 
 public class DetailMapper {
 

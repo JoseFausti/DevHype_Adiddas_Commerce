@@ -1,5 +1,9 @@
 // ProductVariantDTO.java
-package com.example.backend.dtos;
+package com.example.backend.dtos.productVariants;
+
+import com.example.backend.dtos.ColorDTO;
+import com.example.backend.dtos.SizeDTO;
+import com.example.backend.dtos.products.ProductDTO;
 
 import lombok.*;
 
@@ -9,6 +13,7 @@ import lombok.*;
 @Builder
 public class ProductVariantDTO {
     private Long id;
+    private ProductDTO product;
     private SizeDTO size;
     private ColorDTO color;
     private int stock;

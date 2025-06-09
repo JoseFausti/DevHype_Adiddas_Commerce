@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend.dtos.DetailDTO;
-import com.example.backend.models.entities.Details;
+import com.example.backend.dtos.detail.CreateUpdateDetailDTO;
+import com.example.backend.dtos.detail.DetailDTO;
 import com.example.backend.services.DetailsServiceImpl;
 
 @RestController
@@ -40,15 +40,13 @@ public class DetailsController {
     }
 
     @PostMapping
-    public ResponseEntity<DetailDTO> createDetail(@RequestBody DetailDTO detailDTO) throws Exception {
-        DetailDTO createdDetail = detailService.save(detailDTO);
-        return ResponseEntity.ok(createdDetail);
+    public ResponseEntity<DetailDTO> createDetail(@RequestBody CreateUpdateDetailDTO dto) throws Exception {
+        return ResponseEntity.ok(detailService.save(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DetailDTO> updateDetail(@PathVariable Long id, @RequestBody DetailDTO detailDTO) throws Exception {
-        DetailDTO updatedDetail = detailService.update(detailDTO, id);
-        return ResponseEntity.ok(updatedDetail);
+    public ResponseEntity<DetailDTO> updateDetail(@PathVariable Long id, @RequestBody CreateUpdateDetailDTO dto) throws Exception {
+        return ResponseEntity.ok(detailService.update(dto, id));
     }
 
     @DeleteMapping("/{id}")

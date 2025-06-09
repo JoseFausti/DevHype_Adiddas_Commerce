@@ -1,7 +1,7 @@
 package com.example.backend.mappers;
 
+import com.example.backend.dtos.user.UserDTO;
 import com.example.backend.models.entities.Users;
-import com.example.backend.dtos.UserDTO;
 
 import java.util.stream.Collectors;
 

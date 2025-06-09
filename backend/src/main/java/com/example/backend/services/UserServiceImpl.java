@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.backend.dtos.UserDTO;
+import com.example.backend.dtos.user.UserDTO;
 import com.example.backend.mappers.UserMapper;
 import com.example.backend.models.entities.Users;
 import com.example.backend.repositories.BaseRepository;

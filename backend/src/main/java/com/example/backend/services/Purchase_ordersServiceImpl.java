@@ -1,6 +1,7 @@
 package com.example.backend.services;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +16,13 @@ import com.mercadopago.resources.payment.Payment;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.example.backend.dtos.PurchaseOrderDTO;
+import com.example.backend.dtos.detail.CreateUpdateDetailDTO;
+import com.example.backend.dtos.detail.DetailDTO;
+import com.example.backend.dtos.purchaseOrder.CreateUpdatePurchaseOrderDTO;
+import com.example.backend.dtos.purchaseOrder.PurchaseOrderDTO;
 import com.example.backend.mappers.PurchaseOrderMapper;
 import com.example.backend.models.entities.Purchase_orders;
 import com.example.backend.repositories.BaseRepository;
@@ -29,15 +34,52 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
     @Autowired
     private Purchase_ordersRepository purchase_ordersRepository;
 
+    @Autowired
+    private UserService usersService;
+
+    @Autowired
+    @Lazy // para evitar un ciclo de dependencia
+    private DetailsServiceImpl detailsService;
+
     public Purchase_ordersServiceImpl(BaseRepository<Purchase_orders, Long> baseRepository) {
         super(baseRepository);
     }
 
     @Transactional
-    public PurchaseOrderDTO save(PurchaseOrderDTO purchaseOrdersDTO) throws Exception {
+    public PurchaseOrderDTO save(CreateUpdatePurchaseOrderDTO dto) throws Exception {
         try {
-            Purchase_orders purchaseOrder = PurchaseOrderMapper.toEntity(purchaseOrdersDTO);
+            Purchase_orders purchaseOrder = new Purchase_orders();
+
+            purchaseOrder.setDate(LocalDate.now());
+            purchaseOrder.setPaymentMethod(dto.getPaymentMethod());
+            purchaseOrder.setUser(usersService.findById(dto.getUserId()));
+
+            if (dto.getStatus() != null) {
+                purchaseOrder.setStatus(dto.getStatus());
+            } else {
+                purchaseOrder.setStatus(Status.PENDING); // default
+            }
+
             purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
+
+            double totalPrice = 0.0;
+
+            if (dto.getDetails() != null && !dto.getDetails().isEmpty()) {
+                for (CreateUpdateDetailDTO detailDTO : dto.getDetails()) {
+                    detailDTO.setPurchaseOrderId(purchaseOrder.getId());
+
+                    DetailDTO savedDetail = detailsService.save(detailDTO);
+
+                    int quantity = savedDetail.getQuantity();
+                    double price = savedDetail.getVariant().getProduct().getPrice();
+
+                    totalPrice += quantity * price;
+                }
+            }
+
+            purchaseOrder.setTotalPrice(totalPrice);
+            purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
+
             return PurchaseOrderMapper.toDto(purchaseOrder);
         } catch (Exception e) {
             throw new Exception("Error al guardar la orden de compra: " + e.getMessage());
@@ -45,20 +87,53 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
     }
 
     @Transactional
-    public PurchaseOrderDTO update(PurchaseOrderDTO purchaseOrdersDTO, Long id) throws Exception {
+    public PurchaseOrderDTO update(CreateUpdatePurchaseOrderDTO dto, Long id) throws Exception {
         try {
-            Optional<Purchase_orders> purchaseOrderOptional = purchase_ordersRepository.findById(id);
-            if (!purchaseOrderOptional.isPresent()) {
-                throw new Exception("Orden de compra no encontrada con ID: " + id);
+            Purchase_orders purchaseOrder = purchase_ordersRepository.findById(id)
+                    .orElseThrow(() -> new Exception("Orden de compra no encontrada con ID: " + id));
+
+            purchaseOrder.setUser(usersService.findById(dto.getUserId()));
+            purchaseOrder.setPaymentMethod(dto.getPaymentMethod());
+
+            if (dto.getStatus() != null) {
+                purchaseOrder.setStatus(dto.getStatus());
             }
 
-            Purchase_orders purchaseOrder = PurchaseOrderMapper.toEntity(purchaseOrdersDTO);
-            purchaseOrder.setId(id);
+            if (purchaseOrder.getDetails() != null) {
+                purchaseOrder.getDetails().clear();
+            }
+
             purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
+
+            double totalPrice = 0.0;
+
+            if (dto.getDetails() != null && !dto.getDetails().isEmpty()) {
+                for (CreateUpdateDetailDTO detailDTO : dto.getDetails()) {
+                    detailDTO.setPurchaseOrderId(purchaseOrder.getId());
+
+                    DetailDTO savedDetail = detailsService.save(detailDTO);
+
+                    int quantity = savedDetail.getQuantity();
+                    double price = savedDetail.getVariant().getProduct().getPrice();
+
+                    totalPrice += quantity * price;
+                }
+            }
+
+            purchaseOrder.setTotalPrice(totalPrice);
+            purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
+
             return PurchaseOrderMapper.toDto(purchaseOrder);
         } catch (Exception e) {
             throw new Exception("Error al actualizar la orden de compra: " + e.getMessage());
         }
+    }
+
+
+    @Transactional
+    public List<PurchaseOrderDTO> getAll() throws Exception {
+        List<Purchase_orders> purchaseOrders = super.findAll();
+        return purchaseOrders.stream().map(PurchaseOrderMapper::toDto).toList();
     }
 
     @Transactional
@@ -67,17 +142,14 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
         return PurchaseOrderMapper.toDto(purchaseOrder);
     }
 
-    @Transactional
-    public List<PurchaseOrderDTO> getAll() throws Exception {
-        List<Purchase_orders> purchaseOrders = super.findAll();
-        return purchaseOrders.stream().map(PurchaseOrderMapper::toDto).toList();
-    }
-
     
     @Transactional
     public PreferenceRequest buildPreference(Purchase_orders order) {
         List<PreferenceItemRequest> items = new ArrayList<>();
         order.getDetails().forEach(detail -> {
+            if (detail.getVariant() == null || detail.getVariant().getProduct() == null) {
+                throw new IllegalStateException("El detalle con ID " + detail.getId() + " no tiene variante o producto asociado.");
+            }
             items.add(PreferenceItemRequest.builder()
                     .id(detail.getVariant().getProduct().getId().toString())
                     .title(detail.getVariant().getProduct().getName())

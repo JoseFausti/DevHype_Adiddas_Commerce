@@ -1,8 +1,8 @@
 // ProductVariantMapper.java
 package com.example.backend.mappers;
 
+import com.example.backend.dtos.productVariants.ProductVariantDTO;
 import com.example.backend.models.entities.ProductVariants;
-import com.example.backend.dtos.ProductVariantDTO;
 
 public class ProductVariantMapper {
 

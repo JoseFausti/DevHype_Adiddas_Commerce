@@ -1,8 +1,12 @@
 // ProductDTO.java
-package com.example.backend.dtos;
+package com.example.backend.dtos.products;
 
 import lombok.*;
 import java.util.List;
+
+import com.example.backend.dtos.CategoryDTO;
+import com.example.backend.dtos.DiscountDTO;
+import com.example.backend.dtos.productVariants.ProductVariantDTO;
 
 @Data
 @NoArgsConstructor

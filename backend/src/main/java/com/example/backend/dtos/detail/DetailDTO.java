@@ -1,4 +1,6 @@
-package com.example.backend.dtos;
+package com.example.backend.dtos.detail;
+
+import com.example.backend.dtos.productVariants.ProductVariantDTO;
 
 import lombok.*;
 

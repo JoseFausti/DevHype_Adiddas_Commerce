@@ -1,6 +1,6 @@
 package com.example.backend.mappers;
 
-import com.example.backend.dtos.PurchaseOrderDTO;
+import com.example.backend.dtos.purchaseOrder.PurchaseOrderDTO;
 import com.example.backend.models.entities.Purchase_orders;
 
 import java.util.stream.Collectors;
