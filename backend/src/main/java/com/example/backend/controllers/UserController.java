@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend.dtos.user.CreateUpdateUserDTO;
 import com.example.backend.dtos.user.UserDTO;
 import com.example.backend.models.entities.Users;
 import com.example.backend.services.UserServiceImpl;
@@ -40,16 +41,15 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) throws Exception {
-        UserDTO createdUser = userService.save(userDTO);
-        return ResponseEntity.ok(createdUser);
+    public ResponseEntity<UserDTO> createUser(@RequestBody CreateUpdateUserDTO dto) throws Exception {
+        return ResponseEntity.ok(userService.save(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) throws Exception {
-        UserDTO updatedUser = userService.update(userDTO, id);
-        return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody CreateUpdateUserDTO dto) throws Exception {
+        return ResponseEntity.ok(userService.update(dto, id));
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
