@@ -41,27 +41,12 @@ const Home: React.FC = () => {
   const productsWithDiscount = products.filter(
     (product) => product.discounts.length > 0
   );
-<<<<<<< HEAD
-=======
-
->>>>>>> recuperacion-local
   const {
     activeIndex: discountActiveIndex,
     next: nextDiscount,
     prev: prevDiscount,
   } = useCarrousel<IProduct>(productsWithDiscount, 1);
 
-<<<<<<< HEAD
-  // Productos interesantes
-  const interestingProducts = products.filter(
-    (product) => product.category.name === 'interesting'
-  );
-  const {
-    activeIndex: interestingActiveIndex,
-    next: nextInteresting,
-    prev: prevInteresting,
-  } = useCarrousel<IProduct>(interestingProducts, 1);
-=======
 
   // Blog Most Interesting
   const placeholderBlogPosts = [
@@ -86,7 +71,6 @@ const Home: React.FC = () => {
       alt: "Interesting Product jacket",
     },
   ];
->>>>>>> recuperacion-local
 
   return (
     <div className={Styles.home__container}>
@@ -199,26 +183,12 @@ const Home: React.FC = () => {
         >
           <h2 className={Styles.interesting__title}>MOST INTERESTING</h2>
         </Link>
-<<<<<<< HEAD
-        <div className={Styles.home__products}>
-          {interestingProducts.length > 0 ? (
-            <ProductLandingCard
-              carrousel={interestingProducts}
-              activeIndex={interestingActiveIndex}
-              next={nextInteresting}
-              prev={prevInteresting}
-            />
-          ) : (
-            <p>There are no interesting products at the moment</p>
-          )}
-=======
         <div className={Styles.placeholder__container}>
           {placeholderBlogPosts.map((post, index) => (
             <Link key={index} to={post.link} className={Styles.placeholder__link}>
               <img src={post.img} alt={post.alt} className={Styles.placeholder__image} />
             </Link>
           ))}
->>>>>>> recuperacion-local
         </div>
       </div>
     </div>
