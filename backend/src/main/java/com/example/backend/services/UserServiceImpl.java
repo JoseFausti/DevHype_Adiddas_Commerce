@@ -105,6 +105,13 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Long> implements Use
     }
 
     @Transactional
+    public UserDTO findByUsername(String username) {
+        Users user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con username: " + username));
+        return UserMapper.toDto(user);
+    }
+
+    @Transactional
     public List<UserDTO> getAll() throws Exception {
         List<Users> users = super.findAll();
         return users.stream().map(UserMapper::toDto).toList();

@@ -9,6 +9,7 @@ const Products: React.FC = () => {
 
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
+  const name = searchParams.get("name");
 
   const navigate = useNavigate();
   
@@ -40,9 +41,12 @@ const Products: React.FC = () => {
     initialize();
   }, []);
 
-  const filtered = category
+  const filtered = 
+    category
     ? products.filter((p) => p.category.name === category)
-    : products;
+    : name
+      ? products.filter((p) => p.name.toLowerCase().includes(name.toLowerCase()))
+      : products;
 
   const visibleProducts = filtered.slice(0, (visibleCount < filtered.length) ? visibleCount : filtered.length);
 

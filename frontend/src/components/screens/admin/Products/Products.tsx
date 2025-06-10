@@ -3,28 +3,21 @@ import styles from "./Products.module.css";
 import { Table, TableHead, TableBody, TableRow, TableCell, IconButton, Typography, Modal, Box, TextField, Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { IProductVariant } from "../../../../types/types";
 
-// Interfaz para definir la estructura de un producto
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  stock: number;
-  imageUrl: string;
-}
-
+// Variantes para ver los productos
 export const AdminProducts: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([
+  const [products, setProducts] = useState<IProductVariant[]>([
     { id: 1, name: "Zapatillas Adidas", price: 12000, stock: 15, imageUrl: "https://via.placeholder.com/50" },
     { id: 2, name: "Camiseta Adidas", price: 8000, stock: 30, imageUrl: "https://via.placeholder.com/50" },
     { id: 3, name: "Mochila Adidas", price: 15000, stock: 10, imageUrl: "https://via.placeholder.com/50" }
   ]);
   
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<IProductVariant | null>(null);
   const [openModal, setOpenModal] = useState(false);
 
   // Abrir modal de edición
-  const handleEditClick = (product: Product) => {
+  const handleEditClick = (variant: IProductVariant) => {
     setSelectedProduct(product);
     setOpenModal(true);
   };
@@ -50,9 +43,9 @@ export const AdminProducts: React.FC = () => {
           </TableHead>
           <TableBody>
             {products.map((product) => (
-              <TableRow key={product.id}>
+              <TableRow key={variant.id}>
                 <TableCell align="center">
-                  <img src={product.imageUrl} alt={product.name} width="50" height="50" />
+                  <img src={variant.product.imag} alt={product.name} width="50" height="50" />
                 </TableCell>
                 <TableCell align="center">{product.name}</TableCell>
                 <TableCell align="center">${product.price}</TableCell>

@@ -24,9 +24,9 @@ const Shopcart = () => {
               {/* Fin Carrito vacio */}
             </div>
           :
-            <div>
+            <div className={Styles.cartContainer}>
               {/* Main Carrito con productos */}
-              <div>
+              <div className={Styles.cartContainer__main}>
                 <h2>Tu carrito</h2> {/* Vista del carrito con productos */ }
                 {cart.map((product) => {
                     return (
@@ -37,7 +37,7 @@ const Shopcart = () => {
               {/* Fin Main Carrito con productos */}
 
               {/* Aside Carrito */}
-              <div>
+              <div className={Styles.cartContainer__aside}>
                   <ProductSummary />
               </div>
               {/* Fin Aside Carrito */}  

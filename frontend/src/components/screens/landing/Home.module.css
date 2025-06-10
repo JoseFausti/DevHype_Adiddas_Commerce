@@ -66,16 +66,18 @@
     color: rgb(35, 35, 35);
 }
 
-.shoes__title{
+.shoes__title {
     color: black;
     font-size: 1.5rem;
     margin-bottom: 1rem;
 
 }
-.shoes__title:hover{
+
+.shoes__title:hover {
     text-decoration: underline;
     color: rgb(35, 35, 35);
 }
+
 .home__products {
     width: 100%;
     height: auto;
@@ -153,7 +155,7 @@
     gap: .2rem;
 }
 
-.link_discounts{
+.link_discounts {
     display: block;
     align-self: flex-start;
     /* Hace que se ubique al inicio del eje horizontal */
@@ -287,16 +289,18 @@
     max-width: 800px;
 }
 
-.carrousel__container {
+.most_interesting__container {
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 24px;
+    margin-bottom: 40px;
 }
 
-.carrousel__container h2 {
+.most_interesting__container h2 {
     margin: 2rem 0;
     font-size: 1.8rem;
     font-weight: 900;
@@ -308,6 +312,7 @@
     align-self: center;
     /* Hace que se ubique al inicio del eje horizontal */
     text-align: center;
+    margin-top: 30px;
 }
 
 
@@ -321,4 +326,44 @@
 .interesting__title:hover {
     text-decoration: underline;
     color: rgb(35, 35, 35);
+}
+
+.placeholder__container {
+    /* Contenedor de las imágenes en fila */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* Espacia equitativamente las imágenes */
+    align-items: stretch;
+    /* Todas las tarjetas se estiran a igual altura */
+    gap: 1.5rem;
+    width: 100%;
+    padding: 3rem;
+    box-sizing: border-box;
+}
+
+.placeholder__link {
+    /* Contenedor de cada imagen con forma vertical */
+    flex: 1;
+    /* Cada link ocupa el mismo ancho */
+    max-width: 25%;
+    /* Cuatro imágenes por fila */
+    aspect-ratio: 3 / 4;
+    /* Proporción vertical tipo póster o tarjeta */
+    overflow: hidden;
+    display: block;
+}
+
+.placeholder__image {
+    /* Imagen interna ajustada verticalmente */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.placeholder__link:hover{
+    cursor: pointer;
+    border: 3px solid black
 }

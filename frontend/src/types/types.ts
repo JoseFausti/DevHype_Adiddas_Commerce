@@ -38,6 +38,7 @@ export interface IPurchaseOrder extends Base {
 export interface IDetail extends Base {
   variant: IProductVariant;
   quantity: number;
+  purchaseOrder: IPurchaseOrder;
 }
 
 export interface IDirection extends Base {

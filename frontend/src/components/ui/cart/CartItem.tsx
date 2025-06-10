@@ -1,12 +1,13 @@
-import { ICartItem } from "../../../types/types";
+import { IDetail } from "../../../types/types";
+import Styles from "./CartItem.module.css"; 
 
 interface ProductCartProps {
-    item: ICartItem;
+    item: IDetail;
 }
 
 const CartItem = ({ item }: ProductCartProps) => {
   return (
-    <div>
+    <div className={Styles.cartItemContainer}>
       <div>
         <img src="" alt="" />
       </div>

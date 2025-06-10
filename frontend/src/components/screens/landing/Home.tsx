@@ -51,22 +51,22 @@ const Home: React.FC = () => {
   // Blog Most Interesting
   const placeholderBlogPosts = [
     {
-      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771785/MI_Messi_bacryp.jpg",
+      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1747771785/MI_Messi_bacryp.jpg",
       link: "/blog/interesting1",
       alt: "Interesting Product Messi",
     },
     {
-      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771763/MI1_lvntd1.jpg",
+      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1747771763/MI1_lvntd1.jpg",
       link: "/blog/interesting3",
       alt: "Interesting Product Shoes",
     },
     {
-      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771777/MI_Skate_d8plx4.jpg",
+      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1747771777/MI_Skate_d8plx4.jpg",
       link: "/blog/interesting2",
       alt: "Interesting Product Skate",
     },
     {
-      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771759/MI4_l1a1hc.jpg",
+      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1747771759/MI4_l1a1hc.jpg",
       link: "/blog/interesting4",
       alt: "Interesting Product jacket",
     },
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
     <div className={Styles.home__container}>
       <div className={Styles.home__image__container}>
         <img
-          src="https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771633/Banner_Principal_jshu2w.png"
+          src="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1747771633/Banner_Principal_jshu2w.png"
           alt="Banner Adidas Mall"
           className={Styles.imagen_responsive}
         />
@@ -101,7 +101,7 @@ const Home: React.FC = () => {
           <div className={Styles.home__benefits}>
             <div className={Styles.home__benefit_image}>
               <img
-                src="https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771692/modeloDescuentos_uusoqh.jpg"
+                src="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1747771692/modeloDescuentos_uusoqh.jpg"
                 alt="Modelo Descuentos"
               />
             </div>
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
       <div className={Styles.home__history_container}>
         <div className={Styles.home__history_image}>
           <img
-            src="https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771689/modelo_history_oqvanc.png"
+            src="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1747771689/modelo_history_oqvanc.png"
             alt="Modelo History and Grace"
           />
         </div>
@@ -176,7 +176,7 @@ const Home: React.FC = () => {
           </h4>
         </div>
       </div>
-      <div className={Styles.carrousel__container}>
+      <div className={Styles.most_interesting__container}>
         <Link
           to={{ pathname: '/products', search: '?category=interesting' }}
           className={Styles.link_interesting}

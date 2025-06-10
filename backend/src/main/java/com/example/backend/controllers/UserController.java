@@ -19,6 +19,8 @@ import com.example.backend.dtos.user.CreateUpdateUserDTO;
 import com.example.backend.dtos.user.UserDTO;
 import com.example.backend.models.entities.Users;
 import com.example.backend.services.UserServiceImpl;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -33,6 +35,13 @@ public class UserController {
         UserDTO userDTO = userService.getById(id);
         return ResponseEntity.ok(userDTO);
     }
+
+    @GetMapping
+    public ResponseEntity<UserDTO> getUserByUsername(@RequestParam String name) {
+        UserDTO userDTO = userService.findByUsername(name);
+        return ResponseEntity.ok(userDTO);
+    }
+    
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() throws Exception {
