@@ -2,7 +2,7 @@ package com.example.backend.controllers;
 
 import java.util.List;
 
-import com.example.backend.models.entities.Types;
+import com.example.backend.dtos.types.TypeDTO;
 import com.example.backend.services.TypesServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend.dtos.TypeDTO;
+import com.example.backend.dtos.types.CreateUpdateTypeDTO;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -41,13 +41,13 @@ public class TypesController {
     }
 
     @PostMapping
-    public ResponseEntity<TypeDTO> createType(@RequestBody TypeDTO typeDTO) throws Exception {
+    public ResponseEntity<TypeDTO> createType(@RequestBody CreateUpdateTypeDTO typeDTO) throws Exception {
         TypeDTO createdType = typesService.save(typeDTO);
         return ResponseEntity.ok(createdType);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TypeDTO> updateType(@PathVariable Long id, @RequestBody TypeDTO typeDTO) throws Exception {
+    public ResponseEntity<TypeDTO> updateType(@PathVariable Long id, @RequestBody CreateUpdateTypeDTO typeDTO) throws Exception {
         TypeDTO updatedType = typesService.update(typeDTO, id);
         return ResponseEntity.ok(updatedType);
     }

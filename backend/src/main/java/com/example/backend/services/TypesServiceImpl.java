@@ -1,16 +1,22 @@
 package com.example.backend.services;
 
-import com.example.backend.dtos.TypeDTO;
+import com.example.backend.dtos.types.CreateUpdateTypeDTO;
+import com.example.backend.dtos.types.TypeDTO;
 import com.example.backend.mappers.TypeMapper;
 import com.example.backend.models.entities.Types;
 import com.example.backend.repositories.BaseRepository;
+import com.example.backend.repositories.CategoriesRepository;
 import com.example.backend.repositories.TypesRepository;
+
 import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import lombok.var;
 
 @Service
 public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements TypesService {
@@ -18,18 +24,28 @@ public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements Ty
     @Autowired
     private TypesRepository typesRepository;
 
+    @Autowired
+    private CategoriesRepository categoriesRepository;
+
     public TypesServiceImpl(BaseRepository<Types, Long> baseRepository) {
         super(baseRepository);
     }
 
-    @Transactional
-    public TypeDTO save(TypeDTO typesDTO) throws Exception {
+   @Transactional
+    public TypeDTO save(CreateUpdateTypeDTO dto) throws Exception {
         try {
-            if (typesRepository.existsByName(typesDTO.getName())) {
-                throw new Exception("Ya existe un tipo con el nombre: " + typesDTO.getName());
+            if (typesRepository.existsByName(dto.getName())) {
+                throw new Exception("Ya existe un tipo con el nombre: " + dto.getName());
             }
 
-            Types type = TypeMapper.toEntity(typesDTO);
+            var category = categoriesRepository.findByName(dto.getCategoryName())
+                    .orElseThrow(() -> new Exception("Categoría no encontrada con nombre: " + dto.getCategoryName()));
+
+            Types type = Types.builder()
+                    .name(dto.getName())
+                    .category(category)
+                    .build();
+
             type = typesRepository.save(type);
             return TypeMapper.toDto(type);
         } catch (Exception e) {
@@ -38,25 +54,28 @@ public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements Ty
     }
 
     @Transactional
-    public TypeDTO update(TypeDTO typesDTO, Long id) throws Exception {
+    public TypeDTO update(CreateUpdateTypeDTO dto, Long id) throws Exception {
         try {
-            Optional<Types> typeOptional = typesRepository.findById(id);
-            if (!typeOptional.isPresent()) {
-                throw new Exception("Tipo no encontrado con ID: " + id);
+            Types type = typesRepository.findById(id)
+                    .orElseThrow(() -> new Exception("Tipo no encontrado con ID: " + id));
+
+            if (typesRepository.existsByNameAndIdNot(dto.getName(), id)) {
+                throw new Exception("Ya existe otro tipo con el nombre: " + dto.getName());
             }
 
-            if (typesRepository.existsByNameAndIdNot(typesDTO.getName(), id)) {
-                throw new Exception("Ya existe otro tipo con el nombre: " + typesDTO.getName());
-            }
+            var category = categoriesRepository.findByName(dto.getCategoryName())
+                    .orElseThrow(() -> new Exception("Categoría no encontrada con nombre: " + dto.getCategoryName()));
 
-            Types type = TypeMapper.toEntity(typesDTO);
-            type.setId(id);
+            type.setName(dto.getName());
+            type.setCategory(category);
+
             type = typesRepository.save(type);
             return TypeMapper.toDto(type);
         } catch (Exception e) {
             throw new Exception("Error al actualizar tipo: " + e.getMessage());
         }
     }
+
 
     @Transactional
     public TypeDTO getById(Long id) throws Exception {
