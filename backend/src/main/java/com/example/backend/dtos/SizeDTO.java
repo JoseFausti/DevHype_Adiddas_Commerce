@@ -11,3 +11,4 @@ public class SizeDTO {
     private Long id;
     private double size;
 }
+    

@@ -12,6 +12,8 @@ import com.example.backend.models.entities.Directions;
 import com.example.backend.models.entities.Users;
 import com.example.backend.repositories.BaseRepository;
 import com.example.backend.repositories.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,9 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Long> implements Use
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private DirectionsRepository directionsRepository;
@@ -46,6 +51,7 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Long> implements Use
             user.setName(dto.getName());
             user.setSurname(dto.getSurname());
             user.setEmail(dto.getEmail());
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
             user.setRole(dto.getRole());
 
             if (dto.getDirectionIds() != null && !dto.getDirectionIds().isEmpty()) {
@@ -81,6 +87,9 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Long> implements Use
             user.setName(dto.getName());
             user.setSurname(dto.getSurname());
             user.setEmail(dto.getEmail());
+            if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+                user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            }
             user.setRole(dto.getRole());
 
             if (dto.getDirectionIds() != null) {

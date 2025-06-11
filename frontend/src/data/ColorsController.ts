@@ -81,7 +81,7 @@ export const createColor = async(newColor: IColor): Promise<IHttpResponse<IColor
     }
 }
 
-export const updateColor = async(id: string, updatedColor: IColor): Promise<IHttpResponse<IColor | null>> => {
+export const updateColor = async(id: number, updatedColor: IColor): Promise<IHttpResponse<IColor | null>> => {
     try {
         const color = await putColor(id, updatedColor);
         if ('error' in color) {
@@ -105,7 +105,7 @@ export const updateColor = async(id: string, updatedColor: IColor): Promise<IHtt
     }
 }
 
-export const deleteColorById = async(id: string): Promise<IHttpResponse<IColor | null>> => {
+export const deleteColorById = async(id: number): Promise<IHttpResponse<IColor | null>> => {
     try {
         const color = await deleteColor(id);
         if ('error' in color) {

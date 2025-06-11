@@ -1,5 +1,5 @@
 import { deleteType, getTypes, postType, putType } from "../http/types";
-import { IHttpResponse, IType } from "../types/types";
+import { ICreateUpdateType, IHttpResponse, IType } from "../types/types";
 
 
 export const getAllTypes = async (): Promise<IHttpResponse<IType[]>> => {
@@ -26,7 +26,7 @@ export const getAllTypes = async (): Promise<IHttpResponse<IType[]>> => {
     }
 }
 
-export const getTypeById = async (id: string): Promise<IHttpResponse<IType | null>> => {
+export const getTypeById = async (id: number): Promise<IHttpResponse<IType | null>> => {
     try {
         const types = await getTypes();
         if ('error' in types) {
@@ -36,7 +36,7 @@ export const getTypeById = async (id: string): Promise<IHttpResponse<IType | nul
                 status: 500
             };
         }
-        const type = types.find(type => type.id === Number(id));
+        const type = types.find(type => type.id === id);
         if (!type) {
             return {
                 data: null,
@@ -58,7 +58,7 @@ export const getTypeById = async (id: string): Promise<IHttpResponse<IType | nul
     }
 }
 
-export const createType = async (newType: IType): Promise<IHttpResponse<IType | null>> => {
+export const createType = async (newType: ICreateUpdateType): Promise<IHttpResponse<IType | null>> => {
     try {
         const type = await postType(newType);
         if ('error' in type) {
@@ -82,7 +82,7 @@ export const createType = async (newType: IType): Promise<IHttpResponse<IType | 
     }
 }
 
-export const updateType = async (id: string, updatedType: IType): Promise<IHttpResponse<IType | null>> => {
+export const updateType = async (id: number, updatedType: ICreateUpdateType): Promise<IHttpResponse<IType | null>> => {
     try {
         const type = await putType(id, updatedType);
         if ('error' in type) {
@@ -106,7 +106,7 @@ export const updateType = async (id: string, updatedType: IType): Promise<IHttpR
     }
 }
 
-export const deleteTypeById = async (id: string): Promise<IHttpResponse<IType | null>> => {
+export const deleteTypeById = async (id: number): Promise<IHttpResponse<IType | null>> => {
     try {
         const type = await deleteType(id);
         if ('error' in type) {

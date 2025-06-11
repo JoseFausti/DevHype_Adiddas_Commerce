@@ -48,10 +48,6 @@ const Layout: React.FC = () => {
     }, []);    
 
     useEffect(() => {
-        console.log("Nuevo valor de scrollDirection:", scrollDirection);
-    }, [scrollDirection]);
-
-    useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 setDisplayUserMenu(false);

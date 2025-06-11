@@ -15,7 +15,7 @@ const PurchaseProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await findProductById(id!);
+        const response = await findProductById(Number(id!));
         if (response.status === 200) {
           dispatch(setProductActive(response.data));
           setLoading(false);

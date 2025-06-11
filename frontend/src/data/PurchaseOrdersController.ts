@@ -1,5 +1,5 @@
 import { deletePurchaseOrder, getPurchaseOrders, postPurchaseOrder, putPurchaseOrder } from "../http/purchase_orders";
-import { IPurchaseOrder, IHttpResponse } from "../types/types";
+import { IPurchaseOrder, IHttpResponse, ICreateUpdatePurchaseOrder } from "../types/types";
 
 export const getAllPurchaseOrders = async (): Promise<IHttpResponse<IPurchaseOrder[]>> => {
     try {
@@ -25,7 +25,7 @@ export const getAllPurchaseOrders = async (): Promise<IHttpResponse<IPurchaseOrd
     }
 }
 
-export const findPurchaseOrderById = async(id: string): Promise<IHttpResponse<IPurchaseOrder | null>> => {
+export const findPurchaseOrderById = async(id: number): Promise<IHttpResponse<IPurchaseOrder | null>> => {
     try {
         const purchaseOrders = await getPurchaseOrders();
         if ('error' in purchaseOrders) {
@@ -35,7 +35,7 @@ export const findPurchaseOrderById = async(id: string): Promise<IHttpResponse<IP
                 status: 500
             };
         }
-        const purchaseOrder = purchaseOrders.find(order => order.id === Number(id));
+        const purchaseOrder = purchaseOrders.find(order => order.id === id);
         if (!purchaseOrder) {
             return {
                 data: null,
@@ -57,7 +57,7 @@ export const findPurchaseOrderById = async(id: string): Promise<IHttpResponse<IP
     }
 }
 
-export const createPurchaseOrder = async(newPurchaseOrder: IPurchaseOrder): Promise<IHttpResponse<IPurchaseOrder | null>> => {
+export const createPurchaseOrder = async(newPurchaseOrder: ICreateUpdatePurchaseOrder): Promise<IHttpResponse<IPurchaseOrder | null>> => {
     try {
         const purchaseOrder = await postPurchaseOrder(newPurchaseOrder);
         if ('error' in purchaseOrder) {
@@ -81,7 +81,7 @@ export const createPurchaseOrder = async(newPurchaseOrder: IPurchaseOrder): Prom
     }
 }
 
-export const updatePurchaseOrder = async(id: string, updatedPurchaseOrder: IPurchaseOrder): Promise<IHttpResponse<IPurchaseOrder | null>> => {
+export const updatePurchaseOrder = async(id: number, updatedPurchaseOrder: ICreateUpdatePurchaseOrder): Promise<IHttpResponse<IPurchaseOrder | null>> => {
     try {
         const purchaseOrder = await putPurchaseOrder(id, updatedPurchaseOrder);
         if ('error' in purchaseOrder) {
@@ -105,7 +105,7 @@ export const updatePurchaseOrder = async(id: string, updatedPurchaseOrder: IPurc
     }
 }
 
-export const deletePurchaseOrderById = async(id: string): Promise<IHttpResponse<IPurchaseOrder | null>> => {
+export const deletePurchaseOrderById = async(id: number): Promise<IHttpResponse<IPurchaseOrder | null>> => {
     try {
         const purchaseOrder = await deletePurchaseOrder(id);
         if ('error' in purchaseOrder) {

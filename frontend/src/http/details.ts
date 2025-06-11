@@ -1,5 +1,5 @@
 import axiosInstance from "../config/axiosConfig";
-import { IDetail } from "../types/types"
+import { ICreateUpdateDetail, IDetail } from "../types/types"
 import { API_DETAILS_URL } from "../utils/consts"
 
 export const getDetails = async (): Promise<IDetail[] | {error: string}> => {
@@ -13,7 +13,7 @@ export const getDetails = async (): Promise<IDetail[] | {error: string}> => {
     }
 }
 
-export const postDetail = async (detail: IDetail): Promise<IDetail | {error: string}> => {
+export const postDetail = async (detail: ICreateUpdateDetail): Promise<IDetail | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<IDetail>(`${API_DETAILS_URL}`, detail);
         return data;
@@ -24,7 +24,7 @@ export const postDetail = async (detail: IDetail): Promise<IDetail | {error: str
     }
 }
 
-export const putDetail = async (id: string, detail: IDetail): Promise<IDetail | {error: string}> => {
+export const putDetail = async (id: number, detail: ICreateUpdateDetail): Promise<IDetail | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<IDetail>(`${API_DETAILS_URL}/${id}`, detail);
         return data;
@@ -35,7 +35,7 @@ export const putDetail = async (id: string, detail: IDetail): Promise<IDetail | 
     }
 }
 
-export const deleteDetail = async (id: string): Promise<IDetail | {error: string}> => {
+export const deleteDetail = async (id: number): Promise<IDetail | {error: string}> => {
     try {
         const {data} = await axiosInstance.delete<IDetail>(`${API_DETAILS_URL}/${id}`);
         return data

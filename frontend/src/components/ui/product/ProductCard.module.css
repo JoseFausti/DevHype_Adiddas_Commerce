@@ -185,6 +185,19 @@
     margin: 0;
 }
 
+.productShopcartCard__quantity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.productShopcartCard__quantityLabel {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #000000;
+    margin: 0;
+}
+
 /* Botón para agregar al carrito */
 .productShopcartCard__button {
     margin-top: 2rem;

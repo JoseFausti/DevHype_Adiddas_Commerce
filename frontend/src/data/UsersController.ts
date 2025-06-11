@@ -1,5 +1,5 @@
 import { deleteUser, getUsers, login, postUser, putUser, register } from "../http/users";
-import { IHttpResponse, IUser } from "../types/types";
+import { ICreateUpdateUser, IHttpResponse, IUser } from "../types/types";
 import Cookies from "js-cookie";
 
 
@@ -27,7 +27,7 @@ export const getAllUsers = async (): Promise<IHttpResponse<IUser[]>> => {
     }
 }
 
-export const getUserById = async (id: string): Promise<IHttpResponse<IUser | null>> => {
+export const getUserById = async (id: number): Promise<IHttpResponse<IUser | null>> => {
     try {
         const users = await getUsers();
         if ('error' in users) {
@@ -37,7 +37,7 @@ export const getUserById = async (id: string): Promise<IHttpResponse<IUser | nul
                 status: 500
             };
         }
-        const user = users.find(user => user.id === Number(id));
+        const user = users.find(user => user.id === id);
         if (!user) {
             return {
                 data: null,
@@ -83,7 +83,7 @@ export const getUserByUsername = async (username: string): Promise<IHttpResponse
     }   
 }
 
-export const createUser = async (newUser: IUser): Promise<IHttpResponse<IUser | null>> => {
+export const createUser = async (newUser: ICreateUpdateUser): Promise<IHttpResponse<IUser | null>> => {
     try {
         const user = await postUser(newUser);
         if ('error' in user) {
@@ -107,7 +107,7 @@ export const createUser = async (newUser: IUser): Promise<IHttpResponse<IUser | 
     }
 }
 
-export const updateUser = async (id: string, updatedUser: IUser): Promise<IHttpResponse<IUser | null>> => {
+export const updateUser = async (id: number, updatedUser: ICreateUpdateUser): Promise<IHttpResponse<IUser | null>> => {
     try {
         const user = await putUser(id, updatedUser);
         if ('error' in user) {
@@ -131,7 +131,7 @@ export const updateUser = async (id: string, updatedUser: IUser): Promise<IHttpR
     }
 }
 
-export const deleteUserById = async (id: string): Promise<IHttpResponse<IUser | null>> => {
+export const deleteUserById = async (id: number): Promise<IHttpResponse<IUser | null>> => {
     try {
         const user = await deleteUser(id);
         if ('error' in user) {

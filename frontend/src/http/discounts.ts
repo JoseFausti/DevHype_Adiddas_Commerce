@@ -25,7 +25,7 @@ export const postDiscount = async (discount: IDiscount): Promise<IDiscount | {er
     }
 }
 
-export const putDiscount = async (id: string, discount: IDiscount): Promise<IDiscount | {error: string}> => {
+export const putDiscount = async (id: number, discount: IDiscount): Promise<IDiscount | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<IDiscount>(`${API_DISCOUNTS_URL}/${id}`, discount);
         return data;
@@ -36,7 +36,7 @@ export const putDiscount = async (id: string, discount: IDiscount): Promise<IDis
     }
 }
 
-export const deleteDiscount = async (id: string): Promise<IDiscount | {error: string}> => {
+export const deleteDiscount = async (id: number): Promise<IDiscount | {error: string}> => {
     try {
         const {data} = await axiosInstance.delete<IDiscount>(`${API_DISCOUNTS_URL}/${id}`);
         return data;

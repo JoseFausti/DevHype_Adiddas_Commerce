@@ -31,6 +31,10 @@ public class SecurityConfig {
                 authorizeRequest
                     .requestMatchers("/auth/**").permitAll()
 
+                    // PUT permitidos para autenticados
+                    .requestMatchers(HttpMethod.PUT, "/users/{id}").authenticated()
+                    .requestMatchers(HttpMethod.PUT, "/productVariants/{id}").authenticated()
+
                     // POST, PUT, DELETE para todos los endpoints solo ADMIN
                     .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")

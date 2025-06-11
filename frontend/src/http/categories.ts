@@ -24,7 +24,7 @@ export const postCategory = async (category: ICategory): Promise<ICategory | {er
     }
 }
 
-export const putCategory = async (id: string, category: ICategory): Promise<ICategory | {error: string}> => {
+export const putCategory = async (id: number, category: ICategory): Promise<ICategory | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<ICategory>(`${API_CATEGORIES_URL}/${id}`, category);
         return data;
@@ -35,7 +35,7 @@ export const putCategory = async (id: string, category: ICategory): Promise<ICat
     }
 }
 
-export const deleteCategory = async (id: string): Promise<ICategory | {error: string}> => {
+export const deleteCategory = async (id: number): Promise<ICategory | {error: string}> => {
     try {
         const {data} = await axiosInstance.delete<ICategory>(`${API_CATEGORIES_URL}/${id}`);
         return data;

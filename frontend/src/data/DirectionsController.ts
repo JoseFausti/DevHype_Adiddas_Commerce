@@ -25,7 +25,7 @@ export const getAllDirections = async (): Promise<IHttpResponse<IDirection[]>> =
     }
 }
 
-export const findDirectionById = async(id: string): Promise<IHttpResponse<IDirection | null>> => {
+export const findDirectionById = async(id: number): Promise<IHttpResponse<IDirection | null>> => {
     try {
         const directions = await getDirections();
         if ('error' in directions) {
@@ -81,7 +81,7 @@ export const createDirection = async(newDirection: IDirection): Promise<IHttpRes
     }
 }
 
-export const updateDirection = async(id: string, updatedDirection: IDirection): Promise<IHttpResponse<IDirection | null>> => {
+export const updateDirection = async(id: number, updatedDirection: IDirection): Promise<IHttpResponse<IDirection | null>> => {
     try {
         const direction = await putDirection(id, updatedDirection);
         if ('error' in direction) {
@@ -105,7 +105,7 @@ export const updateDirection = async(id: string, updatedDirection: IDirection): 
     }
 }
 
-export const deleteDirectionById = async(id: string): Promise<IHttpResponse<IDirection | null>> => {
+export const deleteDirectionById = async(id: number): Promise<IHttpResponse<IDirection | null>> => {
     try {
         const direction = await deleteDirection(id);
         if ('error' in direction) {

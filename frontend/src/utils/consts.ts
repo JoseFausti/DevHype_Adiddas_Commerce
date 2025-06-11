@@ -12,4 +12,4 @@ export const API_TYPES_URL = base + '/types';
 export const API_COLORS_URL = base + '/colors';
 export const API_USERS_URL = base + '/users';
 export const API_AUTH_URL = base + '/auth';
-export const API_PRODUCT_VARIANTS_URL = base + '/product_variants';
+export const API_PRODUCT_VARIANTS_URL = base + '/productVariants';

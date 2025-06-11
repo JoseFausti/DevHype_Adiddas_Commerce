@@ -1,5 +1,5 @@
 import axiosInstance from "../config/axiosConfig";
-import { IProductVariant } from "../types/types";
+import { ICreateUpdateProductVariant, IProductVariant } from "../types/types";
 import { API_PRODUCT_VARIANTS_URL } from "../utils/consts";
 
 export const getProductsVariants = async (): Promise<IProductVariant[] | {error: string}> => {
@@ -13,7 +13,7 @@ export const getProductsVariants = async (): Promise<IProductVariant[] | {error:
     }
 }
 
-export const postProductVariant = async (productVariant: IProductVariant): Promise<IProductVariant | {error: string}> => {
+export const postProductVariant = async (productVariant: ICreateUpdateProductVariant): Promise<IProductVariant | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<IProductVariant>(`${API_PRODUCT_VARIANTS_URL}`, productVariant);
         return data;
@@ -24,7 +24,7 @@ export const postProductVariant = async (productVariant: IProductVariant): Promi
     }
 }
 
-export const putProductVariant = async (id: string, productVariant: IProductVariant): Promise<IProductVariant | {error: string}> => {
+export const putProductVariant = async (id: number, productVariant: ICreateUpdateProductVariant): Promise<IProductVariant | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<IProductVariant>(`${API_PRODUCT_VARIANTS_URL}/${id}`, productVariant);
         return data;
@@ -35,7 +35,7 @@ export const putProductVariant = async (id: string, productVariant: IProductVari
     }
 }
 
-export const deleteProductVariant = async (id: string): Promise<IProductVariant | {error: string}> => {
+export const deleteProductVariant = async (id: number): Promise<IProductVariant | {error: string}> => {
     try {
         const {data} = await axiosInstance.delete<IProductVariant>(`${API_PRODUCT_VARIANTS_URL}/${id}`);
         return data;

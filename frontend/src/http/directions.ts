@@ -24,7 +24,7 @@ export const postDirection = async (direction: IDirection): Promise<IDirection |
     }
 }
 
-export const putDirection = async (id: string, direction: IDirection): Promise<IDirection | {error: string}> => {
+export const putDirection = async (id: number, direction: IDirection): Promise<IDirection | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<IDirection>(`${API_DIRECTIONS_URL}/${id}`, direction);
         return data
@@ -35,7 +35,7 @@ export const putDirection = async (id: string, direction: IDirection): Promise<I
     }
 }
 
-export const deleteDirection = async (id: string): Promise<IDirection | {error: string}> => {
+export const deleteDirection = async (id: number): Promise<IDirection | {error: string}> => {
     try {
         const {data} = await axiosInstance.delete<IDirection>(`${API_DIRECTIONS_URL}/${id}`);
         return data

@@ -1,5 +1,5 @@
 import { deleteProduct, getProducts, postProduct, putProduct } from "../http/products";
-import { IProduct, IHttpResponse } from "../types/types";
+import { IProduct, IHttpResponse, ICreateUpdateProduct } from "../types/types";
 
 export const getAllProducts = async (): Promise<IHttpResponse<IProduct[]>> => {
     try {
@@ -25,7 +25,7 @@ export const getAllProducts = async (): Promise<IHttpResponse<IProduct[]>> => {
     }
 }
 
-export const findProductById = async(id: string): Promise<IHttpResponse<IProduct | null>> => {
+export const findProductById = async(id: number): Promise<IHttpResponse<IProduct | null>> => {
     try {
         const products = await getProducts();
         if ('error' in products) {
@@ -57,7 +57,7 @@ export const findProductById = async(id: string): Promise<IHttpResponse<IProduct
     }
 }
 
-export const createProduct = async(newProduct: IProduct): Promise<IHttpResponse<IProduct | null>> => {
+export const createProduct = async(newProduct: ICreateUpdateProduct): Promise<IHttpResponse<IProduct | null>> => {
     try {
         const product = await postProduct(newProduct);
         if ('error' in product) {
@@ -81,7 +81,7 @@ export const createProduct = async(newProduct: IProduct): Promise<IHttpResponse<
     }
 }
 
-export const updateProduct = async(id: string, updatedProduct: IProduct): Promise<IHttpResponse<IProduct | null>> => {
+export const updateProduct = async(id: number, updatedProduct: ICreateUpdateProduct): Promise<IHttpResponse<IProduct | null>> => {
     try {
         const product = await putProduct(id, updatedProduct);
         if ('error' in product) {
@@ -105,7 +105,7 @@ export const updateProduct = async(id: string, updatedProduct: IProduct): Promis
     }
 }
 
-export const deleteProductById = async(id: string): Promise<IHttpResponse<IProduct | null>> => {
+export const deleteProductById = async(id: number): Promise<IHttpResponse<IProduct | null>> => {
     try {
         const product = await deleteProduct(id);
         if ('error' in product) {

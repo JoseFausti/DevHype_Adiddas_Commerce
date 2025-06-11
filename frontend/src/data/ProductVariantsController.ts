@@ -1,5 +1,5 @@
 import {getProductsVariants, postProductVariant, putProductVariant, deleteProductVariant} from "../http/product_variants";
-import {IProductVariant, IHttpResponse} from "../types/types";
+import {IProductVariant, IHttpResponse, ICreateUpdateProductVariant} from "../types/types";
 
 export const getAllProductVariants = async (): Promise<IHttpResponse<IProductVariant[]>> => {
     try {
@@ -25,7 +25,7 @@ export const getAllProductVariants = async (): Promise<IHttpResponse<IProductVar
     }
 }
 
-export const findProductVariantById = async(id: string): Promise<IHttpResponse<IProductVariant | null>> => {
+export const findProductVariantById = async(id: number): Promise<IHttpResponse<IProductVariant | null>> => {
     try {
         const productVariants = await getProductsVariants();
         if ('error' in productVariants) {
@@ -35,7 +35,7 @@ export const findProductVariantById = async(id: string): Promise<IHttpResponse<I
                 status: 500
             };
         }
-        const productVariant = productVariants.find(p => p.id === Number(id));
+        const productVariant = productVariants.find(p => p.id === id);
         if (!productVariant) {
             return {
                 data: null,
@@ -57,7 +57,7 @@ export const findProductVariantById = async(id: string): Promise<IHttpResponse<I
     }
 }
 
-export const createProductVariant = async(newProductVariant: IProductVariant): Promise<IHttpResponse<IProductVariant | null>> => {
+export const createProductVariant = async(newProductVariant: ICreateUpdateProductVariant): Promise<IHttpResponse<IProductVariant | null>> => {
     try {
         const productVariant = await postProductVariant(newProductVariant);
         if ('error' in productVariant) {
@@ -81,7 +81,7 @@ export const createProductVariant = async(newProductVariant: IProductVariant): P
     }
 }
 
-export const updateProductVariant = async(id: string, updatedProductVariant: IProductVariant): Promise<IHttpResponse<IProductVariant | null>> => {
+export const updateProductVariant = async(id: number, updatedProductVariant: ICreateUpdateProductVariant): Promise<IHttpResponse<IProductVariant | null>> => {
     try {
         const productVariant = await putProductVariant(id, updatedProductVariant);
         if ('error' in productVariant) {
@@ -105,7 +105,7 @@ export const updateProductVariant = async(id: string, updatedProductVariant: IPr
     }
 }
 
-export const deleteProductVariantById = async(id: string): Promise<IHttpResponse<IProductVariant | null>> => {
+export const deleteProductVariantById = async(id: number): Promise<IHttpResponse<IProductVariant | null>> => {
     try {
         const productVariant = await deleteProductVariant(id);
         if ('error' in productVariant) {

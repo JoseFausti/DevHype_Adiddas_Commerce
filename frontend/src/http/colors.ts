@@ -24,7 +24,7 @@ export const postColor = async (colorImg: IColor): Promise<IColor | {error: stri
     }
 }
 
-export const putColor = async (id: string, colorImg: IColor): Promise<IColor | {error: string}> => {
+export const putColor = async (id: number, colorImg: IColor): Promise<IColor | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<IColor>(`${API_COLORS_URL}/${id}`, colorImg);
         return data;
@@ -35,7 +35,7 @@ export const putColor = async (id: string, colorImg: IColor): Promise<IColor | {
     }
 }
 
-export const deleteColor = async (id: string): Promise<IColor | {error: string}> => {
+export const deleteColor = async (id: number): Promise<IColor | {error: string}> => {
     try {
         const {data} = await axiosInstance.delete<IColor>(`${API_COLORS_URL}/${id}`);
         return data

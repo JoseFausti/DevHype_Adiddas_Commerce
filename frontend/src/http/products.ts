@@ -1,6 +1,6 @@
 import axios from "axios";
 import axiosInstance from "../config/axiosConfig";
-import { IProduct } from "../types/types";
+import { ICreateUpdateProduct, IProduct } from "../types/types";
 import { API_PRODUCTS_URL } from "../utils/consts";
 
 
@@ -15,7 +15,7 @@ export const getProducts = async (): Promise<IProduct[] | {error: string}> => {
     }
 }
 
-export const postProduct = async (product: IProduct): Promise<IProduct | {error: string}> => {
+export const postProduct = async (product: ICreateUpdateProduct): Promise<IProduct | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<IProduct>(`${API_PRODUCTS_URL}`, product);
         return data;
@@ -26,7 +26,7 @@ export const postProduct = async (product: IProduct): Promise<IProduct | {error:
     }
 }
 
-export const putProduct = async (id: string, product: IProduct): Promise<IProduct | {error: string}> => {
+export const putProduct = async (id: number, product: ICreateUpdateProduct): Promise<IProduct | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<IProduct>(`${API_PRODUCTS_URL}/${id}`, product);
         return data;
@@ -37,7 +37,7 @@ export const putProduct = async (id: string, product: IProduct): Promise<IProduc
     }
 }
 
-export const deleteProduct = async (id: string): Promise<IProduct | {error: string}> => {
+export const deleteProduct = async (id: number): Promise<IProduct | {error: string}> => {
     try {
         const {data} = await axiosInstance.delete<IProduct>(`${API_PRODUCTS_URL}/${id}`);
         return data;

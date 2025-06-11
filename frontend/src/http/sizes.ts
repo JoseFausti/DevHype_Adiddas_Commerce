@@ -25,7 +25,7 @@ export const postSize = async (size: ISize): Promise<ISize | {error: string}> =>
     }
 }
 
-export const putSize = async (id: string, size: ISize): Promise<ISize | {error: string}> => {
+export const putSize = async (id: number, size: ISize): Promise<ISize | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<ISize>(`${API_SIZES_URL}/${id}`, size);
         return data;
@@ -36,7 +36,7 @@ export const putSize = async (id: string, size: ISize): Promise<ISize | {error: 
     }
 } 
 
-export const deleteSize = async (id: string): Promise<ISize | {error: string}> => {
+export const deleteSize = async (id: number): Promise<ISize | {error: string}> => {
     try {
         const {data} = await axiosInstance.delete<ISize>(`${API_SIZES_URL}/${id}`);
         return data;

@@ -11,22 +11,7 @@ export const store = configureStore({
         product: productReducer
     },
     // Middleware are used to intercept actions and modify them before they reach the reducer
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([]),
-    // Preloaded state is the initial state of the application
-    preloadedState: {
-        cart: {
-            cart: [],
-            productActive: null
-        },
-        user: {
-            users: [],
-            userActive: null
-        },
-        product: {
-            products: [],
-            productActive: null
-        }
-    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([])
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

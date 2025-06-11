@@ -1,5 +1,5 @@
 import axiosInstance from "../config/axiosConfig";
-import { IPurchaseOrder } from "../types/types";
+import { ICreateUpdatePurchaseOrder, IPurchaseOrder } from "../types/types";
 import { API_PURCHASE_ORDERS_URL } from "../utils/consts";
 
 
@@ -14,7 +14,7 @@ export const getPurchaseOrders = async (): Promise<IPurchaseOrder[] | {error: st
     }
 }
 
-export const postPurchaseOrder = async (purchase_order: IPurchaseOrder): Promise<IPurchaseOrder | {error: string}> => {
+export const postPurchaseOrder = async (purchase_order: ICreateUpdatePurchaseOrder): Promise<IPurchaseOrder | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<IPurchaseOrder>(`${API_PURCHASE_ORDERS_URL}`, purchase_order);
         return data;
@@ -25,7 +25,7 @@ export const postPurchaseOrder = async (purchase_order: IPurchaseOrder): Promise
     }
 }
 
-export const putPurchaseOrder = async (id: string, purchase_order: IPurchaseOrder): Promise<IPurchaseOrder | {error: string}> => {
+export const putPurchaseOrder = async (id: number, purchase_order: ICreateUpdatePurchaseOrder): Promise<IPurchaseOrder | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<IPurchaseOrder>(`${API_PURCHASE_ORDERS_URL}/${id}`, purchase_order);
         return data;
@@ -36,7 +36,7 @@ export const putPurchaseOrder = async (id: string, purchase_order: IPurchaseOrde
     }
 }
 
-export const deletePurchaseOrder = async (id: string): Promise<IPurchaseOrder | {error: string}> => {
+export const deletePurchaseOrder = async (id: number): Promise<IPurchaseOrder | {error: string}> => {
     try {
         const {data} = await axiosInstance.delete<IPurchaseOrder>(`${API_PURCHASE_ORDERS_URL}/${id}`);
         return data;

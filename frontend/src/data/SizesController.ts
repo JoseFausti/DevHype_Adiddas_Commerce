@@ -25,7 +25,7 @@ export const getAllSizes = async (): Promise<IHttpResponse<ISize[]>> => {
     }
 }
 
-export const getSizeById = async (id: string): Promise<IHttpResponse<ISize | null>> => {
+export const getSizeById = async (id: number): Promise<IHttpResponse<ISize | null>> => {
     try {
         const sizes = await getSizes();
         if ('error' in sizes) {
@@ -35,7 +35,7 @@ export const getSizeById = async (id: string): Promise<IHttpResponse<ISize | nul
                 status: 500
             };
         }
-        const size = sizes.find(size => size.id === Number(id));
+        const size = sizes.find(size => size.id === id);
         if (!size) {
             return {
                 data: null,
@@ -81,7 +81,7 @@ export const createSize = async (newSize: ISize): Promise<IHttpResponse<ISize | 
     }
 }
 
-export const updateSize = async (id: string, updatedSize: ISize): Promise<IHttpResponse<ISize | null>> => {
+export const updateSize = async (id: number, updatedSize: ISize): Promise<IHttpResponse<ISize | null>> => {
     try {
         const size = await putSize(id, updatedSize);
         if ('error' in size) {
@@ -105,7 +105,7 @@ export const updateSize = async (id: string, updatedSize: ISize): Promise<IHttpR
     }
 }
 
-export const deleteSizeById = async (id: string): Promise<IHttpResponse<ISize | null>> => {
+export const deleteSizeById = async (id: number): Promise<IHttpResponse<ISize | null>> => {
     try {
         const size = await deleteSize(id);
         if ('error' in size) {

@@ -40,17 +40,15 @@ export function useProductVariants(product: IProduct) {
 
   const maxStock = selectedVariant?.stock ?? 0;
 
-  const increaseQuantity = () => {
-    if (quantity < maxStock) setQuantity(q => q + 1);
-  };
+const increaseQuantity = () => {
+  if (!selectedVariant || !(maxStock > 0)) return;
+  if (quantity < maxStock) setQuantity(prev => prev + 1);
+};
 
-  const decreaseQuantity = () => {
-    if (quantity > 1) setQuantity(q => q - 1);
-  };
-
-  const handleChangeQuantity = () => {
-    return {increaseQuantity, decreaseQuantity};
-  };
+const decreaseQuantity = () => {
+  if (!selectedVariant || !(maxStock > 0)) return;
+  if (quantity > 1) setQuantity(prev => prev - 1);
+};
 
   const reset = () => {
     setSelectedColor(null);
@@ -67,7 +65,8 @@ export function useProductVariants(product: IProduct) {
     handleSizeSelect,
     quantity,
     setQuantity,
-    handleChangeQuantity,
+    increaseQuantity,
+    decreaseQuantity,
     maxStock,
     availableColors,
     availableSizes,

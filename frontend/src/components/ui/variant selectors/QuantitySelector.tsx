@@ -1,28 +1,47 @@
+import { IconButton, Typography, Box } from "@mui/material";
+import { Add, Remove } from "@mui/icons-material";
+
 interface QuantitySelectorProps {
   quantity: number;
   maxQuantity: number;
-  onChange: (value: number) => void;
+  increaseQuantity: () => void;
+  decreaseQuantity: () => void;
 }
 
-const QuantitySelector = ({ quantity, maxQuantity, onChange }: QuantitySelectorProps) => {
+const QuantitySelector = ({
+  quantity,
+  maxQuantity,
+  increaseQuantity,
+  decreaseQuantity,
+}: QuantitySelectorProps) => {
   return (
-    // Modificar el componente para mostrar el numero y usar las flechas para aumentar o disminuir la cantidad
-    // Agregar un mensaje de "Sin stock" si maxQuantity es 0
-    <div>
-      <label>Cantidad:</label>
-      <select
-        value={quantity}
-        onChange={(e) => onChange(Number(e.target.value))}
-        disabled={maxQuantity === 0}
+    <Box display="flex" alignItems="center" gap={1}>
+      <IconButton
+        onClick={decreaseQuantity}
+        disabled={quantity <= 1 || maxQuantity === 0}
+        size="small"
+        color="primary"
       >
-        {[...Array(maxQuantity)].map((_, i) => (
-          <option key={i + 1} value={i + 1}>
-            {i + 1}
-          </option>
-        ))}
-      </select>
-      {maxQuantity === 0 && <p style={{ color: 'red' }}>Sin stock</p>}
-    </div>
+        <Remove />
+      </IconButton>
+
+      <Typography variant="body1">{quantity}</Typography>
+
+      <IconButton
+        onClick={increaseQuantity}
+        disabled={quantity >= maxQuantity || maxQuantity === 0}
+        size="small"
+        color="primary"
+      >
+        <Add />
+      </IconButton>
+
+      {maxQuantity === 0 && (
+        <Typography variant="body2" color="error" ml={2}>
+          Sin stock
+        </Typography>
+      )}
+    </Box>
   );
 };
 

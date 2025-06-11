@@ -25,7 +25,7 @@ export const getAllDiscounts = async (): Promise<IHttpResponse<IDiscount[]>> => 
     }
 }
 
-export const findDiscountById = async(id: string): Promise<IHttpResponse<IDiscount | null>> => {
+export const findDiscountById = async(id: number): Promise<IHttpResponse<IDiscount | null>> => {
     try {
         const discounts = await getDiscounts();
         if ('error' in discounts) {
@@ -82,7 +82,7 @@ export const createDiscount = async(newDiscount: IDiscount): Promise<IHttpRespon
 }
 
 // Actualizar descuento
-export const updateDiscount = async(id: string, updatedDiscount: IDiscount): Promise<IHttpResponse<IDiscount | null>> => {
+export const updateDiscount = async(id: number, updatedDiscount: IDiscount): Promise<IHttpResponse<IDiscount | null>> => {
     try {
         const discount = await putDiscount(id, updatedDiscount);
         if ('error' in discount) {
@@ -106,7 +106,7 @@ export const updateDiscount = async(id: string, updatedDiscount: IDiscount): Pro
     }
 }
 
-export const deleteDiscountById = async(id: string): Promise<IHttpResponse<IDiscount | null>> => {
+export const deleteDiscountById = async(id: number): Promise<IHttpResponse<IDiscount | null>> => {
     try {
         const discount = await deleteDiscount(id);
         if ('error' in discount) {

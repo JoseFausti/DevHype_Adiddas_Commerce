@@ -1,6 +1,6 @@
 import axios from "axios";
 import axiosInstance from "../config/axiosConfig";
-import { IUser } from "../types/types";
+import { ICreateUpdateUser, IUser } from "../types/types";
 import { API_AUTH_URL, API_USERS_URL } from "../utils/consts";
 
 
@@ -15,7 +15,7 @@ export const getUsers = async (): Promise<IUser[] | {error: string}> => {
     }
 }
 
-export const postUser = async (user: IUser): Promise<IUser | {error: string}> => {
+export const postUser = async (user: ICreateUpdateUser): Promise<IUser | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<IUser>(`${API_USERS_URL}`, user);
         return data;
@@ -26,7 +26,7 @@ export const postUser = async (user: IUser): Promise<IUser | {error: string}> =>
     }
 }
 
-export const putUser = async (id: string, user: IUser): Promise<IUser | {error: string}> => {
+export const putUser = async (id: number, user: ICreateUpdateUser): Promise<IUser | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<IUser>(`${API_USERS_URL}/${id}`, user);
         return data;
@@ -37,7 +37,7 @@ export const putUser = async (id: string, user: IUser): Promise<IUser | {error: 
     }
 }
 
-export const deleteUser = async (id: string): Promise<IUser | {error: string}> => {
+export const deleteUser = async (id: number): Promise<IUser | {error: string}> => {
     try {
         const {data} = await axiosInstance.delete<IUser>(`${API_USERS_URL}/${id}`);
         return data;

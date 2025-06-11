@@ -1,5 +1,5 @@
 import { deleteDetail, getDetails, postDetail, putDetail } from "../http/details";
-import { IDetail, IHttpResponse } from "../types/types";
+import { ICreateUpdateDetail, IDetail, IHttpResponse } from "../types/types";
 
 export const getAllDetails = async (): Promise<IHttpResponse<IDetail[]>> => {
     try {
@@ -25,7 +25,7 @@ export const getAllDetails = async (): Promise<IHttpResponse<IDetail[]>> => {
     }
 }
 
-export const findDetailById = async(id: string): Promise<IHttpResponse<IDetail | null>> => {
+export const findDetailById = async(id: number): Promise<IHttpResponse<IDetail | null>> => {
     try {
         const details = await getDetails();
         if ('error' in details) {
@@ -58,7 +58,7 @@ export const findDetailById = async(id: string): Promise<IHttpResponse<IDetail |
 }
 
 // Función para crear un nuevo detalle
-export const createDetail = async(newDetail: IDetail): Promise<IHttpResponse<IDetail | null>> => {
+export const createDetail = async(newDetail: ICreateUpdateDetail): Promise<IHttpResponse<IDetail | null>> => {
     try {
         const detail = await postDetail(newDetail);
         if ('error' in detail) {
@@ -82,7 +82,7 @@ export const createDetail = async(newDetail: IDetail): Promise<IHttpResponse<IDe
     }
 }
 
-export const updateDetail = async(id: string, updatedDetail: IDetail): Promise<IHttpResponse<IDetail | null>> => {
+export const updateDetail = async(id: number, updatedDetail: ICreateUpdateDetail): Promise<IHttpResponse<IDetail | null>> => {
     try {
         const detail = await putDetail(id, updatedDetail);
         if ('error' in detail) {
@@ -107,7 +107,7 @@ export const updateDetail = async(id: string, updatedDetail: IDetail): Promise<I
 }
 
 // Función para eliminar un detalle por ID
-export const deleteDetailById = async(id: string): Promise<IHttpResponse<IDetail | null>> => {
+export const deleteDetailById = async(id: number): Promise<IHttpResponse<IDetail | null>> => {
     try {
         const detail = await deleteDetail(id);
         if ('error' in detail) {

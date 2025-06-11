@@ -26,7 +26,7 @@ export const getAllCategories = async (): Promise<IHttpResponse<ICategory[]>> =>
 }
 
 
-export const findCategoryById = async(id: string): Promise<IHttpResponse<ICategory | null>> => {
+export const findCategoryById = async(id: number): Promise<IHttpResponse<ICategory | null>> => {
     try {
         const categories = await getCategories();
         if('error' in categories){
@@ -83,7 +83,7 @@ export const createCategory = async(newCategory: ICategory): Promise<IHttpRespon
 }
 
 
-export const updateCategory = async(id: string, updatedCategory: ICategory): Promise<IHttpResponse<ICategory | null>> => {
+export const updateCategory = async(id: number, updatedCategory: ICategory): Promise<IHttpResponse<ICategory | null>> => {
     try {
         const category = await putCategory(id, updatedCategory);
         if('error' in category){
@@ -107,7 +107,7 @@ export const updateCategory = async(id: string, updatedCategory: ICategory): Pro
     }
 }
 
-export const deleteCategoryById = async(id: string): Promise<IHttpResponse<ICategory | null>> => {
+export const deleteCategoryById = async(id: number): Promise<IHttpResponse<ICategory | null>> => {
     try {
         const category = await deleteCategory(id);
         if('error' in category){
