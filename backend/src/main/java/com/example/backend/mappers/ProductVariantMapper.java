@@ -6,15 +6,18 @@ import com.example.backend.models.entities.ProductVariants;
 
 public class ProductVariantMapper {
 
-    public static ProductVariantDTO toDto(ProductVariants variant) {
+   public static ProductVariantDTO toDto(ProductVariants variant) {
         if (variant == null) return null;
 
         return ProductVariantDTO.builder()
                 .id(variant.getId())
-                .size(SizeMapper.toDto(variant.getSize()))
+                .productId(variant.getProduct() != null ? variant.getProduct().getId() : null)
                 .color(ColorMapper.toDto(variant.getColor()))
+                .size(SizeMapper.toDto(variant.getSize()))
+                .stock(variant.getStock())
                 .build();
     }
+
 
     public static ProductVariants toEntity(ProductVariantDTO dto) {
         if (dto == null) return null;

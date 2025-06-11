@@ -70,3 +70,14 @@ export const register = async (user: Omit<IUser, 'id' | 'deleted' | 'role' | 'ad
     }
         
 }
+
+export const getUserByUsername = async (username: string): Promise<IUser | {error: string}> => {
+    try {
+        const {data} = await axiosInstance.get<IUser>(`${API_USERS_URL}/username`, {params: {username}});
+        return data;
+    } catch (err) {
+        return {
+            error: "Se produjo un error al obtener el usuario por nombre de usuario en getUserByUsername: " + err,
+        }
+    }
+}

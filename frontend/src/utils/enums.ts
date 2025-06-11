@@ -1,14 +1,14 @@
 export enum Role {
-    USER = 'ROLE_USER',
-    ADMIN = 'ROLE_ADMIN',
+    USER = 'USER',
+    ADMIN = 'ADMIN',
 }
 
 export enum Status {
+  APPROVED = 'APPROVED',
   PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED'
+  REJECTED = 'REJECTED'
 }
 
 export enum PaymentMethod {
-  VISA = 'VISA',
   MASTERCARD = 'MASTERCARD'
 }

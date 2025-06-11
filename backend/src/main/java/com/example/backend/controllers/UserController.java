@@ -36,9 +36,9 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @GetMapping
-    public ResponseEntity<UserDTO> getUserByUsername(@RequestParam String name) {
-        UserDTO userDTO = userService.findByUsername(name);
+    @GetMapping("/username")
+    public ResponseEntity<UserDTO> getUserByUsername(@RequestParam String username) {
+        UserDTO userDTO = userService.findByUsername(username);
         return ResponseEntity.ok(userDTO);
     }
     

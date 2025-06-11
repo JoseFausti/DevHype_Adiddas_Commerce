@@ -1,14 +1,10 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { IProduct } from "../types/types";
 
 export function useProductVariants(product: IProduct) {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
-
-  useEffect(()=>{
-    
-  })
 
   // Color
   const handleColorSelect = (color: string) => {

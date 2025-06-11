@@ -59,6 +59,30 @@ export const getUserById = async (id: string): Promise<IHttpResponse<IUser | nul
     }
 }
 
+export const getUserByUsername = async (username: string): Promise<IHttpResponse<IUser | null>> => {
+    try {
+        const users = await getUserByUsername(username);
+        if ('error' in users) {
+            return {
+                data: null,
+                error: users.error,
+                status: 500
+            };
+        }
+        return {
+            data: users,
+            error: "",
+            status: 200
+        };
+    } catch (error) {
+        return {
+            data: null,
+            error: "Se produjo un error en getUserByUsername: " + error,
+            status: 500
+        };
+    }   
+}
+
 export const createUser = async (newUser: IUser): Promise<IHttpResponse<IUser | null>> => {
     try {
         const user = await postUser(newUser);

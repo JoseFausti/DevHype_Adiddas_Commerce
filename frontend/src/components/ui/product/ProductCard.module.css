@@ -1,23 +1,212 @@
-.productShopcartCard{
+/* Contenedor principal que cubre toda la pantalla y centra el contenido */
+.productShopcartContainer {
+    width: 100vw;
+    /* Ancho completo de la ventana */
+    height: 100vh;
+    /* Alto completo de la ventana */
+    color: black;
+    /* Color de texto por defecto */
+    background-color: #f9f9f9;
+    /* Color de fondo suave */
     display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    border-radius: 1rem;
-    background-color: var(--color_claro_fondo);
-    border: 1px solid var(--color_oscuro);
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    /* Usamos flexbox */
+    justify-content: center;
+    /* Centrado horizontal */
+    align-items: center;
+    /* Centrado vertical */
 }
 
-.productShopcartCard__details{
+/* Tarjeta del producto dividida en imagen e info */
+.productShopcartCard {
+    display: flex;
+    /* Layout horizontal (2 columnas) */
+    width: 100%;
+    /* Ocupa todo el ancho del contenedor */
+    height: 90vh;
+    /* Un poco menos de altura que el viewport */
+    max-width: 1200px;
+    /* Límite de ancho para pantallas grandes */
+    border: 1px solid #000000;
+    /* Borde fino negro */
+    background-color: #fff;
+    /* Fondo blanco */
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    /* Sombra suave para profundidad */
+}
+
+/* Zona izquierda que contiene la imagen */
+.productShopcartCard__imageWrapper {
+    flex: 1;
+    /* Ocupa mitad del espacio */
+    display: flex;
+    /* Centrado de la imagen */
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    /* Espaciado interno */
+    background-color: #eee;
+    /* Fondo gris claro */
+    overflow: hidden;
+    transform-origin: center;
+}
+
+/* Imagen del producto */
+.productShopcartCard__image {
+    width: 100%;
+    /* Que no se desborde */
+    max-width: 450px;
+    /* Límite máximo de ancho */
+    object-fit: contain;
+    /* Mantiene proporción y visibilidad completa */
+    border-radius: 0.5rem;
+    /* Bordes redondeados */
+    transition: transform 0.3s ease;
+}
+
+.productShopcartCard__image:hover {
+    /* Primero se escala y luego se desplaza hacia arriba un 50% */
+    transform: scale(1.5) translateY(-5%);
+    cursor: zoom-in;
+}
+
+/* Contenedor del contenido de texto e interacciones */
+.productShopcartCard__info {
+    flex: 1;
+    /* Otra mitad del espacio */
+    padding: 2rem 3rem;
+    /* Espaciado interno */
+    display: flex;
+    flex-direction: column;
+    /* Stack vertical */
+    gap: 1rem;
+    /* Espaciado entre elementos hijos */
+    justify-content: flex-start;
+    /* Contenido alineado arriba */
+}
+
+/* Agrupación del texto: marca, nombre y precio */
+.productShopcartCard__headerText {
+    line-height: 1.2;
+    /* Disminuye espacio entre líneas */
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    /* Espacio reducido entre marca/nombre/precio */
+}
+
+/* Marca del producto */
+.productShopcartCard__brand {
+    font-size: 1rem;
+    color: #3d3d3d;
+    /* Gris suave */
+    margin: 0;
+}
+
+/* Nombre del producto */
+.productShopcartCard__name {
+    font-size: 2rem;
+    /* Texto grande */
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Precio, debajo del nombre */
+.productShopcartCard__price {
+    font-size: 1rem;
+    font-weight: bold;
+    /* Más pequeño que el nombre */
+    color: #000000;
+    margin: 0;
+}
+
+/* Descripción del producto */
+.productShopcartCard__description {
+    font-size: 1.2rem;
+    /* Texto levemente más grande */
+    color: #606060;
+    /* Color negro */
+    margin-top: 2rem;
+    /* Margen superior (podés ajustar el valor) */
+    font-family: Calibri, system-ui, sans-serif;
+}
+
+/* Fila horizontal para selector de color y cantidad */
+/* Aplica a los botones dentro del contenedor del ColorSelector (primer hijo de la fila) */
+.productShopcartCard__row>div:first-child button {
+    width: 20px;
+    /* Ancho fijo */
+    height: 20px;
+    /* Alto fijo (deben ser iguales) */
+    padding: 0;
+    /* Eliminamos cualquier padding */
+    margin: 0;
+    /* Eliminamos márgenes extra */
+    border-radius: 70%;
+    /* Esto fuerza la forma circular */
+    border: 2px solid #ccc;
+    /* Borde por defecto */
+    text-indent: -9999px;
+    /* Oculta cualquier texto interno */
+    overflow: hidden;
+    /* Previene que se muestre contenido extra */
+    appearance: none;
+    /* Quita estilos por defecto del navegador */
+    -webkit-appearance: none;
+    /* Para compatibilidad con WebKit */
+    display: inline-block;
+    /* Asegura comportamiento de bloque en línea */
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.586);
+}
+
+/* Si por alguna razón se generan más de dos botones, se ocultan los extra */
+.productShopcartCard__row>div:first-child button:nth-child(n+3) {
+    display: none;
+}
+
+/* Efecto hover para agrandar suavemente */
+.productShopcartCard__row>div:first-child button:hover {
+    transform: scale(1.1);
+}
+
+
+/* Contenedor para los talles */
+.productShopcartCard__sizes {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.productShopcartCard__image{
-    width: 5rem;
-    height: 5rem;
-    border-radius: 1rem;
-    object-fit: cover;
-    object-position: center;
+/* Título de la sección de talles */
+.productShopcartCard__sizesLabel {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #000000;
+    margin: 0;
+}
+
+/* Botón para agregar al carrito */
+.productShopcartCard__button {
+    margin-top: 2rem;
+    padding: 1.3rem;
+    background-color: #000;
+    /* Fondo negro */
+    color: #fff;
+    /* Texto blanco */
+    border: none;
+    border-radius: 0.1rem;
+    /* Bordes suavemente redondeados */
+    text-align: left;
+    /* Alineación del texto dentro del botón */
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Suaviza el efecto al pasar el mouse */
+}
+
+/* Estilo al pasar el mouse por el botón */
+.productShopcartCard__button:hover {
+    background-color: #222;
+    /* Un gris oscuro como efecto hover */
 }

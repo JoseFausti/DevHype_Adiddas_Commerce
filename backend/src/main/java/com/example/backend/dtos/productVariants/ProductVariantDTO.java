@@ -13,7 +13,7 @@ import lombok.*;
 @Builder
 public class ProductVariantDTO {
     private Long id;
-    private ProductDTO product;
+    private Long productId;
     private SizeDTO size;
     private ColorDTO color;
     private int stock;

@@ -1,7 +1,11 @@
+.home_container {
+  position: relative;
+}
+
 .logoutForm {
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.5);
@@ -13,7 +17,7 @@
 }
 
 .logoutForm__container {
-  background-color: white; /* Modal blanco */
+  background-color: white;
   color: #000;
   font-family:'Montserrat', sans-serif;
   padding: 2rem;
@@ -22,24 +26,54 @@
   max-width: 400px;
   height: 50%;
   max-height: 300px;
+
   display: flex;
   flex-direction: column;
-  align-items:flex-start;
+  justify-content: space-between; /* 💡 Distribuye arriba y abajo */
+  align-items: center;
+}
+
+.logoutForm__container form {
+  width: 100%;
+  display: flex;
   justify-content: center;
-  gap: 1.5rem;
+}
+
+.logout_formHeader {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.logout_formImage {
+  width: 35px;
+  height: 35px;
+  align-self: flex-end;
 }
 
 .logout_formTitle {
-  text-transform: uppercase;
-  text-align: center;
-  align-self: center;
-  font-size: 1.2rem;
-  font-weight: 600;
   width: 100%;
+  text-align: center; /* Centrado horizontal */
+  font-size: 1.2rem;
+  margin: auto 1.5rem 0 0;
+  align-self: flex-start;
+}
+
+.logout_formText{
+  width: 100%;
+  text-align: justify;
+  margin: 1rem 0;
+  font-size: 1rem;
+  color: #4c4c4c;
 }
 
 .logout_formButton {
-  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center; /* ✅ Esto centra el botón horizontalmente */
   padding: 0.8rem 1.2rem;
   background-color: #000;
   color: white;

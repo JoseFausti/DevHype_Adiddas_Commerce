@@ -23,6 +23,7 @@ const Layout: React.FC = () => {
     const [displayUserMenu, setDisplayUserMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const token = getDecodedToken();
+    const isAdmin: boolean = token? token && token.role === Role.ADMIN : false;
 
     // Estado del header
     const [scrollDirection, setScrollDirection] = useState("up");
@@ -134,7 +135,7 @@ const Layout: React.FC = () => {
                                 </div>
                             )}
                         </div>
-                        <div>
+                        <div style={{display: `${isAdmin ? 'none' : 'flex'}`}}>
                             <ShoppingCart
                                 size={24}
                                 color="#000"
