@@ -88,6 +88,12 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
         if (dto.getProductVariants() != null && !dto.getProductVariants().isEmpty()) {
             List<ProductVariants> variants = new ArrayList<>();
             for (CreateUpdateProductVariantDTO variantDTO : dto.getProductVariants()) {
+                // Validar que el productName de la variante coincida con el producto principal
+                if (!variantDTO.getProductName().equals(dto.getName())) {
+                    throw new Exception("El productName de la variante '" + variantDTO.getProductName()
+                        + "' no coincide con el nombre del producto principal '" + dto.getName() + "'");
+                }
+
                 ProductVariants variant = new ProductVariants();
 
                 Sizes size = sizeRepository.findBySize(variantDTO.getSizeNumber())
@@ -123,47 +129,51 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
         product.setBrand(dto.getBrand());
         product.setPrice(dto.getPrice());
 
+        // Categoría
         Categories category = categoryRepository.findByName(dto.getCategoryName())
                 .orElseThrow(() -> new Exception("Category not found"));
         product.setCategory(category);
 
-        if (dto.getDiscountPercentages() != null && !dto.getDiscountPercentages().isEmpty()) {
-            List<Discounts> discounts = new ArrayList<>();
+        // Descuentos
+        List<Discounts> discounts = new ArrayList<>();
+        if (dto.getDiscountPercentages() != null) {
             for (Double percentage : dto.getDiscountPercentages()) {
                 Discounts discount = discountRepository.findByPercentage(percentage)
                         .orElseThrow(() -> new Exception("Discount not found with percentage: " + percentage));
                 discounts.add(discount);
             }
-            product.setDiscounts(discounts);
-        } else {
-            product.setDiscounts(new ArrayList<>());
         }
+        product.setDiscounts(discounts);
 
-        // Actualizar variantes: por simplicidad, borramos las viejas y ponemos las nuevas
-        product.getProductVariants().clear();
-
-        if (dto.getProductVariants() != null && !dto.getProductVariants().isEmpty()) {
-            List<ProductVariants> variants = new ArrayList<>();
+        // Variantes
+        // Opción 1: borrar las existentes y agregar nuevas
+        product.getProductVariants().clear(); // si está en cascada, se borran de DB
+        List<ProductVariants> variants = new ArrayList<>();
+        if (dto.getProductVariants() != null) {
             for (CreateUpdateProductVariantDTO variantDTO : dto.getProductVariants()) {
-                ProductVariants variant = new ProductVariants();
+                // (opcional) Validación defensiva del nombre
+                if (!variantDTO.getProductName().equals(dto.getName())) {
+                    throw new Exception("Variant productName does not match main product name");
+                }
 
                 Sizes size = sizeRepository.findBySize(variantDTO.getSizeNumber())
-                        .orElseThrow(() -> new Exception("Size not found"));
+                        .orElseThrow(() -> new Exception("Size not found: " + variantDTO.getSizeNumber()));
                 Colors color = colorRepository.findByName(variantDTO.getColorName())
-                        .orElseThrow(() -> new Exception("Color not found"));
+                        .orElseThrow(() -> new Exception("Color not found: " + variantDTO.getColorName()));
 
+                ProductVariants variant = new ProductVariants();
                 variant.setSize(size);
                 variant.setColor(color);
                 variant.setStock(variantDTO.getStock());
-                variant.setProduct(product);
+                variant.setProduct(product); // relación bidireccional
 
                 variants.add(variant);
             }
-            product.setProductVariants(variants);
         }
+        product.setProductVariants(variants);
 
-        product = productsRepository.save(product);
-
-        return ProductMapper.toDto(product);
+        // Guardar
+        Products updated = productsRepository.save(product);
+        return ProductMapper.toDto(updated);
     }
 }

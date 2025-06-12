@@ -9,9 +9,15 @@ import org.springframework.stereotype.Service;
 import com.example.backend.dtos.productVariants.CreateUpdateProductVariantDTO;
 import com.example.backend.dtos.productVariants.ProductVariantDTO;
 import com.example.backend.mappers.ProductVariantMapper;
+import com.example.backend.models.entities.Colors;
 import com.example.backend.models.entities.ProductVariants;
+import com.example.backend.models.entities.Products;
+import com.example.backend.models.entities.Sizes;
 import com.example.backend.repositories.BaseRepository;
+import com.example.backend.repositories.ColorsRepository;
 import com.example.backend.repositories.ProductVariantsRepository;
+import com.example.backend.repositories.ProductsRepository;
+import com.example.backend.repositories.SizesRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -22,13 +28,14 @@ public class ProductVariantsServiceImpl extends BaseServiceImpl<ProductVariants,
     private ProductVariantsRepository productVariantsRepository;
 
     @Autowired
-    private ProductsService productsService;
+    private ProductsRepository productsRepository;
 
     @Autowired
-    private ColorsService colorsService;
+    private ColorsRepository colorsRepository;
 
     @Autowired
-    private SizesService sizesService;
+    private SizesRepository sizesRepository;
+
 
     public ProductVariantsServiceImpl(BaseRepository<ProductVariants, Long> baseRepository) {
         super(baseRepository);
@@ -47,12 +54,24 @@ public class ProductVariantsServiceImpl extends BaseServiceImpl<ProductVariants,
     }
 
     @Transactional
-    public ProductVariantDTO save(CreateUpdateProductVariantDTO  dto) throws Exception {
+    public ProductVariantDTO save(CreateUpdateProductVariantDTO dto) throws Exception {
         ProductVariants variant = new ProductVariants();
-        
-        variant.setProduct(productsService.findById(dto.getProductId()));
-        variant.setColor(colorsService.findById(dto.getColorId()));
-        variant.setSize(sizesService.findById(dto.getSizeId()));
+
+        // Buscar o lanzar error si no se encuentra el producto por nombre
+        Products product = productsRepository.findByName(dto.getProductName())
+            .orElseThrow(() -> new Exception("Producto no encontrado: " + dto.getProductName()));
+        variant.setProduct(product);
+
+        // Buscar o crear el color por nombre
+        Colors color = colorsRepository.findByName(dto.getColorName())
+            .orElseThrow(() -> new Exception("Color no encontrado: " + dto.getColorName()));
+        variant.setColor(color);
+
+        // Buscar o crear el size por número
+        Sizes size = sizesRepository.findBySize(dto.getSizeNumber())
+            .orElseThrow(() -> new Exception("Talle no encontrado: " + dto.getSizeNumber()));
+        variant.setSize(size);
+
         variant.setStock(dto.getStock());
 
         variant = super.save(variant);
@@ -61,15 +80,25 @@ public class ProductVariantsServiceImpl extends BaseServiceImpl<ProductVariants,
 
     @Transactional
     public ProductVariantDTO update(CreateUpdateProductVariantDTO dto, Long id) throws Exception {
-        ProductVariants variant = super.findById(id); // traemos el existente
+        ProductVariants variant = super.findById(id);
 
-        variant.setProduct(productsService.findById(dto.getProductId()));
-        variant.setColor(colorsService.findById(dto.getColorId()));
-        variant.setSize(sizesService.findById(dto.getSizeId()));
+        Products product = productsRepository.findByName(dto.getProductName())
+            .orElseThrow(() -> new Exception("Producto no encontrado: " + dto.getProductName()));
+        variant.setProduct(product);
+
+        Colors color = colorsRepository.findByName(dto.getColorName())
+            .orElseThrow(() -> new Exception("Color no encontrado: " + dto.getColorName()));
+        variant.setColor(color);
+
+        Sizes size = sizesRepository.findBySize(dto.getSizeNumber())
+            .orElseThrow(() -> new Exception("Talle no encontrado: " + dto.getSizeNumber()));
+        variant.setSize(size);
+
         variant.setStock(dto.getStock());
 
         variant = super.update(variant, id);
         return ProductVariantMapper.toDto(variant);
     }
+
 }
 

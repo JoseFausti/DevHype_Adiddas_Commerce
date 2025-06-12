@@ -1,0 +1,65 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Arial', sans-serif;
+    color: #222;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    color: #000;
+  }
+  
+  p {
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  
+  .form label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: #111;
+  }
+  
+  .form input,
+  .form textarea {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form input:focus,
+  .form textarea:focus {
+    outline: none;
+    border-color: #0073e6;
+  }
+  
+  .submitBtn {
+    background-color: #000;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submitBtn:hover {
+    background-color: #444;
+  }
+  
+  .thanksMessage {
+    text-align: center;
+    color: #003264;
+  }
+  

@@ -34,7 +34,7 @@ export const Users: React.FC = () => {
           setError(response.error || "Error al cargar usuarios");
         }
       } catch (err) {
-        setError("Error inesperado al cargar usuarios");
+        setError("Error inesperado al cargar usuarios" + err);
       } finally {
         setLoading(false);
       }
