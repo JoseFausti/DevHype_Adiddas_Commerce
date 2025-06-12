@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { getAllProducts } from '../../../data/ProductsController';
 import { setProducts } from '../../../store/slices/productSlice';
 import ProductLandingCard from '../../ui/landing/ProductLandingCard';
+import { placeholderBlogPosts } from '../../../utils/consts';
 
 const Home: React.FC = () => {
   const { products } = useAppSelector((state) => state.product);
@@ -46,31 +47,6 @@ const Home: React.FC = () => {
     next: nextDiscount,
     prev: prevDiscount,
   } = useCarrousel<IProduct>(productsWithDiscount, 1);
-
-
-  // Blog Most Interesting
-  const placeholderBlogPosts = [
-    {
-      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1749581578/Most1_iszjth.webp",
-      link: "https://news.adidas.com/basketball/adidas-basketball-expands-nil-roster-with-next-generation-of-elite-student-athletes/s/168f99f4-22b5-46c3-962c-af7b602027b7",
-      alt: "Interesting Product 1",
-    },
-    {
-      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1749581577/Most_2_tcaebi.webp",
-      link: "https://news.adidas.com/bad-bunny/icons-unite-icons--bad-bunny-and-lionel-messi-team-up---celebrate-their-new-adidas-collection/s/fa877aa8-781a-476d-9f18-a5c91d48d224",
-      alt: "Interesting Product 2",
-    },
-    {
-      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1749581577/Most_3_y5mezt.webp",
-      link: "https://news.adidas.com/more-sports/adidas---mercedes-amg-petronas-f1-team-launch-first-race-specific-collection-with-all-new-summer-pac/s/40c672a1-a76a-42bd-9e84-3e73b4eeffca",
-      alt: "Interesting Product 3",
-    },
-    {
-      img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1749581578/Most_4_p0xedr.webp",
-      link: "https://news.adidas.com/running/adidas-debuts-regionally-exclusive-adizero-desert-runner-collection-with-a-unique-art-piece-in-the-h/s/8b74f81f-6e58-4ea5-8315-3aaf41c86862",
-      alt: "Interesting Product 4",
-    },
-  ];
 
   return (
     <div className={Styles.home__container}>
@@ -177,31 +153,18 @@ const Home: React.FC = () => {
         </div>
       </div>
       <div className={Styles.most_interesting__container}>
-        {/* Enlace externo en el título "MOST INTERESTING" */}
-        <a
-          href="https://www.tubloginteresante.com/blog"
-          /* Reemplazá este URL si querés que el título lleve a otro sitio */
-          target="_blank"
-          rel="noopener noreferrer"
-          className={Styles.link_interesting}
-        >
+        <div className={Styles.interesting__title_container}>
           <h2 className={Styles.interesting__title}>MOST INTERESTING</h2>
-        </a>
+        </div>
         <div className={Styles.placeholder__container}>
           {placeholderBlogPosts.map((post, index) => (
-            <a
-              key={index}
-              href={post.link}  /* Cada imagen te lleva a un blog distinto */
-              target="_blank"
-              rel="noopener noreferrer"
-              className={Styles.placeholder__link}
-            >
+            <div className={Styles.placeholder__div} key={index}>
               <img
                 src={post.img}
                 alt={post.alt}
                 className={Styles.placeholder__image}
               />
-            </a>
+            </div>
           ))}
         </div>
       </div>

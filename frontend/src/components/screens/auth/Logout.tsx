@@ -24,7 +24,7 @@ const Logout: React.FC = () => {
             <img className={Styles.logout_formImage} src="https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771636/Logotipo_Adidas_Negro_kmqyhs.png" alt="adidas" />
             <h2 className={Styles.logout_formTitle}>CERRAR SESIÓN</h2>
           </div>
-          <p className={Styles.logout_formText}>Al elegir esta opción, se cerrará tu sesión en el navegador web que hayas utilizado para acceder a la página web de adidas. Para volver a iniciar sesión, tendrás que ingresar tus credenciales.</p>
+          <p className={Styles.logout_formText}>Al elegir esta opción, se cerrará tu sesión en el navegador web que hayas utilizado para acceder a la página web de adidas. Para volver a iniciar sesión, tendrás que ingresar tus credenciales.</p>
           <Formik initialValues={{}} onSubmit={handleLogout}>
             {() => (
               <Form >

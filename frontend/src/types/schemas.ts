@@ -31,3 +31,19 @@ export const registerSchema = z.object({
   path: ["confirmPassword"],
   message: "Las contraseñas no coinciden",
 });
+
+export const adminProductFormSchema = z.object({
+  name: z.string().min(1, "Nombre requerido"),
+  image: z.string().url("Debe ser una URL válida"),
+  description: z.string().min(1, "Descripción requerida"),
+  brand: z.string().min(1, "Marca requerida"),
+  price: z.number().min(0, "El precio debe ser mayor a 0"),
+  categoryId: z.number().int().positive("Categoría requerida"),
+  discountIds: z.array(z.number().int()).optional(),
+  productVariants: z.array(z.object({
+    productId: z.number().int(),
+    sizeId: z.number().int(),
+    colorId: z.number().int(),
+    stock: z.number().int().min(0, "Stock mínimo 0"),
+  }))
+});

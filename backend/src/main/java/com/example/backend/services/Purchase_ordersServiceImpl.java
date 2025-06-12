@@ -24,8 +24,10 @@ import com.example.backend.dtos.detail.DetailDTO;
 import com.example.backend.dtos.purchaseOrder.CreateUpdatePurchaseOrderDTO;
 import com.example.backend.dtos.purchaseOrder.PurchaseOrderDTO;
 import com.example.backend.mappers.PurchaseOrderMapper;
+import com.example.backend.models.entities.Products;
 import com.example.backend.models.entities.Purchase_orders;
 import com.example.backend.repositories.BaseRepository;
+import com.example.backend.repositories.ProductsRepository;
 import com.example.backend.repositories.Purchase_ordersRepository;
 
 @Service
@@ -33,6 +35,9 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
 
     @Autowired
     private Purchase_ordersRepository purchase_ordersRepository;
+
+    @Autowired
+    private ProductsRepository productsRepository;
 
     @Autowired
     private UserService usersService;
@@ -71,7 +76,11 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
                     DetailDTO savedDetail = detailsService.save(detailDTO);
 
                     int quantity = savedDetail.getQuantity();
-                    double price = savedDetail.getVariant().getProduct().getPrice();
+
+                    Products product = productsRepository.findById(savedDetail.getVariant().getProductId())
+                            .orElseThrow(() -> new Exception("Product not found"));
+
+                    double price = product.getPrice();
 
                     totalPrice += quantity * price;
                 }
@@ -114,7 +123,11 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
                     DetailDTO savedDetail = detailsService.save(detailDTO);
 
                     int quantity = savedDetail.getQuantity();
-                    double price = savedDetail.getVariant().getProduct().getPrice();
+
+                    Products product = productsRepository.findById(savedDetail.getVariant().getProductId())
+                        .orElseThrow(() -> new Exception("Producto no encontrado con ID: " + savedDetail.getVariant().getProductId()));
+
+                    double price = product.getPrice();
 
                     totalPrice += quantity * price;
                 }

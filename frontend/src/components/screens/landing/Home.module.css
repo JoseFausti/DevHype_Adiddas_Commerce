@@ -315,17 +315,24 @@
     margin-top: 30px;
 }
 
+.interesting__title_container {
+    display: flex;
+    align-self: flex-start;
+    /* Hace que se ubique al inicio del eje horizontal */
+    margin-left: 50px;
+    margin-top: 30px;
+}
+
+.interesting__title_container:hover {
+    text-decoration: underline;
+    color: rgb(35, 35, 35);
+} 
 
 .interesting__title {
     color: black;
     font-size: 1.5rem;
     margin-bottom: 1rem;
     text-align: left;
-}
-
-.interesting__title:hover {
-    text-decoration: underline;
-    color: rgb(35, 35, 35);
 }
 
 .placeholder__container {
@@ -342,7 +349,7 @@
     box-sizing: border-box;
 }
 
-.placeholder__link {
+.placeholder__div {
     /* Contenedor de cada imagen con forma vertical */
     flex: 1;
     /* Cada link ocupa el mismo ancho */

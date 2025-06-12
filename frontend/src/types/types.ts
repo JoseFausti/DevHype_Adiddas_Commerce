@@ -155,6 +155,6 @@ export interface IHttpResponse<E> {
 
 // Token
 export interface ITokenPayload {
-  username: string;
+  sub: string;
   role: Role;
 }

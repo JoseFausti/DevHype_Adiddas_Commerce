@@ -106,7 +106,7 @@ const Layout: React.FC = () => {
                                 <div className={styles.userMenu} ref={menuRef}>
                                     {token ? (
                                         <div>
-                                            <h5>{token.username}</h5>
+                                            <h5>{token.sub}</h5>
                                             <div className={styles.userMenu__options}>
                                                 {token.role === Role.ADMIN && (
                                                     <Link to="/admin" className={styles.userMenu__option}>

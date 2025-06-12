@@ -1,15 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Importa Link de react-router-dom
 import styles from './Sidebar.module.css';
+import { ITokenPayload } from '../../../../types/types';
+import { getDecodedToken } from '../../../../utils/functions';
 
 const Sidebar: React.FC = () => {
-  // Suponiendo que el nombre del admin se obtiene de alguna variable o contexto, en este caso lo dejamos como estático.
-  const adminName = "Joaquín";
+
+  const token: ITokenPayload | null = getDecodedToken();
+  const {sub: username} = token!;
 
   return (
     <aside className={styles.sidebar}>
       {/* Título personalizado: centrado */}
-      <h2 className={styles.title}>HOLA, {adminName}!</h2>
+      <h2 className={styles.title}>HOLA, {username}!</h2>
       <nav className={styles.nav}>
         <ul>
           <li>
