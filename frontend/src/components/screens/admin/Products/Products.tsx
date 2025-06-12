@@ -17,6 +17,7 @@ import { ErrorMessage } from "formik";
 
 // Estilos del modal
 const modalStyle = {
+  color: "black",
   position: "absolute" as const,
   top: "50%",
   left: "50%",
@@ -210,8 +211,38 @@ export const AdminProducts: React.FC = () => {
                   </FieldArray>
 
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: "1.5rem" }}>
-                    <Button onClick={() => setOpenModal(false)} variant="outlined">Cancelar</Button>
-                    <Button type="submit" variant="contained" color="primary">Guardar Cambios</Button>
+                    <Button
+                      onClick={() => setOpenModal(false)}
+                      variant="outlined"
+                      sx={{
+                        width: '200px',    // Ancho fijo para que ambos sean del mismo tamaño
+                        borderColor: 'black',
+                        color: 'black',
+                        '&:hover': {
+                          borderColor: 'black',
+                          backgroundColor: 'black',
+                          color: 'white',
+                        },
+                      }}
+                    >
+                      Cancelar
+                    </Button>
+
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        width: '200px',    // Mismo ancho que el botón de cancelar
+                        backgroundColor: 'black',
+                        color: 'white',
+                        '&:hover': {
+                          backgroundColor: 'white',
+                          color: 'black',
+                        },
+                      }}
+                    >
+                      Guardar Cambios
+                    </Button>
                   </div>
                 </Form>
 
