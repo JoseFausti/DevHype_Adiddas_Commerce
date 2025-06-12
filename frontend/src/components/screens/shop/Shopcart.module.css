@@ -75,3 +75,16 @@
     flex-direction: column;
     gap: 1rem;
 }
+
+/* Estilo para el título "TU CARRITO" ubicado en la parte superior izquierda */
+.cartTitle {
+    font-size: 25px;
+    /* Fuente en negrita */
+    margin-bottom: 5px;
+    /* Espacio inferior bajo el título */
+    
+    margin-left: 30px;
+    /* Espacio a la izquierda para separar del borde izquierdo */
+    color: #000000;
+    /* Color del texto (negro) */
+}
