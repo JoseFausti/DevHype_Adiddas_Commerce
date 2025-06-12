@@ -31,7 +31,8 @@ import com.example.backend.repositories.ProductsRepository;
 import com.example.backend.repositories.Purchase_ordersRepository;
 
 @Service
-public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders, Long> implements Purchase_ordersService{
+public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders, Long>
+        implements Purchase_ordersService {
 
     @Autowired
     private Purchase_ordersRepository purchase_ordersRepository;
@@ -78,7 +79,8 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
                     int quantity = savedDetail.getQuantity();
 
                     Products product = productsRepository.findById(savedDetail.getVariant().getProductId())
-                            .orElseThrow(() -> new Exception("Product not found"));
+                            .orElseThrow(() -> new Exception(
+                                    "Producto no encontrado con ID: " + savedDetail.getVariant().getProductId()));
 
                     double price = product.getPrice();
 
@@ -125,7 +127,8 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
                     int quantity = savedDetail.getQuantity();
 
                     Products product = productsRepository.findById(savedDetail.getVariant().getProductId())
-                        .orElseThrow(() -> new Exception("Producto no encontrado con ID: " + savedDetail.getVariant().getProductId()));
+                            .orElseThrow(() -> new Exception(
+                                    "Producto no encontrado con ID: " + savedDetail.getVariant().getProductId()));
 
                     double price = product.getPrice();
 
@@ -142,7 +145,6 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
         }
     }
 
-
     @Transactional
     public List<PurchaseOrderDTO> getAll() throws Exception {
         List<Purchase_orders> purchaseOrders = super.findAll();
@@ -155,13 +157,13 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
         return PurchaseOrderMapper.toDto(purchaseOrder);
     }
 
-    
     @Transactional
     public PreferenceRequest buildPreference(Purchase_orders order) {
         List<PreferenceItemRequest> items = new ArrayList<>();
         order.getDetails().forEach(detail -> {
             if (detail.getVariant() == null || detail.getVariant().getProduct() == null) {
-                throw new IllegalStateException("El detalle con ID " + detail.getId() + " no tiene variante o producto asociado.");
+                throw new IllegalStateException(
+                        "El detalle con ID " + detail.getId() + " no tiene variante o producto asociado.");
             }
             items.add(PreferenceItemRequest.builder()
                     .id(detail.getVariant().getProduct().getId().toString())

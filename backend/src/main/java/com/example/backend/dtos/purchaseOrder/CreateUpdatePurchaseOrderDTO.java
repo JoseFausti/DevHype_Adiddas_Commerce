@@ -2,12 +2,13 @@ package com.example.backend.dtos.purchaseOrder;
 
 import com.example.backend.dtos.detail.CreateUpdateDetailDTO;
 import com.example.backend.models.enums.PaymentMethod;
+import com.example.backend.models.enums.Status;
 
 import lombok.*;
 
 import java.util.List;
 
-import ch.qos.logback.core.status.Status;
+
 
 @Data
 @NoArgsConstructor
