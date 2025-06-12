@@ -12,6 +12,7 @@ import Dashboard from "../components/screens/admin/Dashboard/Dashboard"
 import { Users } from "../components/screens/admin/Users/Users"
 import { AdminProducts } from "../components/screens/admin/Products/Products"
 import RequireAdmin from "../components/screens/admin/auth/RequireAdmin"
+import About from "../components/screens/about/About"
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
               <Route path="/products" element={<Products/>} />
               <Route path="/products/:id" element={<PurchaseProduct />} />
               <Route path="/shopcart" element={<Shopcart/>} />
+              <Route path="/about" element={<About/>} />
 
               {/* Rutas de Admin */}
               <Route 
