@@ -7,8 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class CreateUpdateProductVariantDTO {
-    private Long productId;
-    private Long sizeId;  // id del size
-    private Long colorId; // id del color
+    private String productName;
+    private double sizeNumber;  
+    private String colorName; 
     private int stock;
 }

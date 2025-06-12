@@ -1,0 +1,92 @@
+/* Contenedor general del resumen de compra */
+.summaryWrapper {
+    width: 100%;
+    max-width: 400px;
+    /* Margin en el orden: top, right, bottom, left */
+    margin: 50px auto 0 -85px;
+    padding: 20px;
+}
+
+/* Título principal */
+.summaryTitle {
+    font-size: 24px;
+    /* Tamaño del título */
+    margin-bottom: 20px;
+    /* Espacio inferior que lo separa de las filas */
+    color: #000000;
+    font-weight: 600;
+}
+
+/* Fila estándar para cantidad y sub total */
+.summaryRow {
+    display: flex;
+    /* Organiza la fila en columnas */
+    justify-content: space-between;
+    /* Alinea la etiqueta a la izquierda y el valor a la derecha */
+    margin-bottom: 8px;
+    /* Espaciado vertical entre filas */
+}
+
+/* Fila para la entrega; se le da un extra de espacio arriba para separarla */
+.summaryRowExtra {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    /* Mucho espacio arriba para destacar esta fila */
+    margin-bottom: 4px;
+    /* Menor espacio inferior para unirla visualmente con Total */
+}
+
+/* Fila para el total, que aparece justo debajo de la fila de entrega */
+.summaryRowTotal {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0;
+    /* Sin espacio extra superior para que Total quede pegado a Entrega */
+}
+
+/* Estilo para las etiquetas de la izquierda */
+.label {
+    text-align: left;
+    color: #555;
+    font-size: 16px;
+}
+
+/* Estilo para los valores de la derecha */
+.value {
+    text-align: right;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Botón IR A PAGAR */
+.payButton {
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    margin-top: 20px;
+    /* Espacio superior para separar el botón de los totales */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: start;
+}
+
+/* Contenedor para los iconos de método de pago (se alinean horizontalmente y centrados) */
+.paymentIcons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    /* Espacio entre las imágenes de los iconos */
+    margin-top: 16px;
+    /* Espacio superior para separarlo del botón */
+}
+
+/* Estilo para cada imagen de método de pago */
+.paymentIcon {
+    width: 120px;
+    height: auto;
+}

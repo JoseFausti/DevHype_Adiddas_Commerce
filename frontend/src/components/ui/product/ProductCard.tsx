@@ -38,6 +38,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   } = useProductVariants(product);
 
   const handleAddToCart = () => {
+    if (!token) return navigate("/login");
     if (selectedVariant && quantity > 0 && maxStock > 0 && quantity <= maxStock) {
       dispatch(addProduct({
         id: selectedVariant.id,

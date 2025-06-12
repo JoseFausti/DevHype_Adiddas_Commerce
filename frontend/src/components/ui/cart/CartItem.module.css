@@ -1,3 +1,185 @@
-.cartItemContainer{
-    
+/* Contenedor general que agrupa el título y la tarjeta del carrito */
+.cartItemWrapper {
+    width: 85%;
+    /* Ancho completo del contenedor */
+    margin: 20px auto;
+    /* Margen vertical de 20px y centrado horizontal */
+    padding: 0 20px;
+    /* Espaciado horizontal interior de 20px */
+    margin-left: 10px;
+}
+
+/* Tarjeta que contiene cada ítem del carrito */
+.cartItemContainer {
+    display: flex;
+    /* Usa Flexbox para organizar los elementos horizontalmente */
+    align-items: center;
+    /* Centra los elementos verticalmente */
+    position: relative;
+    /* Posicionamiento relativo para ubicar elementos absolutos (como el botón eliminar) */
+    background-color: #fff;
+    /* Fondo blanco para la tarjeta */
+    border: 1px solid #000;
+    /* Borde negro de 1px */
+    border-radius: 0.1rem;
+    /* Bordes levemente redondeados; ajusta el valor para mayor redondeo */
+    padding: 16px 8px;
+    /* Espaciado interno de 16px */
+    margin-bottom: 8px;
+    /* Separación inferior entre tarjetas */
+    transition: transform 0.2s ease,
+        /* Transición suave para cambios de posición */
+        box-shadow 0.2s ease;
+    /* Transición suave para cambios en la sombra */
+}
+
+/* Efecto hover para levantar la tarjeta y agregar sombra */
+.cartItemContainer:hover {
+    transform: translateY(-2px);
+    /* Mueve la tarjeta 2px hacia arriba al pasar el cursor */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.349);
+    /* Aplica una sombra, ajusta rgba para mayor o menor intensidad */
+}
+
+/* Botón de eliminación (la "X") ubicado en la esquina superior derecha */
+.deleteButton {
+    position: absolute;
+    top: 1px;
+    /* Valor reducido para acercar el icono al borde superior */
+    right: 1px;
+    /* Valor reducido para acercar el icono al borde derecho */
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #000000;
+    transition: color 0.2s ease;
+}
+
+
+
+/* Contenedor de la imagen del producto */
+.imageWrapper {
+    flex-shrink: 0;
+    /* Evita que el contenedor se reduzca al tener espacio limitado */
+    width: 100px;
+    /* Ancho fijo para la imagen */
+    height: 100px;
+    /* Alto fijo para la imagen */
+    border-radius: 0.1rem;
+    /* Bordes redondeados para la imagen; ajusta el valor para mayor redondeo */
+    border: 1px solid #555555;
+    /* Borde gris claro alrededor de la imagen */
+    overflow: hidden;
+    /* Oculta cualquier parte de la imagen que se salga del contenedor */
+    margin-right: 16px;
+    /* Espacio a la derecha para separar de los demás elementos */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.349);
+    /* Aplica una sombra, ajusta rgba para mayor o menor intensidad */
+}
+
+/* Estilo para la imagen del producto */
+.productImage {
+    width: 100%;
+    /* La imagen ocupa el 100% del ancho del contenedor */
+    height: 100%;
+    /* La imagen ocupa el 100% de la altura del contenedor */
+    object-fit: cover;
+    /* La imagen se recorta manteniendo la proporción para cubrir el contenedor */
+}
+
+/* Contenedor horizontal para los detalles del ítem del carrito */
+.infoWrapper {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    /* Opción 1: Alinear todos al inicio para que estén juntos */
+    justify-content: space-around;
+    gap: 16px;
+
+}
+
+/* Sección para el nombre y la marca del producto */
+.productInfo {
+    display: flex;
+    /* Usa Flexbox para organizar los textos */
+    flex-direction: column;
+    /* Los organiza en columna (uno sobre otro) */
+    justify-content: center;
+    /* Centra verticalmente el contenido dentro de este bloque */
+    min-width: 150px;
+    /* Ancho mínimo para garantizar que el texto tenga suficiente espacio */
+
+}
+
+/* Estilos para el nombre del producto en la sección de productInfo */
+.productInfo h3 {
+    text-align: start;
+    margin: 0;
+    font-size: 18px;
+    /* Tamaño de fuente para el nombre, se puede ajustar */
+    color: #000000;
+    /* Color de texto gris oscuro */
+}
+
+/* Estilos para la marca del producto en la sección de productInfo */
+.productInfo p {
+    margin: 0;
+    /* Sin margen */
+    font-size: 15px;
+    /* Tamaño de fuente para el texto de la marca */
+    font-family: 'Open Sans', sans-serif;
+    /* Para textos corrientes */
+    color: #555;
+    /* Color de texto ligeramente más claro */
+}
+
+/* Contenedor para la representación del color (redondel) */
+.colorInfo {
+    display: flex;
+    /* Usa Flexbox para centrar el redondel */
+    align-items: center;
+    /* Centra verticalmente */
+    justify-content: center;
+    /* Centra horizontalmente */
+    width: 40px;
+    /* Ancho fijo del contenedor para el color */
+}
+
+/* Estilos para el círculo que representa el color seleccionado */
+.colorCircle {
+    width: 20px;
+    /* Ancho del círculo */
+    height: 20px;
+    /* Alto del círculo */
+    border-radius: 20%;
+    /* Borde redondeado; se puede cambiar a 50% para un círculo perfecto */
+    background-color: #ff0000;
+    /* Color de fondo. Actualmente rojo (#ff0000), modifícalo para cambiar el color */
+    border: 1px solid #000;
+    /* Borde negro alrededor del círculo */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.349);
+    /* Sombra que da profundidad, ajusta la opacidad y tamaño si deseas */
+}
+
+/* Estilos para los bloques de Cantidad y Precio */
+.quantityInfo,
+.priceInfo {
+    display: flex;
+    /* Usa Flexbox para centrar el contenido */
+    align-items: center;
+    /* Centra verticalmente */
+    justify-content: center;
+    /* Centra horizontalmente */
+    min-width: 80px;
+    /* Ancho mínimo asignado a estos bloques */
+    font-size: 17px;
+    /* Tamaño de fuente para el texto */
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
+    /* Para textos corrientes */
+    color: #000000;
+    /* Color de texto: gris oscuro */
+    padding: 0 8px;
+    /* Padding horizontal para dar espacio al contenido */
 }
