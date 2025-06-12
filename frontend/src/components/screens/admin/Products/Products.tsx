@@ -1,5 +1,8 @@
 import styles from "./Products.module.css";
-import { Table, TableHead, TableBody, TableRow, TableCell, IconButton, TextField, Button } from "@mui/material";
+import {
+  Table, TableHead, TableBody, TableRow, TableCell,
+  IconButton, TextField, Button, MenuItem, Modal, Box
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
@@ -9,39 +12,50 @@ import { useCallback, useState } from "react";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { adminProductFormSchema } from "../../../../types/schemas";
+import { ErrorMessage } from "formik";
 
-// Variantes para ver los productos
+
+// Estilos del modal
+const modalStyle = {
+  position: "absolute" as const,
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 700,
+  maxHeight: "90vh",
+  overflowY: "auto",
+  bgcolor: "background.paper",
+  borderRadius: 2,
+  boxShadow: 24,
+  p: 4,
+};
+
 export const AdminProducts: React.FC = () => {
-
   const { products, productActive } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
-
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleSetProductActive = useCallback((product: IProduct) => {
-    if (product) {
-      dispatch(setProductActive(product));
-    }
+    dispatch(setProductActive(product));
+    setOpenModal(true);
   }, [dispatch]);
 
   return (
     <div className={styles.productsContainer}>
-      {/* Título principal */}
       <div className={styles.productsTitle}>
         <h1>Productos</h1>
       </div>
 
-      {/* Tabla de productos */}
       <div className={styles.tableContainer}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell align="center">Nombre</TableCell>
               <TableCell align="center">Imagen</TableCell>
-              <TableCell align="center">Descripcion</TableCell>
+              <TableCell align="center">Descripción</TableCell>
               <TableCell align="center">Marca</TableCell>
               <TableCell align="center">Precio</TableCell>
-              <TableCell align="center">Categoria</TableCell>
+              <TableCell align="center">Categoría</TableCell>
               <TableCell align="center">Acciones</TableCell>
             </TableRow>
           </TableHead>
@@ -60,14 +74,9 @@ export const AdminProducts: React.FC = () => {
                 <TableCell align="center">{product.description}</TableCell>
                 <TableCell align="center">{product.brand}</TableCell>
                 <TableCell align="center">${product.price}</TableCell>
-                <TableCell align="center">{product.category.name}</TableCell>
+                <TableCell align="center">{product.category?.name}</TableCell>
                 <TableCell align="center">
-                  <IconButton
-                    onClick={() => {
-                      handleSetProductActive(product);
-                      setOpenModal(true);
-                    }}
-                  >
+                  <IconButton onClick={() => handleSetProductActive(product)}>
                     <EditIcon color="primary" />
                   </IconButton>
                   <IconButton>
@@ -80,164 +89,137 @@ export const AdminProducts: React.FC = () => {
         </Table>
       </div>
 
-      {openModal && productActive && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalCard}>
+      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+        <Box sx={modalStyle}>
+          {productActive &&
             <Formik
               initialValues={{
-                name: productActive?.name ?? "",
-                image: productActive?.image ?? "",
-                description: productActive?.description ?? "",
-                brand: productActive?.brand ?? "",
-                price: productActive?.price ?? 0,
-                categoryId: productActive?.category?.id ?? 0,
-                discountIds: productActive?.discounts?.map((d) => d.id) ?? [],
-                productVariants:
-                  productActive?.productVariants?.map((v) => ({
-                    productId: productActive.id,
-                    sizeId: v.size.id,
-                    colorId: v.color.id,
-                    stock: v.stock,
-                  })) ?? [],
+                name: productActive.name || "",
+                image: productActive.image || "",
+                description: productActive.description || "",
+                brand: productActive.brand || "",
+                price: productActive.price || 0,
+                categoryName: productActive.category?.name || "",
+                discountPercentages: productActive.discounts?.map(d => d.percentage) || [],
+                productVariants: productActive.productVariants?.map(v => ({
+                  sizeNumber: v.size.size,
+                  colorName: v.color.name,
+                  stock: v.stock,
+                })) || [],
               }}
               validationSchema={toFormikValidationSchema(adminProductFormSchema)}
               onSubmit={(values) => {
-                // Aquí haces el PUT al backend con values
-                console.log("Submit DTO", values);
+                console.log("Submit DTO:", values);
+                // Aquí iría el llamado al backend (ej: PUT /api/products/:id)
+                setOpenModal(false);
               }}
             >
               {({ values }) => (
-                <Form className={styles.modalForm}>
-                  <div className={styles.modalHeader}>
-                    <h2>EDITAR PRODUCTO</h2>
-                  </div>
+                <Form>
+                  <h2 style={{ marginBottom: "1rem" }}>Editar Producto</h2>
 
-                  {/* Sección en dos columnas */}
-                  <div className={styles.formRow}>
-                    <div className={styles.formColumn}>
-                      <Field
-                        name="name"
-                        as={TextField}
-                        label="Nombre"
-                        fullWidth
-                        className={styles.inputField}
-                      />
-                      <Field
-                        name="image"
-                        as={TextField}
-                        label="Imagen URL"
-                        fullWidth
-                        className={styles.inputField}
-                      />
-                      <Field
-                        name="description"
-                        as={TextField}
-                        label="Descripción"
-                        fullWidth
-                        className={styles.inputField}
-                      />
-                    </div>
-                    <div className={styles.formColumn}>
-                      <Field
-                        name="brand"
-                        as={TextField}
-                        label="Marca"
-                        fullWidth
-                        className={styles.inputField}
-                      />
-                      <Field
-                        name="price"
-                        as={TextField}
-                        type="number"
-                        label="Precio"
-                        fullWidth
-                        className={styles.inputField}
-                      />
-                      <Field
-                        name="categoryId"
-                        as={TextField}
-                        label="Categoría ID"
-                        fullWidth
-                        className={styles.inputField}
-                      />
-                    </div>
-                  </div>
+                  <Field name="name" as={TextField} label="Nombre" fullWidth margin="normal" />
+                  <ErrorMessage name="name">
+                    {msg => <div style={{ color: "red" }}>{msg}</div>}
+                  </ErrorMessage>
 
-                  {/* Sección de variantes */}
-                  <div className={styles.variantSection}>
-                    <FieldArray name="productVariants">
-                      {({ push, remove }) => (
-                        <div className={styles.variantContainer}>
-                          {values.productVariants.map((variant, index) => (
-                            <div key={index} className={styles.variantRow}>
-                              <Field
-                                name={`productVariants.${index}.sizeId`}
-                                as={TextField}
-                                label="Size ID"
-                                className={styles.inputField}
-                              />
-                              <Field
-                                name={`productVariants.${index}.colorId`}
-                                as={TextField}
-                                label="Color ID"
-                                className={styles.inputField}
-                              />
-                              <Field
-                                name={`productVariants.${index}.stock`}
-                                as={TextField}
-                                label="Stock"
-                                className={styles.inputField}
-                              />
-                              <button
-                                type="button"
-                                onClick={() => remove(index)}
-                              >
-                                Eliminar
-                              </button>
+                  <Field name="image" as={TextField} label="Imagen URL" fullWidth margin="normal" />
+                  <ErrorMessage name="image">
+                    {msg => <div style={{ color: "red" }}>{msg}</div>}
+                  </ErrorMessage>
+
+                  <Field name="description" as={TextField} label="Descripción" fullWidth margin="normal" />
+                  <ErrorMessage name="description">
+                    {msg => <div style={{ color: "red" }}>{msg}</div>}
+                  </ErrorMessage>
+
+                  <Field name="brand" as={TextField} label="Marca" fullWidth margin="normal" />
+                  <ErrorMessage name="brand">
+                    {msg => <div style={{ color: "red" }}>{msg}</div>}
+                  </ErrorMessage>
+
+                  <Field name="price" as={TextField} type="number" label="Precio" fullWidth margin="normal" />
+                  <ErrorMessage name="price">
+                    {msg => <div style={{ color: "red" }}>{msg}</div>}
+                  </ErrorMessage>
+
+                  <Field name="categoryName" as={TextField} select label="Categoría" fullWidth margin="normal">
+                    {["men", "woman", "shoes"].map((cat) => (
+                      <MenuItem key={cat} value={cat}>{cat}</MenuItem>
+                    ))}
+                  </Field>
+                  <ErrorMessage name="categoryName">
+                    {msg => <div style={{ color: "red" }}>{msg}</div>}
+                  </ErrorMessage>
+
+                  <h4>Descuentos (%)</h4>
+                  <FieldArray name="discountPercentages">
+                    {({ push, remove }) => (
+                      <>
+                        {values.discountPercentages.map((_, idx) => (
+                          <div key={idx} style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "0.5rem" }}>
+                            <Field name={`discountPercentages.${idx}`} as={TextField} type="number" label="%" />
+                            <ErrorMessage name={`discountPercentages.${idx}`}>
+                              {msg => <div style={{ color: "red" }}>{msg}</div>}
+                            </ErrorMessage>
+                            <Button onClick={() => remove(idx)} color="error">Eliminar</Button>
+                          </div>
+                        ))}
+                        <Button onClick={() => push(0)}>Agregar Descuento</Button>
+                      </>
+                    )}
+                  </FieldArray>
+
+                  <h4 style={{ marginTop: "1rem" }}>Variantes</h4>
+                  <FieldArray name="productVariants">
+                    {({ push, remove }) => (
+                      <>
+                        {values.productVariants.map((_, idx) => (
+                          <div key={idx} style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1rem" }}>
+                            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+                              <Field name={`productVariants.${idx}.sizeNumber`} as={TextField} select label="Talle" style={{ width: 120 }}>
+                                {[36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46].map(size => (
+                                  <MenuItem key={size} value={size}>{size}</MenuItem>
+                                ))}
+                              </Field>
+                              <Field name={`productVariants.${idx}.colorName`} as={TextField} select label="Color" style={{ width: 120 }}>
+                                {["Red", "Blue", "Green", "Black", "White", "Yellow", "Pink", "Orange", "Purple", "Gray"].map(color => (
+                                  <MenuItem key={color} value={color}>{color}</MenuItem>
+                                ))}
+                              </Field>
+                              <Field name={`productVariants.${idx}.stock`} as={TextField} type="number" label="Stock" style={{ width: 100 }} />
+                              <Button onClick={() => remove(idx)} color="error">Eliminar</Button>
                             </div>
-                          ))}
-                          <button
-                            type="button"
-                            onClick={() =>
-                              push({
-                                productId: productActive.id,
-                                sizeId: 0,
-                                colorId: 0,
-                                stock: 0,
-                              })
-                            }
-                            className={styles.addVariantButton}
-                          >
-                            Agregar Variante
-                          </button>
-                        </div>
-                      )}
-                    </FieldArray>
-                  </div>
 
-                  {/* Sección de botones de acción */}
-                  <div className={styles.actionRow}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      className={styles.saveButtonCustom}
-                    >
-                      GUARDAR CAMBIOS
-                    </Button>
-                    <Button
-                      variant="contained"
-                      onClick={() => setOpenModal(false)}
-                      className={styles.closeButtonCustom}
-                    >
-                      CERRAR
-                    </Button>
+                            <div style={{ display: "flex", gap: "1rem" }}>
+                              <ErrorMessage name={`productVariants.${idx}.sizeNumber`}>
+                                {msg => <div style={{ color: "red" }}>{msg}</div>}
+                              </ErrorMessage>
+                              <ErrorMessage name={`productVariants.${idx}.colorName`}>
+                                {msg => <div style={{ color: "red" }}>{msg}</div>}
+                              </ErrorMessage>
+                              <ErrorMessage name={`productVariants.${idx}.stock`}>
+                                {msg => <div style={{ color: "red" }}>{msg}</div>}
+                              </ErrorMessage>
+                            </div>
+                          </div>
+                        ))}
+                        <Button onClick={() => push({ sizeNumber: 0, colorName: "", stock: 0 })}>Agregar Variante</Button>
+                      </>
+                    )}
+                  </FieldArray>
+
+                  <div style={{ display: "flex", justifyContent: "space-between", marginTop: "1.5rem" }}>
+                    <Button onClick={() => setOpenModal(false)} variant="outlined">Cancelar</Button>
+                    <Button type="submit" variant="contained" color="primary">Guardar Cambios</Button>
                   </div>
                 </Form>
+
               )}
             </Formik>
-          </div>
-        </div>
-      )}
+          }
+        </Box>
+      </Modal>
     </div>
   );
 };

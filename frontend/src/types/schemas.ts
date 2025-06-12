@@ -38,12 +38,23 @@ export const adminProductFormSchema = z.object({
   description: z.string().min(1, "Descripción requerida"),
   brand: z.string().min(1, "Marca requerida"),
   price: z.number().min(0, "El precio debe ser mayor a 0"),
-  categoryId: z.number().int().positive("Categoría requerida"),
-  discountIds: z.array(z.number().int()).optional(),
+  categoryName: z.string().min(1, "Nombre de categoría requerido"),
+  discountPercentages: z.array(
+    z.preprocess((val) => {
+      if (typeof val === "string") {
+        val = val.replace(",", ".");
+      }
+      const parsed = parseFloat(val as string);
+      // Si no es un número válido, devolvemos undefined (falla la validación)
+      return isNaN(parsed) ? undefined : parsed;
+    }, z.number()
+      .min(0, "El descuento debe ser ≥ 0")
+      .max(100, "El descuento no puede superar 100"))
+  ).optional(),
+
   productVariants: z.array(z.object({
-    productId: z.number().int(),
-    sizeId: z.number().int(),
-    colorId: z.number().int(),
+    sizeNumber: z.number().int().positive("Talle inválido"),
+    colorName: z.string().min(1, "Color requerido"),
     stock: z.number().int().min(0, "Stock mínimo 0"),
   }))
 });

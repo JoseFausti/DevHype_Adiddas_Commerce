@@ -24,11 +24,10 @@ import com.example.backend.repositories.ProductsRepository;
 import com.example.backend.repositories.SizesRepository;
 
 import jakarta.transaction.Transactional;
-import javafx.scene.paint.Color;
 
 @Service
 public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> implements ProductsService {
-    
+
     @Autowired
     private ProductsRepository productsRepository;
 
@@ -43,7 +42,6 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
 
     @Autowired
     private ColorsRepository colorRepository;
-    
 
     public ProductsServiceImpl(BaseRepository<Products, Long> baseRepository) {
         super(baseRepository);
@@ -51,7 +49,7 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
 
     @Transactional
     public ProductDTO getById(Long id) throws Exception {
-        Products product = super.findById(id); 
+        Products product = super.findById(id);
         return ProductMapper.toDto(product);
     }
 
@@ -71,12 +69,17 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
         product.setBrand(dto.getBrand());
         product.setPrice(dto.getPrice());
 
-        Categories category = categoryRepository.findById(dto.getCategoryId())
-            .orElseThrow(() -> new Exception("Category not found"));
+        Categories category = categoryRepository.findByName(dto.getCategoryName())
+                .orElseThrow(() -> new Exception("Category not found"));
         product.setCategory(category);
 
-        if (dto.getDiscountIds() != null && !dto.getDiscountIds().isEmpty()) {
-            List<Discounts> discounts = discountRepository.findAllById(dto.getDiscountIds());
+        if (dto.getDiscountPercentages() != null && !dto.getDiscountPercentages().isEmpty()) {
+            List<Discounts> discounts = new ArrayList<>();
+            for (Double percentage : dto.getDiscountPercentages()) {
+                Discounts discount = discountRepository.findByPercentage(percentage)
+                        .orElseThrow(() -> new Exception("Discount not found with percentage: " + percentage));
+                discounts.add(discount);
+            }
             product.setDiscounts(discounts);
         } else {
             product.setDiscounts(new ArrayList<>());
@@ -87,10 +90,10 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
             for (CreateUpdateProductVariantDTO variantDTO : dto.getProductVariants()) {
                 ProductVariants variant = new ProductVariants();
 
-                Sizes size = sizeRepository.findById(variantDTO.getSizeId())
-                    .orElseThrow(() -> new Exception("Size not found"));
-                Colors color = colorRepository.findById(variantDTO.getColorId())
-                    .orElseThrow(() -> new Exception("Color not found"));
+                Sizes size = sizeRepository.findBySize(variantDTO.getSizeNumber())
+                        .orElseThrow(() -> new Exception("Size not found"));
+                Colors color = colorRepository.findByName(variantDTO.getColorName())
+                        .orElseThrow(() -> new Exception("Color not found"));
 
                 variant.setSize(size);
                 variant.setColor(color);
@@ -109,11 +112,10 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
         return ProductMapper.toDto(product);
     }
 
-
     @Transactional
     public ProductDTO update(CreateUpdateProductDTO dto, Long id) throws Exception {
         Products product = productsRepository.findById(id)
-            .orElseThrow(() -> new Exception("Product not found"));
+                .orElseThrow(() -> new Exception("Product not found"));
 
         product.setName(dto.getName());
         product.setImage(dto.getImage());
@@ -121,12 +123,17 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
         product.setBrand(dto.getBrand());
         product.setPrice(dto.getPrice());
 
-        Categories category = categoryRepository.findById(dto.getCategoryId())
-            .orElseThrow(() -> new Exception("Category not found"));
+        Categories category = categoryRepository.findByName(dto.getCategoryName())
+                .orElseThrow(() -> new Exception("Category not found"));
         product.setCategory(category);
 
-        if (dto.getDiscountIds() != null && !dto.getDiscountIds().isEmpty()) {
-            List<Discounts> discounts = discountRepository.findAllById(dto.getDiscountIds());
+        if (dto.getDiscountPercentages() != null && !dto.getDiscountPercentages().isEmpty()) {
+            List<Discounts> discounts = new ArrayList<>();
+            for (Double percentage : dto.getDiscountPercentages()) {
+                Discounts discount = discountRepository.findByPercentage(percentage)
+                        .orElseThrow(() -> new Exception("Discount not found with percentage: " + percentage));
+                discounts.add(discount);
+            }
             product.setDiscounts(discounts);
         } else {
             product.setDiscounts(new ArrayList<>());
@@ -140,10 +147,10 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
             for (CreateUpdateProductVariantDTO variantDTO : dto.getProductVariants()) {
                 ProductVariants variant = new ProductVariants();
 
-                Sizes size = sizeRepository.findById(variantDTO.getSizeId())
-                    .orElseThrow(() -> new Exception("Size not found"));
-                Colors color = colorRepository.findById(variantDTO.getColorId())
-                    .orElseThrow(() -> new Exception("Color not found"));
+                Sizes size = sizeRepository.findBySize(variantDTO.getSizeNumber())
+                        .orElseThrow(() -> new Exception("Size not found"));
+                Colors color = colorRepository.findByName(variantDTO.getColorName())
+                        .orElseThrow(() -> new Exception("Color not found"));
 
                 variant.setSize(size);
                 variant.setColor(color);
@@ -159,6 +166,4 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
 
         return ProductMapper.toDto(product);
     }
-
-
 }
