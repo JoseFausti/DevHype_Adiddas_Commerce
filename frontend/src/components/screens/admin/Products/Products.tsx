@@ -13,10 +13,12 @@ import { Formik, Form, Field, FieldArray } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { adminProductFormSchema } from "../../../../types/schemas";
 import { ErrorMessage } from "formik";
+import { updateProduct } from "../../../../data/ProductsController";
 
 
 // Estilos del modal
 const modalStyle = {
+  color: "black",
   position: "absolute" as const,
   top: "50%",
   left: "50%",
@@ -64,7 +66,12 @@ export const AdminProducts: React.FC = () => {
               <TableRow key={product.id}>
                 <TableCell align="center">{product.name}</TableCell>
                 <TableCell align="center">
-                  <img src={product.image} alt={product.name} width="50" height="50" />
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    width="50"
+                    height="50"
+                  />
                 </TableCell>
                 <TableCell align="center">{product.description}</TableCell>
                 <TableCell align="center">{product.brand}</TableCell>
@@ -97,16 +104,36 @@ export const AdminProducts: React.FC = () => {
                 categoryName: productActive.category?.name || "",
                 discountPercentages: productActive.discounts?.map(d => d.percentage) || [],
                 productVariants: productActive.productVariants?.map(v => ({
+                  productName: productActive.name,
                   sizeNumber: v.size.size,
                   colorName: v.color.name,
                   stock: v.stock,
                 })) || [],
               }}
               validationSchema={toFormikValidationSchema(adminProductFormSchema)}
-              onSubmit={(values) => {
-                console.log("Submit DTO:", values);
-                // Aquí iría el llamado al backend (ej: PUT /api/products/:id)
-                setOpenModal(false);
+              onSubmit={async (values) => {
+                const dto = {
+                  name: values.name,
+                  image: values.image,
+                  description: values.description,
+                  brand: values.brand,
+                  price: values.price,
+                  categoryName: values.categoryName,
+                  discountPercentages: values.discountPercentages,
+                  productVariants: values.productVariants.map(variant => ({
+                    productName: values.name,
+                    sizeNumber: variant.sizeNumber,
+                    colorName: variant.colorName,
+                    stock: variant.stock,
+                  }))
+                };
+
+                try {
+                  await updateProduct(productActive.id, dto);
+                  setOpenModal(false);
+                } catch (error) {
+                  console.error("Error al actualizar el producto:", error);
+                }
               }}
             >
               {({ values }) => (
@@ -114,38 +141,26 @@ export const AdminProducts: React.FC = () => {
                   <h2 style={{ marginBottom: "1rem" }}>Editar Producto</h2>
 
                   <Field name="name" as={TextField} label="Nombre" fullWidth margin="normal" />
-                  <ErrorMessage name="name">
-                    {msg => <div style={{ color: "red" }}>{msg}</div>}
-                  </ErrorMessage>
+                  <ErrorMessage name="name">{msg => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
                   <Field name="image" as={TextField} label="Imagen URL" fullWidth margin="normal" />
-                  <ErrorMessage name="image">
-                    {msg => <div style={{ color: "red" }}>{msg}</div>}
-                  </ErrorMessage>
+                  <ErrorMessage name="image">{msg => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
                   <Field name="description" as={TextField} label="Descripción" fullWidth margin="normal" />
-                  <ErrorMessage name="description">
-                    {msg => <div style={{ color: "red" }}>{msg}</div>}
-                  </ErrorMessage>
+                  <ErrorMessage name="description">{msg => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
                   <Field name="brand" as={TextField} label="Marca" fullWidth margin="normal" />
-                  <ErrorMessage name="brand">
-                    {msg => <div style={{ color: "red" }}>{msg}</div>}
-                  </ErrorMessage>
+                  <ErrorMessage name="brand">{msg => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
                   <Field name="price" as={TextField} type="number" label="Precio" fullWidth margin="normal" />
-                  <ErrorMessage name="price">
-                    {msg => <div style={{ color: "red" }}>{msg}</div>}
-                  </ErrorMessage>
+                  <ErrorMessage name="price">{msg => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
                   <Field name="categoryName" as={TextField} select label="Categoría" fullWidth margin="normal">
                     {["men", "woman", "shoes"].map((cat) => (
                       <MenuItem key={cat} value={cat}>{cat}</MenuItem>
                     ))}
                   </Field>
-                  <ErrorMessage name="categoryName">
-                    {msg => <div style={{ color: "red" }}>{msg}</div>}
-                  </ErrorMessage>
+                  <ErrorMessage name="categoryName">{msg => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
                   <h4>Descuentos (%)</h4>
                   <FieldArray name="discountPercentages">
@@ -205,11 +220,40 @@ export const AdminProducts: React.FC = () => {
                   </FieldArray>
 
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: "1.5rem" }}>
-                    <Button onClick={() => setOpenModal(false)} variant="outlined">Cancelar</Button>
-                    <Button type="submit" variant="contained" color="primary">Guardar Cambios</Button>
+                    <Button
+                      onClick={() => setOpenModal(false)}
+                      variant="outlined"
+                      sx={{
+                        width: '200px',
+                        borderColor: 'black',
+                        color: 'black',
+                        '&:hover': {
+                          borderColor: 'black',
+                          backgroundColor: 'black',
+                          color: 'white',
+                        },
+                      }}
+                    >
+                      Cancelar
+                    </Button>
+
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        width: '200px',
+                        backgroundColor: 'black',
+                        color: 'white',
+                        '&:hover': {
+                          backgroundColor: 'white',
+                          color: 'black',
+                        },
+                      }}
+                    >
+                      Guardar Cambios
+                    </Button>
                   </div>
                 </Form>
-
               )}
             </Formik>
           }

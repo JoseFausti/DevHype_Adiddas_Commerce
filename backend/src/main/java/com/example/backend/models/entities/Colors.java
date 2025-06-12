@@ -31,5 +31,4 @@ public class Colors extends Base{
     
     @OneToMany(mappedBy = "color", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductVariants> productVariants;
-
 }

@@ -14,10 +14,10 @@ export interface IProductVariant extends Base {
   stock: number;
 }
 
-export interface ICreateUpdateProductVariant extends Base {
-  productId: number;
-  colorId: number;
-  sizeId: number;
+export interface ICreateUpdateProductVariant {
+  productName: string;
+  colorName: string;
+  sizeNumber: number;
   stock: number;
 }
 
@@ -33,14 +33,14 @@ export interface IProduct extends Base {
   productVariants: IProductVariant[];
 }
 
-export interface ICreateUpdateProduct extends Base{
+export interface ICreateUpdateProduct {
   name: string;
   image: string;
   description: string;
   brand: string;
   price: number;
-  categoryId: number;
-  discountIds: number[];
+  categoryName: string;
+  discountPercentages: number[];
   productVariants: ICreateUpdateProductVariant[];
 }
 
@@ -54,7 +54,7 @@ export interface IPurchaseOrder extends Base {
   details: IDetail[];
 }
 
-export interface ICreateUpdatePurchaseOrder extends Base {
+export interface ICreateUpdatePurchaseOrder {
   paymentMethod: PaymentMethod;
   status: Status;
   userId: number;
@@ -67,7 +67,7 @@ export interface IDetail extends Base {
   variant: IProductVariant;
 }
 
-export interface ICreateUpdateDetail extends Base {
+export interface ICreateUpdateDetail {
   quantity: number;
   variantId: number;
   purchaseOrderId: number;
@@ -92,7 +92,7 @@ export interface IUser extends Base {
   directions: IDirection[];
 }
 
-export interface ICreateUpdateUser extends Base {
+export interface ICreateUpdateUser {
   username: string;
   name: string;
   surname: string;
@@ -112,7 +112,7 @@ export interface IType extends Base {
   category: ICategory;
 }
 
-export interface ICreateUpdateType extends Base {
+export interface ICreateUpdateType {
   name: string;
   categoryName: string;
 }
