@@ -1,16 +1,15 @@
 import { useSearchParams } from "react-router-dom";
 import AboutInfo from "../../ui/about/AboutInfo";
 import { JSX } from "react";
-import AboutUs from "../../ui/about/Footer Descriptions/AboutUs/AboutUs";
-import PrivacyPolicy from "../../ui/about/Footer Descriptions/PrivacyPolicy/PrivacyPolicy";
-import TermsOfService from "../../ui/about/Footer Descriptions/TermsOfService/TermsOfService";
-import ShippingPolicy from "../../ui/about/Footer Descriptions/ShippingPolicy/ShippingPolicy";
-import Faq from "../../ui/about/Footer Descriptions/FAQ/Faq";
-import ShippingReturns from "../../ui/about/Footer Descriptions/ShippingReturns/ShippingReturns";
-import OrderTracking from "../../ui/about/Footer Descriptions/OrderTracking/OrderTracking";
-import SizeGuide from "../../ui/about/Footer Descriptions/SizeGuide/SizeGuide";
-import ContactUs from "../../ui/about/Footer Descriptions/ContactUs/ContactUs";
-
+import AboutUs from "./AboutUs/AboutUs";
+import PrivacyPolicy from "./PrivacyPolicy/PrivacyPolicy";
+import TermsOfService from "./TermsOfService/TermsOfService";
+import ShippingPolicy from "./ShippingPolicy/ShippingPolicy";
+import Faq from "./FAQ/Faq";
+import ShippingReturns from "./ShippingReturns/ShippingReturns";
+import OrderTracking from "./OrderTracking/OrderTracking";
+import SizeGuide from "./SizeGuide/SizeGuide";
+import ContactUs from "./ContactUs/ContactUs";
 
 const About = () => {
 
