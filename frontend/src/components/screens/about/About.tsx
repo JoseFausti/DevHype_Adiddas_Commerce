@@ -1,6 +1,15 @@
 import { useSearchParams } from "react-router-dom";
 import AboutInfo from "../../ui/about/AboutInfo";
 import { JSX } from "react";
+import AboutUs from "./AboutUs/AboutUs";
+import PrivacyPolicy from "./PrivacyPolicy/PrivacyPolicy";
+import TermsOfService from "./TermsOfService/TermsOfService";
+import ShippingPolicy from "./ShippingPolicy/ShippingPolicy";
+import Faq from "./FAQ/Faq";
+import ShippingReturns from "./ShippingReturns/ShippingReturns";
+import OrderTracking from "./OrderTracking/OrderTracking";
+import SizeGuide from "./SizeGuide/SizeGuide";
+import ContactUs from "./ContactUs/ContactUs";
 
 const About = () => {
 
@@ -23,7 +32,7 @@ const About = () => {
         : q === "privacy" ? <PrivacyPolicy /> 
         : q === "terms" ? <TermsOfService />
         : q === "shipping" ? <ShippingPolicy /> 
-        : q === "faq" ? <FAQ />
+        : q === "faq" ? <Faq />
         : q === "shipping-returns" ? <ShippingReturns />
         : q === "tracking" ? <OrderTracking />
         : q === "size-guide" ? <SizeGuide />
