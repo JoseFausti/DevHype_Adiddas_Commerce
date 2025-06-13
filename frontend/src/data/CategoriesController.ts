@@ -58,7 +58,7 @@ export const findCategoryById = async(id: number): Promise<IHttpResponse<ICatego
     }
 }
 
-export const createCategory = async(newCategory: ICategory): Promise<IHttpResponse<ICategory | null>> => {
+export const createCategory = async(newCategory: Omit<ICategory, 'id'>): Promise<IHttpResponse<ICategory | null>> => {
     try {
         const category = await postCategory(newCategory);
         if('error' in category){

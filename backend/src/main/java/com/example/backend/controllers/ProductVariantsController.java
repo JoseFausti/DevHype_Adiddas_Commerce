@@ -21,22 +21,22 @@ public class ProductVariantsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductVariantDTO> getProductVariant(@PathVariable Long id) throws Exception {
-        return ResponseEntity.ok(productVariantsService.getById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(productVariantsService.getById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<ProductVariantDTO>> getAllProductVariants() throws Exception {
-        return ResponseEntity.ok(productVariantsService.getAll());
+        return ResponseEntity.status(HttpStatus.OK).body(productVariantsService.getAll());
     }
 
     @PostMapping
     public ResponseEntity<ProductVariantDTO> createProductVariant(@RequestBody CreateUpdateProductVariantDTO  variantDTO) throws Exception {
-        return ResponseEntity.ok(productVariantsService.save(variantDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productVariantsService.save(variantDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductVariantDTO> updateProductVariant(@PathVariable Long id, @RequestBody CreateUpdateProductVariantDTO  variantDTO) throws Exception {
-        return ResponseEntity.ok(productVariantsService.update(variantDTO, id));
+        return ResponseEntity.status(HttpStatus.OK).body(productVariantsService.update(variantDTO, id));
     }
 
     @DeleteMapping("/{id}")

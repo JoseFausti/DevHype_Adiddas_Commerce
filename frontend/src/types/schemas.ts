@@ -58,3 +58,14 @@ export const adminProductFormSchema = z.object({
     stock: z.number().int().min(0, "Stock mínimo 0"),
   }))
 });
+
+export const directionSchema = z.object({
+  street: z.string().min(1, "La calle es obligatoria"),
+  number: z.coerce.number().positive("Debe ser un número positivo"),
+  locality: z.string().min(1, "La localidad es obligatoria"),
+  city: z.string().min(1, "La ciudad es obligatoria"),
+  country: z.string().min(1, "El país es obligatorio"),
+  postalCode: z.coerce.number().min(1, "Código postal inválido"),
+});
+
+export type DirectionFormData = z.infer<typeof directionSchema>;

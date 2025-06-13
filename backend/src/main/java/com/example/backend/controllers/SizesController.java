@@ -20,22 +20,22 @@ public class SizesController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SizeDTO> getSize(@PathVariable Long id) throws Exception {
-        return ResponseEntity.ok(sizesService.getById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(sizesService.getById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<SizeDTO>> getAllSizes() throws Exception {
-        return ResponseEntity.ok(sizesService.getAll());
+        return ResponseEntity.status(HttpStatus.OK).body(sizesService.getAll());
     }
 
     @PostMapping
     public ResponseEntity<SizeDTO> createSize(@RequestBody SizeDTO sizeDTO) throws Exception {
-        return ResponseEntity.ok(sizesService.save(sizeDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(sizesService.save(sizeDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<SizeDTO> updateSize(@PathVariable Long id, @RequestBody SizeDTO sizeDTO) throws Exception {
-        return ResponseEntity.ok(sizesService.update(sizeDTO, id));
+        return ResponseEntity.status(HttpStatus.OK).body(sizesService.update(sizeDTO, id));
     }
 
     @DeleteMapping("/{id}")

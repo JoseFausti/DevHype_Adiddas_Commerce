@@ -70,7 +70,6 @@ export interface IDetail extends Base {
 export interface ICreateUpdateDetail {
   quantity: number;
   variantId: number;
-  purchaseOrderId: number;
 }
 
 export interface IDirection extends Base {
@@ -97,9 +96,9 @@ export interface ICreateUpdateUser {
   name: string;
   surname: string;
   email: string;
-  password: string;
+  password?: string;
   role: Role;
-  directionsIds: number[];
+  directionIds: number[];
 }
 
 export interface ICategory extends Base {

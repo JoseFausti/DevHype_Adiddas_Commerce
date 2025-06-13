@@ -57,7 +57,7 @@ export const findDirectionById = async(id: number): Promise<IHttpResponse<IDirec
     }
 }
 
-export const createDirection = async(newDirection: IDirection): Promise<IHttpResponse<IDirection | null>> => {
+export const createDirection = async(newDirection: Omit<IDirection, 'id'>): Promise<IHttpResponse<IDirection | null>> => {
     try {
         const direction = await postDirection(newDirection);
         if ('error' in direction) {

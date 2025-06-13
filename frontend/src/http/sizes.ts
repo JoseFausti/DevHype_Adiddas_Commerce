@@ -14,7 +14,7 @@ export const getSizes = async (): Promise<ISize[] | {error: string}> => {
     }
 }
 
-export const postSize = async (size: ISize): Promise<ISize | {error: string}> => {
+export const postSize = async (size: Omit<ISize, 'id'>): Promise<ISize | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<ISize>(`${API_SIZES_URL}`, size);
         return data;

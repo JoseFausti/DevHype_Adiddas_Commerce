@@ -33,30 +33,30 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) throws Exception {
         UserDTO userDTO = userService.getById(id);
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
 
     @GetMapping("/username")
     public ResponseEntity<UserDTO> getUserByUsername(@RequestParam String username) {
         UserDTO userDTO = userService.findByUsername(username);
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
     
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() throws Exception {
         List<UserDTO> userDTOs = userService.getAll();
-        return ResponseEntity.ok(userDTOs);
+        return ResponseEntity.status(HttpStatus.OK).body(userDTOs);
     }
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody CreateUpdateUserDTO dto) throws Exception {
-        return ResponseEntity.ok(userService.save(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(dto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody CreateUpdateUserDTO dto) throws Exception {
-        return ResponseEntity.ok(userService.update(dto, id));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(dto, id));
     }
 
 

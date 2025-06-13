@@ -31,25 +31,25 @@ public class TypesController {
     @GetMapping("/{id}")
     public ResponseEntity<TypeDTO> getTypeById(@PathVariable Long id) throws Exception {
         TypeDTO typesDTO = typesService.getById(id);
-        return ResponseEntity.ok(typesDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(typesDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<TypeDTO>> getAllTypes() throws Exception {
         List<TypeDTO> typesDTOs = typesService.getAll();
-        return ResponseEntity.ok(typesDTOs);
+        return ResponseEntity.status(HttpStatus.OK).body(typesDTOs);
     }
 
     @PostMapping
     public ResponseEntity<TypeDTO> createType(@RequestBody CreateUpdateTypeDTO typeDTO) throws Exception {
         TypeDTO createdType = typesService.save(typeDTO);
-        return ResponseEntity.ok(createdType);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdType);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TypeDTO> updateType(@PathVariable Long id, @RequestBody CreateUpdateTypeDTO typeDTO) throws Exception {
         TypeDTO updatedType = typesService.update(typeDTO, id);
-        return ResponseEntity.ok(updatedType);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedType);
     }
 
     @DeleteMapping("/{id}")

@@ -14,7 +14,7 @@ export const getDiscounts = async (): Promise<IDiscount[] | {error: string}> => 
     }
 }
 
-export const postDiscount = async (discount: IDiscount): Promise<IDiscount | {error: string}> => {
+export const postDiscount = async (discount: Omit<IDiscount, 'id'>): Promise<IDiscount | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<IDiscount>(`${API_DISCOUNTS_URL}`, discount);
         return data;

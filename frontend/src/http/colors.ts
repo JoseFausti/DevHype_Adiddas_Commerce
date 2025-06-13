@@ -13,7 +13,7 @@ export const getColors = async (): Promise<IColor[] | {error: string}> => {
     }
 }
 
-export const postColor = async (colorImg: IColor): Promise<IColor | {error: string}> => {
+export const postColor = async (colorImg: Omit<IColor, 'id'>): Promise<IColor | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<IColor>(`${API_COLORS_URL}`, colorImg);
         return data;

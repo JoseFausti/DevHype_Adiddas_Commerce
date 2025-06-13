@@ -23,25 +23,25 @@ public class ProductsController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) throws Exception {
         ProductDTO productDTO = productsService.getById(id);
-        return ResponseEntity.ok(productDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(productDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts() throws Exception {
         List<ProductDTO> productDTOs = productsService.getAll();
-        return ResponseEntity.ok(productDTOs);
+        return ResponseEntity.status(HttpStatus.OK).body(productDTOs);
     }
 
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody CreateUpdateProductDTO createDTO) throws Exception {
         ProductDTO createdProduct = productsService.save(createDTO);
-        return ResponseEntity.ok(createdProduct);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody CreateUpdateProductDTO updateDTO) throws Exception {
         ProductDTO updatedProduct = productsService.update(updateDTO, id);
-        return ResponseEntity.ok(updatedProduct);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
 
     @DeleteMapping("/{id}")

@@ -1,4 +1,4 @@
-import { deleteUser, getUsers, login, postUser, putUser, register } from "../http/users";
+import { deleteUser, getByUsername, getUsers, login, postUser, putUser, register } from "../http/users";
 import { ICreateUpdateUser, IHttpResponse, IUser } from "../types/types";
 import Cookies from "js-cookie";
 
@@ -61,7 +61,7 @@ export const getUserById = async (id: number): Promise<IHttpResponse<IUser | nul
 
 export const getUserByUsername = async (username: string): Promise<IHttpResponse<IUser | null>> => {
     try {
-        const users = await getUserByUsername(username);
+        const users = await getByUsername(username);
         if ('error' in users) {
             return {
                 data: null,

@@ -30,23 +30,23 @@ public class DetailsController {
     @GetMapping("/{id}")
     public ResponseEntity<DetailDTO> getDetailById(@PathVariable Long id) throws Exception {
         DetailDTO detailDTO = detailService.getById(id);
-        return ResponseEntity.ok(detailDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(detailDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<DetailDTO>> getAllDetails() throws Exception {
         List<DetailDTO> detailDTOs = detailService.getAll();
-        return ResponseEntity.ok(detailDTOs);
+        return ResponseEntity.status(HttpStatus.OK).body(detailDTOs);
     }
 
     @PostMapping
     public ResponseEntity<DetailDTO> createDetail(@RequestBody CreateUpdateDetailDTO dto) throws Exception {
-        return ResponseEntity.ok(detailService.save(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(detailService.save(dto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<DetailDTO> updateDetail(@PathVariable Long id, @RequestBody CreateUpdateDetailDTO dto) throws Exception {
-        return ResponseEntity.ok(detailService.update(dto, id));
+        return ResponseEntity.status(HttpStatus.OK).body(detailService.update(dto, id));
     }
 
     @DeleteMapping("/{id}")

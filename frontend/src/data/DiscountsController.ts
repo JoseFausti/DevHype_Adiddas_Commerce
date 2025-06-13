@@ -57,7 +57,7 @@ export const findDiscountById = async(id: number): Promise<IHttpResponse<IDiscou
     }
 }
 
-export const createDiscount = async(newDiscount: IDiscount): Promise<IHttpResponse<IDiscount | null>> => {
+export const createDiscount = async(newDiscount: Omit<IDiscount, 'id'>): Promise<IHttpResponse<IDiscount | null>> => {
     try {
         const discount = await postDiscount(newDiscount);
         if ('error' in discount) {

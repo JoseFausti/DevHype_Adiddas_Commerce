@@ -35,6 +35,9 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.PUT, "/users/{id}").authenticated()
                     .requestMatchers(HttpMethod.PUT, "/productVariants/{id}").authenticated()
 
+                    // POST permitidos para autenticados
+                    .requestMatchers(HttpMethod.POST, "/directions").authenticated()
+
                     // POST, PUT, DELETE para todos los endpoints solo ADMIN
                     .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")

@@ -7,6 +7,7 @@ export const API_DIRECTIONS_URL = base + '/directions';
 export const API_DISCOUNTS_URL = base + '/discounts';
 export const API_PRODUCTS_URL = base + '/products';
 export const API_PURCHASE_ORDERS_URL = base + '/purchase_orders';
+export const API_PURCHASE_ORDER_MP_URL = base + '/pay/mp';
 export const API_SIZES_URL = base + '/sizes';
 export const API_TYPES_URL = base + '/types';
 export const API_COLORS_URL = base + '/colors';
