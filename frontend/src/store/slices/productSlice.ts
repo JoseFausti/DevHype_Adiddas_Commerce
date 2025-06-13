@@ -30,9 +30,9 @@ const productSlice = createSlice({
             localStorage.setItem("products", JSON.stringify(state.products));
         },
         removeProduct: (state, action: PayloadAction<IProduct>) => {
-            state.products.filter((product) => product.id !== action.payload.id);
+            state.products = state.products.filter((product) => product.id !== action.payload.id);
             localStorage.setItem("products", JSON.stringify(state.products));
-        }
+        }        
     }
 })
 
