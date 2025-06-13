@@ -46,20 +46,35 @@ const ProductLandingCard: React.FC<ProductLandingCardProps> = ({
           style={{ transform: `translateX(-${trackTranslate}px)` }}
         >
           {carrousel.map((product) => (
-            <div 
-              key={product.id} 
+            <div
+              key={product.id}
               className={Styles.productCardItem}
               onClick={() => goToProduct(product)}
             >
               <img src={product.image} alt={product.name} />
               <div className={Styles.info}>
                 <div className={Styles.left}>
-                  <h3 className={Styles.name}>{product.name}</h3>
-                  <p className={Styles.price}>${product.price}</p>
-                  {product.discounts.length > 0 && (
-                    <p className={Styles.discount}>
-                      {product.discounts[0].percentage}% OFF
-                    </p>
+                  <div className={Styles.nameRow}>
+                    <h3 className={Styles.name}>{product.name}</h3>
+                    {product.discounts.length > 0 && (
+                      <span className={Styles.discountTag}>
+                        -{Math.max(...product.discounts.map(d => d.percentage))}%
+                      </span>
+                    )}
+                  </div>
+
+                  {product.discounts.length > 0 ? (
+                    <>
+                      <p className={Styles.oldPrice}>${product.price.toFixed(2)}</p>
+                      <p className={Styles.discountPrice}>
+                        ${(
+                          product.price *
+                          (1 - Math.max(...product.discounts.map(d => d.percentage)) / 100)
+                        ).toFixed(2)}
+                      </p>
+                    </>
+                  ) : (
+                    <p className={Styles.price}>${product.price.toFixed(2)}</p>
                   )}
                 </div>
                 <button

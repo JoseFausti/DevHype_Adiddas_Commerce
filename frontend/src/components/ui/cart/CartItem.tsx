@@ -14,7 +14,7 @@ const CartItem = ({ item }: CartItemProps) => {
 
   const dispatch = useAppDispatch();
 
-  const [product, setProduct] = useState<IProduct | null>(null); 
+  const [product, setProduct] = useState<IProduct | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const CartItem = ({ item }: CartItemProps) => {
             <div className={Styles.confirmationButtonsContainer}>
               {/* Botones de confirmación y cancelación */}
               <button className={Styles.confirmButton} onClick={() => { return dispatch(removeProduct(item)); setOpenModal(false) }}>Sí</button>
-              <button className={Styles.cancelButton} onClick={() => { return setOpenModal(false)}}>No</button>
+              <button className={Styles.cancelButton} onClick={() => { return setOpenModal(false) }}>No</button>
             </div>
           </div>
         </div>
@@ -56,24 +56,24 @@ const CartItem = ({ item }: CartItemProps) => {
           {/* Botón eliminar posicionado en la esquina superior derecha 
               Se usa el icono X importado desde lucide-react */}
           <button className={Styles.deleteButton}>
-            <X 
+            <X
               size={20}
-              style={{ 
-                border: "none", 
-                cursor: "pointer", 
+              style={{
+                border: "none",
+                cursor: "pointer",
                 outline: "none", // Esto remueve el borde negro
-              }} 
+              }}
               onClick={() => { setOpenModal(true) }}
             />
           </button>
 
           {/* Contenedor para la imagen del producto */}
           <div className={Styles.imageWrapper}>
-            <img
-              src="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1749581777/w25_wangam.webp"
-              alt="Imagen del producto"
-              className={Styles.productImage}
-            />
+            {product ? (
+              <img src={product.image} alt={product.name} className={Styles.productImage} />
+            ) : (
+              <div className={Styles.imagePlaceholder}>Cargando imagen...</div>
+            )}
           </div>
 
           {/* Contenedor para la información del producto, organizado horizontalmente */}

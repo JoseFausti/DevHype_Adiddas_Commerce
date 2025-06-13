@@ -47,12 +47,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
       }));
       // Actualizar la base de datos
       updateProductVariant(selectedVariant.id, {
-        id: selectedVariant.id,
-        productId: selectedVariant.productId,
-        colorId: selectedVariant.color.id,
-        sizeId: selectedVariant.size.id,
+        productName: product.name,
+        colorName: selectedVariant.color.name,
+        sizeNumber: selectedVariant.size.size,
         stock: selectedVariant.stock - quantity,
       });
+      
       navigate("/")
     }
   };

@@ -30,8 +30,10 @@ const Home: React.FC = () => {
 
   // Shoes carrusel
   const shoes = products.filter(
-    (product) => product.category.name === 'shoes'
+    (product) =>
+      product.category.name === 'shoes' && product.discounts.length === 0
   );
+  
   const {
     activeIndex: shoesActiveIndex,
     next: nextShoes,
