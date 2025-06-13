@@ -10,5 +10,5 @@ export enum Status {
 }
 
 export enum PaymentMethod {
-  MASTERCARD = 'MASTERCARD'
+  MERCADO_PAGO = 'MERCADO_PAGO'
 }

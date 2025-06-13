@@ -57,7 +57,7 @@ export const findPurchaseOrderById = async(id: number): Promise<IHttpResponse<IP
     }
 }
 
-export const createPurchaseOrder = async(newPurchaseOrder: ICreateUpdatePurchaseOrder): Promise<IHttpResponse<IPurchaseOrder | null>> => {
+export const createPurchaseOrder = async(newPurchaseOrder: ICreateUpdatePurchaseOrder): Promise<IHttpResponse<IPurchaseOrder & {initPoint: string} | null>> => {
     try {
         const purchaseOrder = await postPurchaseOrder(newPurchaseOrder);
         if ('error' in purchaseOrder) {

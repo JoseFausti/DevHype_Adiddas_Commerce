@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.backend.models.entities.Details;
+import com.example.backend.models.entities.ProductVariants;
 import com.example.backend.models.enums.PaymentMethod;
 import com.example.backend.models.enums.Status;
 import com.mercadopago.client.payment.PaymentClient;
@@ -48,44 +50,50 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
     @Lazy // para evitar un ciclo de dependencia
     private DetailsServiceImpl detailsService;
 
+    @Autowired
+    private ProductVariantsService productVariantsService;
+
     public Purchase_ordersServiceImpl(BaseRepository<Purchase_orders, Long> baseRepository) {
         super(baseRepository);
     }
 
-    @Transactional
-    public PurchaseOrderDTO save(CreateUpdatePurchaseOrderDTO dto) throws Exception {
-        try {
-            Purchase_orders purchaseOrder = new Purchase_orders();
-            purchaseOrder.setDate(LocalDate.now());
-            purchaseOrder.setPaymentMethod(PaymentMethod.MERCADO_PAGO);
-            purchaseOrder.setUser(usersService.findById(dto.getUserId()));
-            purchaseOrder.setStatus(dto.getStatus() != null ? dto.getStatus() : Status.PENDING);
+@Transactional
+public PurchaseOrderDTO save(CreateUpdatePurchaseOrderDTO dto) throws Exception {
+    try {
+        Purchase_orders purchaseOrder = new Purchase_orders();
+        purchaseOrder.setDate(LocalDate.now());
+        purchaseOrder.setPaymentMethod(PaymentMethod.MERCADO_PAGO);
+        purchaseOrder.setUser(usersService.findById(dto.getUserId()));
+        purchaseOrder.setStatus(dto.getStatus() != null ? dto.getStatus() : Status.PENDING);
+        purchaseOrder.setDetails(new ArrayList<>()); // Inicializar la lista
 
-            purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
+        purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
 
-            double totalPrice = 0.0;
+        double totalPrice = 0.0;
 
-            if (dto.getDetails() != null && !dto.getDetails().isEmpty()) {
-                for (CreateUpdateDetailDTO detailDTO : dto.getDetails()) {
-                    detailDTO.setPurchaseOrderId(purchaseOrder.getId());
-                    DetailDTO savedDetail = detailsService.save(detailDTO);
-
-                    int quantity = savedDetail.getQuantity();
-                    Products product = productsRepository.findById(savedDetail.getVariant().getProductId())
-                            .orElseThrow(() -> new Exception("Product not found with ID: " + savedDetail.getVariant().getProductId()));
-
-                    totalPrice += quantity * product.getPrice();
-                }
+        if (dto.getDetails() != null && !dto.getDetails().isEmpty()) {
+            for (CreateUpdateDetailDTO detailDTO : dto.getDetails()) {
+                Details detail = new Details();
+                detail.setQuantity(detailDTO.getQuantity());
+                detail.setVariant(productVariantsService.findById(detailDTO.getVariantId()));
+                detail.setPurchaseOrder(purchaseOrder);
+                
+                // Agregar el detalle a la lista de la orden
+                purchaseOrder.getDetails().add(detail);
+                
+                Products product = detail.getVariant().getProduct();
+                totalPrice += detailDTO.getQuantity() * product.getPrice();
             }
-
-            purchaseOrder.setTotalPrice(Math.round(totalPrice * 100.0) / 100.0); // Redondea a 2 decimales
-            purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
-
-            return PurchaseOrderMapper.toDto(purchaseOrder);
-        } catch (Exception e) {
-            throw new Exception("Error al guardar la orden de compra: " + e.getMessage());
         }
+
+        purchaseOrder.setTotalPrice(Math.round(totalPrice * 100.0) / 100.0);
+        purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
+
+        return PurchaseOrderMapper.toDto(purchaseOrder);
+    } catch (Exception e) {
+        throw new Exception("Error al guardar la orden de compra: " + e.getMessage());
     }
+}
 
 
    @Transactional
@@ -110,8 +118,8 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
 
             if (dto.getDetails() != null && !dto.getDetails().isEmpty()) {
                 for (CreateUpdateDetailDTO detailDTO : dto.getDetails()) {
-                    detailDTO.setPurchaseOrderId(purchaseOrder.getId());
-                    DetailDTO savedDetail = detailsService.save(detailDTO);
+
+                    DetailDTO savedDetail = detailsService.save(detailDTO , purchaseOrder );
 
                     int quantity = savedDetail.getQuantity();
                     Products product = productsRepository.findById(savedDetail.getVariant().getProductId())
@@ -144,36 +152,47 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
         return PurchaseOrderMapper.toDto(purchaseOrder);
     }
 
-    @Transactional
-    public PreferenceRequest buildPreference(Purchase_orders order) {
-        List<PreferenceItemRequest> items = new ArrayList<>();
-        order.getDetails().forEach(detail -> {
-            if (detail.getVariant() == null || detail.getVariant().getProduct() == null) {
-                throw new IllegalStateException(
-                        "El detalle con ID " + detail.getId() + " no tiene variante o producto asociado.");
-            }
-            items.add(PreferenceItemRequest.builder()
-                    .id(detail.getVariant().getProduct().getId().toString())
-                    .title(detail.getVariant().getProduct().getName())
-                    .description(detail.getVariant().getProduct().getDescription())
-                    .unitPrice(BigDecimal.valueOf(detail.getVariant().getProduct().getPrice()))
-                    .quantity(detail.getQuantity())
-                    .build());
-        });
 
-        PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
-                .success("https://localhost/success")
-                .failure("https://localhost/failure")
-                .pending("https://localhost/pending")
-                .build();
-
-        return PreferenceRequest.builder()
-                .items(items)
-                .backUrls(backUrls)
-                .autoReturn("approved")
-                .externalReference(String.valueOf(order.getId()))
-                .build();
+@Transactional
+public PreferenceRequest buildPreference(Purchase_orders order) throws Exception {
+    if (order.getDetails() == null || order.getDetails().isEmpty()) {
+        throw new IllegalStateException("La orden no tiene detalles asociados");
     }
+
+    List<PreferenceItemRequest> items = new ArrayList<>();
+    
+    for (Details detail : order.getDetails()) {
+        if (detail.getVariant() == null) {
+            throw new IllegalStateException("El detalle con ID " + detail.getId() + " no tiene variante asociada");
+        }
+        
+        Products product = detail.getVariant().getProduct();
+        if (product == null) {
+            throw new IllegalStateException("La variante del detalle con ID " + detail.getId() + " no tiene producto asociado");
+        }
+        
+        items.add(PreferenceItemRequest.builder()
+                .id(product.getId().toString())
+                .title(product.getName())
+                .description(product.getDescription())
+                .unitPrice(BigDecimal.valueOf(product.getPrice()))
+                .quantity(detail.getQuantity())
+                .build());
+    }
+
+    PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
+            .success("https://localhost/success")
+            .failure("https://localhost/failure")
+            .pending("https://localhost/pending")
+            .build();
+
+    return PreferenceRequest.builder()
+            .items(items)
+            .backUrls(backUrls)
+            .autoReturn("approved")
+            .externalReference(String.valueOf(order.getId()))
+            .build();
+}
 
     public void processWebhook(String type, String dataId) throws Exception {
         if ("payment".equals(type)) {

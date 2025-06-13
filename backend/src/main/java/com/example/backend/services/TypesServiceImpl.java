@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import lombok.*;
 
 @Service
 public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements TypesService {

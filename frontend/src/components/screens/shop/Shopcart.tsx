@@ -9,9 +9,9 @@ import { useEffect, useState } from "react"
 import { X } from "lucide-react";
 import { getUserByUsername } from "../../../data/UsersController"
 import { DirectionForm } from "../../ui/cart/DirectionForm"
-import { postPurchaseOrder } from "../../../http/purchase_orders"
 import { PaymentMethod, Status } from "../../../utils/enums"
 import { addUser, setUserActive } from "../../../store/slices/userSlice"
+import { createPurchaseOrder } from "../../../data/PurchaseOrdersController"
 
 const Shopcart = () => {
 
@@ -22,6 +22,7 @@ const Shopcart = () => {
   const dispatch = useAppDispatch();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [initPoint, setInitPoint] = useState<string>('');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,16 +42,24 @@ const Shopcart = () => {
     fetchUser();
   }, [])
 
-  const goToPay = async () => {
-    await postPurchaseOrder({
-      userId: userActive!.id,
-      paymentMethod: PaymentMethod.MASTERCARD,
-      status: Status.PENDING,
-      details: cart.map(item => ({
-        quantity: item.quantity,
-        variantId: item.variant.id,
-      }))
-    });
+  const createOrder = async () => {
+    try {
+      const response = await createPurchaseOrder({
+        userId: userActive!.id,
+        paymentMethod: PaymentMethod.MERCADO_PAGO,
+        status: Status.PENDING,
+        details: cart.map(item => ({
+          quantity: item.quantity,
+          variantId: item.variant.id,
+        }))
+      });
+      if (response.status === 201) {
+        setInitPoint(response.data!.initPoint);
+        window.location.href = response.data!.initPoint;
+      }
+    } catch (error) {
+      console.log("Error al realizar la compra", error);
+    }
   }
 
   const handleGoToPay = () => {
@@ -60,7 +69,7 @@ const Shopcart = () => {
       setOpenModal(true);
     } else {
       setOpenModal(false);
-      goToPay();
+      createOrder();
     }
   }
 
@@ -108,7 +117,9 @@ const Shopcart = () => {
 
               {/* Aside Carrito */}
               <div className={Styles.cartContainer__aside}>
-                <ProductSummary onGoToPay={handleGoToPay} />
+                <ProductSummary 
+                  onGoToPay={handleGoToPay}
+                />
               </div>
               {/* Fin Aside Carrito */}
             </div>

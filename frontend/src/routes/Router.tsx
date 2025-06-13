@@ -13,6 +13,9 @@ import { Users } from "../components/screens/admin/Users/Users"
 import { AdminProducts } from "../components/screens/admin/Products/Products"
 import RequireAdmin from "../components/screens/admin/auth/RequireAdmin"
 import About from "../components/screens/about/About"
+import Success from "../components/ui/mp/Success"
+import Failure from "../components/ui/mp/Failure"
+import Pending from "../components/ui/mp/Pending"
 
 const Router = () => {
   return (
@@ -44,6 +47,10 @@ const Router = () => {
             <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register/>} />
             <Route path="/logout" element={<Logout/>} />
+
+            <Route path="/success" element={<Success/>} />
+            <Route path="/failure" element={<Failure/>} />
+            <Route path="/pending" element={<Pending/>} />
         </Routes> 
     </BrowserRouter>
   )

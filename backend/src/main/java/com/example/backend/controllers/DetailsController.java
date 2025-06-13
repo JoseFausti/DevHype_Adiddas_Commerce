@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 
 import java.util.List;
 
+import com.example.backend.models.entities.Purchase_orders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ public class DetailsController {
     @Autowired
     private DetailsServiceImpl detailService;
 
+
+    private Purchase_orders purchaseOrders;
+
     @GetMapping("/{id}")
     public ResponseEntity<DetailDTO> getDetailById(@PathVariable Long id) throws Exception {
         DetailDTO detailDTO = detailService.getById(id);
@@ -41,7 +45,7 @@ public class DetailsController {
 
     @PostMapping
     public ResponseEntity<DetailDTO> createDetail(@RequestBody CreateUpdateDetailDTO dto) throws Exception {
-        return ResponseEntity.status(HttpStatus.CREATED).body(detailService.save(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(detailService.save(dto , purchaseOrders));
     }
 
     @PutMapping("/{id}")

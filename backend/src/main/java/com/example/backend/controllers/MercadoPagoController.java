@@ -1,5 +1,7 @@
 package com.example.backend.controllers;
 
+import com.example.backend.dtos.purchaseOrder.CreateUpdatePurchaseOrderDTO;
+import com.example.backend.dtos.purchaseOrder.PurchaseOrderDTO;
 import com.example.backend.models.entities.Purchase_orders;
 import com.example.backend.services.Purchase_ordersServiceImpl;
 import com.mercadopago.MercadoPagoConfig;
@@ -30,19 +32,22 @@ public class MercadoPagoController {
 
     @PostMapping("/mp")
     @CrossOrigin("*")
-    public ResponseEntity<Map<String, Object>> crearOrden(@RequestBody Purchase_orders purchase_orders) throws Exception {
-
+    public ResponseEntity<Map<String, Object>> crearOrden(@RequestBody CreateUpdatePurchaseOrderDTO purchaseOrderDTO) throws Exception {
         MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
-        Purchase_orders ordenCreada = purchaseOrdersService.save(purchase_orders);
+        // Primero crear la orden usando el servicio existente
+        PurchaseOrderDTO createdOrder = purchaseOrdersService.save(purchaseOrderDTO);
+        
+        // Obtener la orden completa con todos sus detalles
+        Purchase_orders ordenCompleta = purchaseOrdersService.findById(createdOrder.getId());
 
-        // Volvés a crear la preferencia para obtener el init_point
+        // Crear la preferencia
         PreferenceClient client = new PreferenceClient();
-        PreferenceRequest preferenceRequest = purchaseOrdersService.buildPreference(ordenCreada);
+        PreferenceRequest preferenceRequest = purchaseOrdersService.buildPreference(ordenCompleta);
         Preference preference = client.create(preferenceRequest);
 
         Map<String, Object> respuesta = new HashMap<>();
-        respuesta.put("purchaseOrder", ordenCreada);
+        respuesta.put("purchaseOrder", createdOrder);
         respuesta.put("initPoint", preference.getInitPoint());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
