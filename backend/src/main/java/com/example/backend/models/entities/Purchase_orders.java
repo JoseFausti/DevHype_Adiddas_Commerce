@@ -1,6 +1,7 @@
 package com.example.backend.models.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import com.example.backend.models.enums.PaymentMethod;
 import com.example.backend.models.enums.Status;
@@ -10,9 +11,7 @@ import lombok.*;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -43,6 +42,6 @@ public class Purchase_orders extends Base {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToMany(mappedBy = "purchaseOrder", fetch= FetchType.LAZY)
-    private List<Details> details;
+    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Details> details = new ArrayList<>();
 }

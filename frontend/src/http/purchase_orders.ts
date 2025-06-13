@@ -14,9 +14,9 @@ export const getPurchaseOrders = async (): Promise<IPurchaseOrder[] | {error: st
     }
 }
 
-export const postPurchaseOrder = async (purchase_order: ICreateUpdatePurchaseOrder): Promise<IPurchaseOrder | {error: string}> => {
+export const postPurchaseOrder = async (purchase_order: ICreateUpdatePurchaseOrder): Promise<IPurchaseOrder & {initPoint: string} | {error: string}> => {
     try {
-        const {data} = await axiosInstance.post<IPurchaseOrder>(`${API_PURCHASE_ORDER_MP_URL}`, purchase_order);
+        const {data} = await axiosInstance.post<IPurchaseOrder & {initPoint: string}>(`${API_PURCHASE_ORDER_MP_URL}`, purchase_order);
         return data;
     } catch (err) {
         return {

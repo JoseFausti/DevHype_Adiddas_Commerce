@@ -68,6 +68,7 @@ export interface IDetail extends Base {
 }
 
 export interface ICreateUpdateDetail {
+  id?: number;
   quantity: number;
   variantId: number;
 }

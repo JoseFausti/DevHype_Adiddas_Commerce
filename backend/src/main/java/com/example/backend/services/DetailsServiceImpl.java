@@ -12,6 +12,7 @@ import com.example.backend.mappers.DetailMapper;
 import com.example.backend.models.entities.Details;
 import com.example.backend.repositories.BaseRepository;
 import com.example.backend.repositories.DetailsRepository;
+import com.example.backend.models.entities.Purchase_orders;
 
 import jakarta.transaction.Transactional;
 
@@ -34,15 +35,12 @@ public class DetailsServiceImpl extends BaseServiceImpl<Details, Long> implement
     }
 
     @Transactional
-    public DetailDTO save(CreateUpdateDetailDTO dto) throws Exception {
+    public DetailDTO save(CreateUpdateDetailDTO dto, Purchase_orders purchaseOrder) throws Exception {
         try {
             Details detail = new Details();
             detail.setQuantity(dto.getQuantity());
             detail.setVariant(productVariantsService.findById(dto.getVariantId()));
-
-            if (dto.getPurchaseOrderId() != null) {
-                detail.setPurchaseOrder(purchaseOrdersService.findById(dto.getPurchaseOrderId()));
-            }
+            detail.setPurchaseOrder(purchaseOrder); // Establecer la relación
 
             detail = detailsRepository.save(detail);
             return DetailMapper.toDto(detail);
@@ -60,9 +58,7 @@ public class DetailsServiceImpl extends BaseServiceImpl<Details, Long> implement
             detail.setQuantity(dto.getQuantity());
             detail.setVariant(productVariantsService.findById(dto.getVariantId()));
 
-            if (dto.getPurchaseOrderId() != null) {
-                detail.setPurchaseOrder(purchaseOrdersService.findById(dto.getPurchaseOrderId()));
-            }
+
 
             detail = detailsRepository.save(detail);
             return DetailMapper.toDto(detail);
