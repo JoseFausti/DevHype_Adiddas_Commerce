@@ -31,25 +31,25 @@ public class Purchase_ordersController {
     @GetMapping("/{id}")
     public ResponseEntity<PurchaseOrderDTO> getPurchaseOrderById(@PathVariable Long id) throws Exception {
         PurchaseOrderDTO purchaseOrdersDTO = purchaseOrdersService.getById(id);
-        return ResponseEntity.ok(purchaseOrdersDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(purchaseOrdersDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<PurchaseOrderDTO>> getAllPurchaseOrders() throws Exception {
         List<PurchaseOrderDTO> purchaseOrdersDTOs = purchaseOrdersService.getAll();
-        return ResponseEntity.ok(purchaseOrdersDTOs);
+        return ResponseEntity.status(HttpStatus.OK).body(purchaseOrdersDTOs);
     }
 
     @PostMapping
     public ResponseEntity<PurchaseOrderDTO> createPurchaseOrder(@RequestBody CreateUpdatePurchaseOrderDTO purchaseOrdersDTO) throws Exception {
         PurchaseOrderDTO createdPurchaseOrder = purchaseOrdersService.save(purchaseOrdersDTO);
-        return ResponseEntity.ok(createdPurchaseOrder);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPurchaseOrder);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PurchaseOrderDTO> updatePurchaseOrder(@PathVariable Long id, @RequestBody CreateUpdatePurchaseOrderDTO purchaseOrdersDTO) throws Exception {
         PurchaseOrderDTO updatedPurchaseOrder = purchaseOrdersService.update(purchaseOrdersDTO, id);
-        return ResponseEntity.ok(updatedPurchaseOrder);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedPurchaseOrder);
     }
 
     @DeleteMapping("/{id}")

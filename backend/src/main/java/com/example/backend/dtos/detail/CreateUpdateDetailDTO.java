@@ -9,5 +9,4 @@ import lombok.*;
 public class CreateUpdateDetailDTO {
     private int quantity;
     private Long variantId;
-    private Long purchaseOrderId;
 }

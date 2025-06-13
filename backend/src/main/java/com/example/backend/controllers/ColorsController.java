@@ -20,22 +20,22 @@ public class ColorsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ColorDTO> getColor(@PathVariable Long id) throws Exception {
-        return ResponseEntity.ok(colorsService.getById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(colorsService.getById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<ColorDTO>> getAllColors() throws Exception {
-        return ResponseEntity.ok(colorsService.getAll());
+        return ResponseEntity.status(HttpStatus.OK).body(colorsService.getAll());
     }
 
     @PostMapping
     public ResponseEntity<ColorDTO> createColor(@RequestBody ColorDTO colorDTO) throws Exception {
-        return ResponseEntity.ok(colorsService.save(colorDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(colorsService.save(colorDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ColorDTO> updateColor(@PathVariable Long id, @RequestBody ColorDTO colorDTO) throws Exception {
-        return ResponseEntity.ok(colorsService.update(colorDTO, id));
+        return ResponseEntity.status(HttpStatus.OK).body(colorsService.update(colorDTO, id));
     }
 
     @DeleteMapping("/{id}")

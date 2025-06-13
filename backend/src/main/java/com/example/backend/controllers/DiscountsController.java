@@ -21,25 +21,25 @@ public class DiscountsController {
     @GetMapping("/{id}")
     public ResponseEntity<DiscountDTO> getDiscountById(@PathVariable Long id) throws Exception {
         DiscountDTO discountDTO = discountsService.getById(id);
-        return ResponseEntity.ok(discountDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(discountDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<DiscountDTO>> getAllDiscounts() throws Exception {
         List<DiscountDTO> discountDTOs = discountsService.getAll();
-        return ResponseEntity.ok(discountDTOs);
+        return ResponseEntity.status(HttpStatus.OK).body(discountDTOs);
     }
 
     @PostMapping
     public ResponseEntity<DiscountDTO> createDiscount(@RequestBody DiscountDTO discountDTO) throws Exception {
         DiscountDTO createdDiscount = discountsService.save(discountDTO);
-        return ResponseEntity.ok(createdDiscount);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdDiscount);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<DiscountDTO> updateDiscount(@PathVariable Long id, @RequestBody DiscountDTO discountDTO) throws Exception {
         DiscountDTO updatedDiscount = discountsService.update(discountDTO, id);
-        return ResponseEntity.ok(updatedDiscount);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedDiscount);
     }
 
     @DeleteMapping("/{id}")

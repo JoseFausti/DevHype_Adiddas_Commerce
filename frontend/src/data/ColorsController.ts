@@ -57,7 +57,7 @@ export const findColorByName = async(name: string): Promise<IHttpResponse<IColor
     }
 }
 
-export const createColor = async(newColor: IColor): Promise<IHttpResponse<IColor | null>> => {
+export const createColor = async(newColor: Omit<IColor, 'id'>): Promise<IHttpResponse<IColor | null>> => {
     try {
         const color = await postColor(newColor);
         if ('error' in color) {

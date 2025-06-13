@@ -13,7 +13,7 @@ export const getCategories = async (): Promise<ICategory[] | {error: string}> =>
     }
 }
 
-export const postCategory = async (category: ICategory): Promise<ICategory | {error: string}> => {
+export const postCategory = async (category: Omit<ICategory, 'id'>): Promise<ICategory | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<ICategory>(`${API_CATEGORIES_URL}`, category);
         return data;

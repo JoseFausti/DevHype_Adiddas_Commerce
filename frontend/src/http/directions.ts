@@ -13,7 +13,7 @@ export const getDirections = async(): Promise<IDirection[] | {error: string}> =>
     }
 }
 
-export const postDirection = async (direction: IDirection): Promise<IDirection | {error: string}> => {
+export const postDirection = async (direction: Omit<IDirection, 'id'>): Promise<IDirection | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<IDirection>(`${API_DIRECTIONS_URL}`, direction);
         return data

@@ -20,22 +20,22 @@ public class CategoriesController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getCategory(@PathVariable Long id) throws Exception {
-        return ResponseEntity.ok(categoriesService.getById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(categoriesService.getById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategories() throws Exception {
-        return ResponseEntity.ok(categoriesService.getAll());
+        return ResponseEntity.status(HttpStatus.OK).body(categoriesService.getAll());
     }
 
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) throws Exception {
-        return ResponseEntity.ok(categoriesService.save(categoryDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriesService.save(categoryDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) throws Exception {
-        return ResponseEntity.ok(categoriesService.update(categoryDTO, id));
+        return ResponseEntity.status(HttpStatus.OK).body(categoriesService.update(categoryDTO, id));
     }
 
     @DeleteMapping("/{id}")

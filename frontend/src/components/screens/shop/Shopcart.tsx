@@ -1,49 +1,118 @@
 import { Link } from "react-router-dom"
-import { useAppSelector } from "../../../hooks/redux"
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux"
 import ProductSummary from "../../ui/cart/ProductSummary"
 import { ArrowRight } from "lucide-react"
 import Styles from './Shopcart.module.css'
 import CartItem from "../../ui/cart/CartItem"
+import { getDecodedToken } from "../../../utils/functions"
+import { useEffect, useState } from "react"
+import { getUserByUsername } from "../../../data/UsersController"
+import { DirectionForm } from "../../ui/cart/DirectionForm"
+import { postPurchaseOrder } from "../../../http/purchase_orders"
+import { PaymentMethod, Status } from "../../../utils/enums"
+import { addUser, setUserActive } from "../../../store/slices/userSlice"
 
 const Shopcart = () => {
 
+  const token = getDecodedToken();
   const {cart} = useAppSelector((state) => state.cart) 
+
+  const {userActive, users} = useAppSelector((state) => state.user)
+  const dispatch = useAppDispatch();
+
+  const [openModal, setOpenModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+        try {
+          const response = await getUserByUsername(token!.sub);
+          if (response.status === 200) {
+            const user = response.data;
+            if (user) { 
+              dispatch(setUserActive(user));
+              dispatch(addUser(user));
+            } else { throw new Error()};
+          }
+        } catch (error) {
+          console.log("Error fetching user:", error);
+        }
+      }
+      fetchUser();
+  }, [])
+
+  const goToPay = async () => {
+    await postPurchaseOrder({
+      userId: userActive!.id,
+      paymentMethod: PaymentMethod.MASTERCARD,
+      status: Status.PENDING,
+      details: cart.map(item => ({
+        quantity: item.quantity,
+        variantId: item.variant.id,
+      }))
+    });
+  }
+
+  const handleGoToPay = () => {
+    const user = users.find(user => user.id === userActive?.id);
+    if (!user?.directions || user.directions.length === 0) {
+      console.log(user)
+      setOpenModal(true);
+    }else {
+      setOpenModal(false);
+      goToPay();
+    }
+  }
 
   return (
     <>
-      <div>
-        {cart.length === 0 
-          ? 
-            <div>
-              {/* Carrito vacio */}
-              <div className={Styles.emptyCart}>
-                <h2 className={Styles.emptyCart__title}>El carrito esta vacio</h2>
-                <p className={Styles.emptyCart__text}>Una vez que agregues un producto a tu carrito aparecera aca. Listo para empezar?</p>
-                <button className={Styles.emptyCart__button}><Link to={'/products'} className={Styles.button_start}>Empezar <ArrowRight/></Link></button>
+      {openModal ? (
+        <div className={Styles.modal}>
+          <div className={Styles.modalContent}>
+            <h3>Ingrese una Dirección</h3>
+              <DirectionForm
+                user={userActive!}
+                onSuccess={() => {
+                  setOpenModal(false);
+                }}
+              />
+            <button onClick={() => setOpenModal(false)}>Cerrar</button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          {cart.length === 0 || !token || token.role === 'ADMIN'
+            ? 
+              <div>
+                {/* Carrito vacio */}
+                <div className={Styles.emptyCart}>
+                  <h2 className={Styles.emptyCart__title}>El carrito esta vacio</h2>
+                  <p className={Styles.emptyCart__text}>Una vez que agregues un producto a tu carrito aparecera aca. Listo para empezar?</p>
+                  <button className={Styles.emptyCart__button}><Link to={'/products'} className={Styles.button_start}>Empezar <ArrowRight/></Link></button>
+                </div>
+                {/* Fin Carrito vacio */}
               </div>
-              {/* Fin Carrito vacio */}
-            </div>
-          :
-            <div className={Styles.cartContainer}>
-              {/* Main Carrito con productos */}
-              <div className={Styles.cartContainer__main}>
-                <h2>Tu carrito</h2> {/* Vista del carrito con productos */ }
-                {cart.map((product) => {
-                    return (
-                    <CartItem key={product.variant.id} item={product} />
-                  )
-                })}
-              </div>
-              {/* Fin Main Carrito con productos */}
+            :
+              <div className={Styles.cartContainer}>
+                {/* Main Carrito con productos */}
+                <div className={Styles.cartContainer__main}>
+                  <h2>Tu carrito</h2> {/* Vista del carrito con productos */ }
+                  {cart.map((product) => {
+                      return (
+                      <CartItem key={product.variant.id} item={product} />
+                    )
+                  })}
+                </div>
+                {/* Fin Main Carrito con productos */}
 
-              {/* Aside Carrito */}
-              <div className={Styles.cartContainer__aside}>
-                  <ProductSummary />
+                {/* Aside Carrito */}
+                <div className={Styles.cartContainer__aside}>
+                    <ProductSummary onGoToPay={handleGoToPay} />
+                </div>
+                {/* Fin Aside Carrito */}  
               </div>
-              {/* Fin Aside Carrito */}  
-            </div>
-        }
-      </div>
+          }
+        </div>
+      )}
     </>
   )
 }

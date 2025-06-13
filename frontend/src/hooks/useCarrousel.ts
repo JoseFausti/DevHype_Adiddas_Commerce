@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface ICarrousel {
   activeIndex: number;
@@ -8,8 +8,7 @@ interface ICarrousel {
 
 export const useCarrousel = <T>(
   items: T[],
-  quantity: number = 3,
-  autoScrollInterval: number = 5000
+  quantity: number = 3
 ): ICarrousel => {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -28,14 +27,6 @@ export const useCarrousel = <T>(
       return newIndex < 0 ? Math.max(0, items.length - quantity) : newIndex;
     });
   };
-
-  // Auto-scroll cada autoScrollInterval milisegundos
-  useEffect(() => {
-    const interval = setInterval(() => {
-      next();
-    }, autoScrollInterval);
-    return () => clearInterval(interval);
-  }, [items, autoScrollInterval]);
 
   return { activeIndex, next, prev };
 };

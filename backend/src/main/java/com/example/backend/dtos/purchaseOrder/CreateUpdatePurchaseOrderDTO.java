@@ -7,7 +7,8 @@ import lombok.*;
 
 import java.util.List;
 
-import ch.qos.logback.core.status.Status;
+import com.example.backend.models.enums.Status;
+
 
 @Data
 @NoArgsConstructor

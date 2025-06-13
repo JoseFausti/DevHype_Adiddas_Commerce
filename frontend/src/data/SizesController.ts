@@ -57,7 +57,7 @@ export const getSizeById = async (id: number): Promise<IHttpResponse<ISize | nul
     }
 }
 
-export const createSize = async (newSize: ISize): Promise<IHttpResponse<ISize | null>> => {
+export const createSize = async (newSize: Omit<ISize, 'id'>): Promise<IHttpResponse<ISize | null>> => {
     try {
         const size = await postSize(newSize);
         if ('error' in size) {

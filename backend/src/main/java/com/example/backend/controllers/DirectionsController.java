@@ -30,25 +30,25 @@ public class DirectionsController {
     @GetMapping("/{id}")
     public ResponseEntity<DirectionsDTO> getDirectionById(@PathVariable Long id) throws Exception {
         DirectionsDTO directionsDTO = directionsService.getById(id);
-        return ResponseEntity.ok(directionsDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(directionsDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<DirectionsDTO>> getAllDirections() throws Exception {
         List<DirectionsDTO> directionsDTOs = directionsService.getAll();
-        return ResponseEntity.ok(directionsDTOs);
+        return ResponseEntity.status(HttpStatus.OK).body(directionsDTOs);
     }
 
     @PostMapping
     public ResponseEntity<DirectionsDTO> createDirection(@RequestBody DirectionsDTO directionsDTO) throws Exception {
         DirectionsDTO createdDirection = directionsService.save(directionsDTO);
-        return ResponseEntity.ok(createdDirection);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdDirection);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<DirectionsDTO> updateDirection(@PathVariable Long id, @RequestBody DirectionsDTO directionsDTO) throws Exception {
         DirectionsDTO updatedDirection = directionsService.update(directionsDTO, id);
-        return ResponseEntity.ok(updatedDirection);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedDirection);
     }
 
     @DeleteMapping("/{id}")

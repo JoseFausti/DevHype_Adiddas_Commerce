@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.backend.models.enums.PaymentMethod;
 import com.example.backend.models.enums.Status;
 import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
@@ -54,16 +55,10 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
     public PurchaseOrderDTO save(CreateUpdatePurchaseOrderDTO dto) throws Exception {
         try {
             Purchase_orders purchaseOrder = new Purchase_orders();
-
             purchaseOrder.setDate(LocalDate.now());
-            purchaseOrder.setPaymentMethod(dto.getPaymentMethod());
+            purchaseOrder.setPaymentMethod(PaymentMethod.MERCADO_PAGO);
             purchaseOrder.setUser(usersService.findById(dto.getUserId()));
-
-            if (dto.getStatus() != null) {
-                purchaseOrder.setStatus(dto.getStatus());
-            } else {
-                purchaseOrder.setStatus(Status.PENDING); // default
-            }
+            purchaseOrder.setStatus(dto.getStatus() != null ? dto.getStatus() : Status.PENDING);
 
             purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
 
@@ -72,21 +67,17 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
             if (dto.getDetails() != null && !dto.getDetails().isEmpty()) {
                 for (CreateUpdateDetailDTO detailDTO : dto.getDetails()) {
                     detailDTO.setPurchaseOrderId(purchaseOrder.getId());
-
                     DetailDTO savedDetail = detailsService.save(detailDTO);
 
                     int quantity = savedDetail.getQuantity();
-
                     Products product = productsRepository.findById(savedDetail.getVariant().getProductId())
-                            .orElseThrow(() -> new Exception("Product not found"));
+                            .orElseThrow(() -> new Exception("Product not found with ID: " + savedDetail.getVariant().getProductId()));
 
-                    double price = product.getPrice();
-
-                    totalPrice += quantity * price;
+                    totalPrice += quantity * product.getPrice();
                 }
             }
 
-            purchaseOrder.setTotalPrice(totalPrice);
+            purchaseOrder.setTotalPrice(Math.round(totalPrice * 100.0) / 100.0); // Redondea a 2 decimales
             purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
 
             return PurchaseOrderMapper.toDto(purchaseOrder);
@@ -95,14 +86,14 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
         }
     }
 
-    @Transactional
+
+   @Transactional
     public PurchaseOrderDTO update(CreateUpdatePurchaseOrderDTO dto, Long id) throws Exception {
         try {
             Purchase_orders purchaseOrder = purchase_ordersRepository.findById(id)
                     .orElseThrow(() -> new Exception("Orden de compra no encontrada con ID: " + id));
 
             purchaseOrder.setUser(usersService.findById(dto.getUserId()));
-            purchaseOrder.setPaymentMethod(dto.getPaymentMethod());
 
             if (dto.getStatus() != null) {
                 purchaseOrder.setStatus(dto.getStatus());
@@ -119,21 +110,17 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
             if (dto.getDetails() != null && !dto.getDetails().isEmpty()) {
                 for (CreateUpdateDetailDTO detailDTO : dto.getDetails()) {
                     detailDTO.setPurchaseOrderId(purchaseOrder.getId());
-
                     DetailDTO savedDetail = detailsService.save(detailDTO);
 
                     int quantity = savedDetail.getQuantity();
-
                     Products product = productsRepository.findById(savedDetail.getVariant().getProductId())
-                        .orElseThrow(() -> new Exception("Producto no encontrado con ID: " + savedDetail.getVariant().getProductId()));
+                            .orElseThrow(() -> new Exception("Producto no encontrado con ID: " + savedDetail.getVariant().getProductId()));
 
-                    double price = product.getPrice();
-
-                    totalPrice += quantity * price;
+                    totalPrice += quantity * product.getPrice();
                 }
             }
 
-            purchaseOrder.setTotalPrice(totalPrice);
+            purchaseOrder.setTotalPrice(Math.round(totalPrice * 100.0) / 100.0); // Redondea a 2 decimales
             purchaseOrder = purchase_ordersRepository.save(purchaseOrder);
 
             return PurchaseOrderMapper.toDto(purchaseOrder);
@@ -141,6 +128,7 @@ public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders,
             throw new Exception("Error al actualizar la orden de compra: " + e.getMessage());
         }
     }
+
 
 
     @Transactional

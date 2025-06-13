@@ -16,13 +16,13 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const token = getDecodedToken();
-  const isAdmin: boolean = token? token && token.role === Role.ADMIN : false;
-  
+  const isAdmin: boolean = token ? token && token.role === Role.ADMIN : false;
+
   const {
     availableColors,
     availableSizes,
@@ -47,16 +47,16 @@ const ProductCard = ({ product }: ProductCardProps) => {
       }));
       // Actualizar la base de datos
       updateProductVariant(selectedVariant.id, {
-        id: selectedVariant.id,
-        productId: selectedVariant.productId,
-        colorId: selectedVariant.color.id,
-        sizeId: selectedVariant.size.id,
+        productName: product.name,
+        colorName: selectedVariant.color.name,
+        sizeNumber: selectedVariant.size.size,
         stock: selectedVariant.stock - quantity,
       });
+
       navigate("/")
     }
   };
-      
+
 
   return (
     <div className={Styles.productShopcartContainer}>
@@ -73,7 +73,26 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <div className={Styles.productShopcartCard__headerText}>
             <p className={Styles.productShopcartCard__brand}>{product.brand}</p>
             <h2 className={Styles.productShopcartCard__name}>{product.name}</h2>
-            <p className={Styles.productShopcartCard__price}>${product.price}</p>
+            {product.discounts && product.discounts.length > 0 ? (
+              <div className={Styles.productShopcartCard__priceWrapper}>
+                <p className={Styles.productShopcartCard__oldPrice}>
+                  ${product.price.toFixed(2)}
+                </p>
+                <p className={Styles.productShopcartCard__discountPrice}>
+                  ${(
+                    product.price *
+                    (1 - Math.max(...product.discounts.map(d => d.percentage)) / 100)
+                  ).toFixed(2)}
+                </p>
+                <p className={Styles.productShopcartCard__discountTag}>
+                  -{Math.max(...product.discounts.map(d => d.percentage))}%
+                </p>
+              </div>
+            ) : (
+              <p className={Styles.productShopcartCard__price}>
+                ${product.price.toFixed(2)}
+              </p>
+            )}
             <p className={Styles.productShopcartCard__description}>{product.description}</p>
           </div>
 
@@ -113,14 +132,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
             )}
           </div>
 
-          <button 
-            className={Styles.productShopcartCard__button} 
-            style={{ 
+          <button
+            className={Styles.productShopcartCard__button}
+            style={{
               display: isAdmin ? 'none' : 'block',
               backgroundColor: !selectedVariant || quantity < 1 || maxStock < 1 ? '#ccc' : '#000'
-             }}
+            }}
             disabled={!selectedVariant || quantity < 1 || maxStock < 1}
-            onClick={() => {handleAddToCart()}}
+            onClick={() => { handleAddToCart() }}
           >
             AÑADIR AL CARRITO
           </button>

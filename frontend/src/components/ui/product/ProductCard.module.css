@@ -72,16 +72,11 @@
 /* Contenedor del contenido de texto e interacciones */
 .productShopcartCard__info {
     flex: 1;
-    /* Otra mitad del espacio */
     padding: 2rem 3rem;
-    /* Espaciado interno */
     display: flex;
     flex-direction: column;
-    /* Stack vertical */
-    gap: 1rem;
-    /* Espaciado entre elementos hijos */
-    justify-content: flex-start;
-    /* Contenido alineado arriba */
+    justify-content: space-between;
+    /* Distribuye arriba y abajo */
 }
 
 /* Agrupación del texto: marca, nombre y precio */
@@ -117,6 +112,36 @@
     /* Más pequeño que el nombre */
     color: #000000;
     margin: 0;
+}
+
+.productShopcartCard__priceWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.productShopcartCard__oldPrice {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.productShopcartCard__discountPrice {
+    color: red;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.productShopcartCard__discountTag {
+    color: red;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.1;
 }
 
 /* Descripción del producto */

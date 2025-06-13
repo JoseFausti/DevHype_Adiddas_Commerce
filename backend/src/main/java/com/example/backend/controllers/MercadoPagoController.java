@@ -59,7 +59,7 @@ public class MercadoPagoController {
                     .body(Map.of("error", "Orden no encontrada con ID: " + id));
         }
 
-        return ResponseEntity.ok(Map.of(
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                 "estado", order.getStatus() != null ? order.getStatus().name() : "Sin estado",
                 "metodoPago", order.getPaymentMethod() != null ? order.getPaymentMethod().name() : "Sin método"
         ));
@@ -72,7 +72,7 @@ public class MercadoPagoController {
     @GetMapping("/orders")
     public ResponseEntity<?> findAllOrders() throws Exception {
         List<Purchase_orders> orders = purchaseOrdersService.findAll();
-        return ResponseEntity.ok(orders);
+        return ResponseEntity.status(HttpStatus.OK).body(orders);
     }
 
     /**
@@ -109,7 +109,7 @@ public class MercadoPagoController {
 
             purchaseOrdersService.processWebhook(type, dataId);
 
-            return ResponseEntity.ok("Webhook procesado correctamente.");
+            return ResponseEntity.status(HttpStatus.OK).body("Webhook procesado correctamente.");
         } catch (Exception e) {
             // Aquí puedes usar un logger para guardar el error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
