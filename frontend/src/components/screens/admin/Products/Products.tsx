@@ -204,7 +204,6 @@ export const AdminProducts: React.FC = () => {
                 if (isEditing && productActive) {
                   const response = await updateProduct(productActive.id, dto);
                   if (response.status === 200) {
-                    console.log("Producto actualizado:", response.data);
                     dispatch(editProduct(response.data!));
                   }
                 } else {
