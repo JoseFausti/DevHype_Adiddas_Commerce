@@ -37,29 +37,20 @@
 /* Zona izquierda que contiene la imagen */
 .productShopcartCard__imageWrapper {
     flex: 1;
-    /* Ocupa mitad del espacio */
     display: flex;
-    /* Centrado de la imagen */
     justify-content: center;
     align-items: center;
-    padding: 2rem;
-    /* Espaciado interno */
+    
     background-color: #eee;
-    /* Fondo gris claro */
     overflow: hidden;
-    transform-origin: center;
+    /* Puedes considerar establecer una altura específica aquí si es necesario */
 }
 
-/* Imagen del producto */
 .productShopcartCard__image {
     width: 100%;
-    /* Que no se desborde */
-    max-width: 450px;
-    /* Límite máximo de ancho */
-    object-fit: contain;
-    /* Mantiene proporción y visibilidad completa */
+    height: 100%; /* Agregamos la altura completa */
+    object-fit: cover; /* Cambiamos a cover para que se llene el contenedor */
     border-radius: 0.5rem;
-    /* Bordes redondeados */
     transition: transform 0.3s ease;
 }
 
@@ -72,16 +63,11 @@
 /* Contenedor del contenido de texto e interacciones */
 .productShopcartCard__info {
     flex: 1;
-    /* Otra mitad del espacio */
     padding: 2rem 3rem;
-    /* Espaciado interno */
     display: flex;
     flex-direction: column;
-    /* Stack vertical */
-    gap: 1rem;
-    /* Espaciado entre elementos hijos */
-    justify-content: flex-start;
-    /* Contenido alineado arriba */
+    justify-content: space-between;
+    /* Distribuye arriba y abajo */
 }
 
 /* Agrupación del texto: marca, nombre y precio */
@@ -117,6 +103,36 @@
     /* Más pequeño que el nombre */
     color: #000000;
     margin: 0;
+}
+
+.productShopcartCard__priceWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.productShopcartCard__oldPrice {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.productShopcartCard__discountPrice {
+    color: red;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.productShopcartCard__discountTag {
+    color: red;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.1;
 }
 
 /* Descripción del producto */
