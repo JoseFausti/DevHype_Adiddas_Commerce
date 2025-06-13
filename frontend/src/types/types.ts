@@ -4,6 +4,7 @@ import { PaymentMethod, Role, Status } from "../utils/enums";
 // Interfaces
 interface Base {
   id: number;
+  deleted?: boolean;
 }
 
 // Product Variants

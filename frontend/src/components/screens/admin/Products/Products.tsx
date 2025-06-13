@@ -7,14 +7,14 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import { setProductActive } from "../../../../store/slices/productSlice";
-import { IProduct } from "../../../../types/types";
-import { useState } from "react";
+import { addProduct, editProduct, setProductActive, setProducts } from "../../../../store/slices/productSlice";
+import { ICreateUpdateProduct, IProduct } from "../../../../types/types";
+import { useEffect, useState } from "react";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { adminProductFormSchema } from "../../../../types/schemas";
 import { ErrorMessage } from "formik";
-import { createProduct, updateProduct, deleteProductById } from "../../../../data/ProductsController";
+import { createProduct, updateProduct, deleteProductById, getAllProducts } from "../../../../data/ProductsController";
 
 // Estilos del modal
 const modalStyle = {
@@ -41,6 +41,21 @@ export const AdminProducts: React.FC = () => {
   const [productToDelete, setProductToDelete] = useState<IProduct | null>(null);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await getAllProducts();
+        if (response.status === 200) {
+          dispatch(setProducts(response.data));
+          console.log("Productos cargados:", response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, [dispatch]);
+
   const handleAddProduct = () => {
     dispatch(setProductActive(null)); // limpiamos producto activo
     setIsEditing(false);
@@ -57,11 +72,6 @@ export const AdminProducts: React.FC = () => {
     setOpenModal(false);
     dispatch(setProductActive(null));
     setLoadingSubmit(false);
-  };
-
-  const handleDeleteClick = (product: IProduct) => {
-    setProductToDelete(product);
-    setOpenDeleteDialog(true);
   };
 
   const handleConfirmDelete = async () => {
@@ -123,7 +133,7 @@ export const AdminProducts: React.FC = () => {
                 <TableCell align="center">${product.price}</TableCell>
                 <TableCell align="center">{product.category?.name}</TableCell>
                 <TableCell align="center">
-                  <IconButton onClick={() => handleEditProduct(product)} aria-label={`Editar ${product.name}`}>
+                  <IconButton onClick={() => {handleEditProduct(product)}} aria-label={`Editar ${product.name}`}>
                     <EditIcon color="primary" />
                   </IconButton>
                   <IconButton
@@ -131,7 +141,11 @@ export const AdminProducts: React.FC = () => {
                       if (product.id) {
                         try {
                           await deleteProductById(product.id);
-                          // Aquí idealmente refrescas la lista de productos después de borrar
+                          // Recargar productos para actualizar la lista
+                          const response = await getAllProducts();
+                          if (response.status === 200) {
+                            dispatch(setProducts(response.data));
+                          }
                         } catch (error) {
                           console.error("Error eliminando producto:", error);
                         }
@@ -170,7 +184,7 @@ export const AdminProducts: React.FC = () => {
             validationSchema={toFormikValidationSchema(adminProductFormSchema)}
             onSubmit={async (values, { setSubmitting }) => {
               setLoadingSubmit(true);
-              const dto = {
+              const dto: ICreateUpdateProduct = {
                 name: values.name,
                 image: values.image,
                 description: values.description,
@@ -188,9 +202,14 @@ export const AdminProducts: React.FC = () => {
 
               try {
                 if (isEditing && productActive) {
-                  await updateProduct(productActive.id, dto);
+                  const response = await updateProduct(productActive.id, dto);
+                  if (response.status === 200) {
+                    console.log("Producto actualizado:", response.data);
+                    dispatch(editProduct(response.data!));
+                  }
                 } else {
-                  await createProduct(dto);
+                  const response = await createProduct(dto);
+                  dispatch(addProduct(response.data!));
                 }
                 handleCloseModal();
               } catch (error) {

@@ -22,7 +22,7 @@ const Shopcart = () => {
   const dispatch = useAppDispatch();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [initPoint, setInitPoint] = useState<string>('');
+  const [, setInitPoint] = useState<string>('');
 
   useEffect(() => {
     const fetchUser = async () => {

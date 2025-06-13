@@ -6,16 +6,16 @@ import Shopcart from "../components/screens/shop/Shopcart"
 import Products from "../components/screens/categories/Products"
 import Logout from "../components/screens/auth/Logout"
 import PurchaseProduct from "../components/screens/shop/PurchaseProduct"
-import Layout from "../components/ui/Layout"
 import AdminLayout from "../components/screens/admin/AdminLayout"
 import Dashboard from "../components/screens/admin/Dashboard/Dashboard"
 import { Users } from "../components/screens/admin/Users/Users"
-import { AdminProducts } from "../components/screens/admin/Products/Products"
 import RequireAdmin from "../components/screens/admin/auth/RequireAdmin"
 import About from "../components/screens/about/About"
 import Success from "../components/ui/mp/Success"
 import Failure from "../components/ui/mp/Failure"
 import Pending from "../components/ui/mp/Pending"
+import Layout from "../components/ui/Layout"
+import { AdminProducts } from "../components/screens/admin/Products/Products"
 
 const Router = () => {
   return (
