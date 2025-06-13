@@ -12,11 +12,11 @@ import { editUser } from "../../../store/slices/userSlice";
 type Props = {
   user: IUser;
   onSuccess: () => void;
+  onClose: () => void; // Nueva prop para gestionar el cierre
 };
 
 export const DirectionForm = ({ user, onSuccess }: Props) => {
-
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const initialValues: DirectionFormData = {
     street: "",
@@ -35,8 +35,8 @@ export const DirectionForm = ({ user, onSuccess }: Props) => {
         console.log(directionIds);
 
         const userResponse = await updateUser(user.id, {
-            ...user,
-            directionIds: [directionIds]
+          ...user,
+          directionIds: [directionIds],
         });
 
         dispatch(editUser(userResponse.data!));
@@ -56,29 +56,43 @@ export const DirectionForm = ({ user, onSuccess }: Props) => {
       onSubmit={handleSubmit}
     >
       <Form className={Styles.form}>
-        <label>Calle</label>
-        <Field name="street" />
-        <ErrorMessage name="street" component="div" />
+        <div className={Styles.formGrid}>
+          <div>
+            <label>Calle</label>
+            <Field name="street" />
+            <ErrorMessage name="street" component="div" />
+          </div>
 
-        <label>Número</label>
-        <Field name="number" type="number" />
-        <ErrorMessage name="number" component="div" />
+          <div>
+            <label>Número</label>
+            <Field name="number" type="number" />
+            <ErrorMessage name="number" component="div" />
+          </div>
 
-        <label>Localidad</label>
-        <Field name="locality" />
-        <ErrorMessage name="locality" component="div" />
+          <div>
+            <label>Localidad</label>
+            <Field name="locality" />
+            <ErrorMessage name="locality" component="div" />
+          </div>
 
-        <label>Ciudad</label>
-        <Field name="city" />
-        <ErrorMessage name="city" component="div" />
+          <div>
+            <label>Ciudad</label>
+            <Field name="city" />
+            <ErrorMessage name="city" component="div" />
+          </div>
 
-        <label>País</label>
-        <Field name="country" />
-        <ErrorMessage name="country" component="div" />
+          <div>
+            <label>País</label>
+            <Field name="country" />
+            <ErrorMessage name="country" component="div" />
+          </div>
 
-        <label>Código Postal</label>
-        <Field name="postalCode" type="number" />
-        <ErrorMessage name="postalCode" component="div" />
+          <div>
+            <label>Código Postal</label>
+            <Field name="postalCode" type="number" />
+            <ErrorMessage name="postalCode" component="div" />
+          </div>
+        </div>
 
         <button type="submit">Guardar Dirección</button>
       </Form>
