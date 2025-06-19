@@ -1,4 +1,4 @@
-import { deleteCategory, getCategories, postCategory, putCategory } from "../http/categories";
+import { deleteCategory, getCategories, getCategoryByName, postCategory, putCategory } from "../http/categories";
 import { ICategory, IHttpResponse } from "../types/types";
 
 export const getAllCategories = async (): Promise<IHttpResponse<ICategory[]>> => {
@@ -53,6 +53,30 @@ export const findCategoryById = async(id: number): Promise<IHttpResponse<ICatego
         return {
             data: null,
             error: "Se produjo un error en getCategoryById: " + error,
+            status: 500
+        }
+    }
+}
+
+export const findCategoryByName = async(name: string): Promise<IHttpResponse<ICategory | null>> => {
+    try {
+        const category = await getCategoryByName(name.toLowerCase());
+        if('error' in category){
+            return {
+                data: null,
+                error: category.error,
+                status: 500
+            }
+        }
+        return {
+            data: category,
+            error: "",
+            status: 200
+        }
+    } catch (error) {
+        return {
+            data: null,
+            error: "Se produjo un error en getCategoryByName: " + error,
             status: 500
         }
     }

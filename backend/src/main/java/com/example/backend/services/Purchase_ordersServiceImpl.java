@@ -181,9 +181,9 @@ public PreferenceRequest buildPreference(Purchase_orders order) throws Exception
     }
 
     PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
-            .success("https://localhost/success")
-            .failure("https://localhost/failure")
-            .pending("https://localhost/pending")
+            .success("https://localhost:5173/success")
+            .failure("https://localhost:5173/failure")
+            .pending("https://localhost:5173/pending")
             .build();
 
     return PreferenceRequest.builder()

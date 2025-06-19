@@ -19,6 +19,8 @@ public class CreateUpdateProductDTO {
 
     private String categoryName;
 
+    private String typeName;
+
     private List<Double> discountPercentages; // porcentajes opcionales de descuentos
 
     private List<CreateUpdateProductVariantDTO> productVariants; // variantes con solo ids

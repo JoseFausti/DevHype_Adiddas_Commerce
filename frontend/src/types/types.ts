@@ -30,6 +30,7 @@ export interface IProduct extends Base {
   brand: string;
   price: number;
   category: ICategory;
+  type: IType;
   discounts: IDiscount[];
   productVariants: IProductVariant[];
 }
@@ -89,6 +90,7 @@ export interface IUser extends Base {
   name: string;
   surname: string;
   email: string;
+  password?: string;
   role: Role;
   directions: IDirection[];
 }
@@ -105,12 +107,12 @@ export interface ICreateUpdateUser {
 
 export interface ICategory extends Base {
   name: string;
+  types: IType[];
 }
 
 // Types
 export interface IType extends Base {
   name: string;
-  category: ICategory;
 }
 
 export interface ICreateUpdateType {

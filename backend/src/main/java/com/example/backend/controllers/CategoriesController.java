@@ -1,6 +1,6 @@
 package com.example.backend.controllers;
 
-import com.example.backend.dtos.CategoryDTO;
+import com.example.backend.dtos.category.CategoryDTO;
 import com.example.backend.services.CategoriesServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -45,5 +46,10 @@ public class CategoriesController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + e.getMessage() + "\"}");
         }
+    }
+    
+    @GetMapping("/name/{name}")
+    public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(categoriesService.findByName(name));
     }
 }

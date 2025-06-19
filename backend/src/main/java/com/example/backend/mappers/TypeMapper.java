@@ -1,29 +1,28 @@
 package com.example.backend.mappers;
 
-import com.example.backend.dtos.types.TypeDTO;
+import com.example.backend.dtos.TypeDTO;
+import com.example.backend.models.entities.Categories;
 import com.example.backend.models.entities.Types;
 
 public class TypeMapper {
 
-    public static TypeDTO toDto(Types type) {
+   public static TypeDTO toDto(Types type) {
         if (type == null) return null;
 
         return TypeDTO.builder()
-                .id(type.getId())
-                .name(type.getName())
-                .category(CategoryMapper.toDto(type.getCategory()))
-                .build();
+            .id(type.getId())
+            .name(type.getName())
+            .categoryId(type.getCategory().getId())
+            .build();
     }
 
-    public static Types toEntity(TypeDTO dto) {
+    public static Types toEntity(TypeDTO dto, Categories category) {
         if (dto == null) return null;
 
-        Types type = Types.builder()
-                .name(dto.getName())
-                .category(CategoryMapper.toEntity(dto.getCategory()))
-                .build();
-        type.setId(dto.getId());
-
-        return type;
+        return Types.builder()
+            .name(dto.getName())
+            .category(category)
+            .build();
     }
+
 }

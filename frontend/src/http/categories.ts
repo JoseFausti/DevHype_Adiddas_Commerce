@@ -45,3 +45,14 @@ export const deleteCategory = async (id: number): Promise<ICategory | {error: st
         }
     }
 }
+
+export const getCategoryByName = async (name: string): Promise<ICategory | {error: string}> => {
+    try {
+        const {data} = await axiosInstance.get<ICategory>(`${API_CATEGORIES_URL}/name/${name}`);
+        return data;
+    } catch (err) {
+        return {
+            error: "Se produjo un error al obtener la categoria en getCategoryByName: " + err,
+        }
+    }
+}

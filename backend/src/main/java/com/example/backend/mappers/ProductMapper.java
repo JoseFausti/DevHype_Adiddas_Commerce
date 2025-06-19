@@ -20,6 +20,7 @@ public class ProductMapper {
                 .brand(product.getBrand())
                 .price(product.getPrice())
                 .category(CategoryMapper.toDto(product.getCategory()))
+                .type(TypeMapper.toDto(product.getType()))
                 .discounts(product.getDiscounts() != null ? product.getDiscounts().stream().map(DiscountMapper::toDto).collect(Collectors.toList()) : null)
                 .productVariants(product.getProductVariants() != null ? product.getProductVariants().stream().map(ProductVariantMapper::toDto).collect(Collectors.toList()) : null)
                 .build();
@@ -35,6 +36,7 @@ public class ProductMapper {
                 .brand(dto.getBrand())
                 .price(dto.getPrice())
                 .category(CategoryMapper.toEntity(dto.getCategory()))
+                .type(TypeMapper.toEntity(dto.getType()))
                 .discounts(dto.getDiscounts() != null ? dto.getDiscounts().stream().map(DiscountMapper::toEntity).collect(Collectors.toList()) : null)
                 .productVariants(dto.getProductVariants() != null ? dto.getProductVariants().stream().map(ProductVariantMapper::toEntity).collect(Collectors.toList()) : null)
                 .build();

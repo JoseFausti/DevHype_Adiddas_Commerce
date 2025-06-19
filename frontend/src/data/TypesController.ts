@@ -1,4 +1,4 @@
-import { deleteType, getTypes, postType, putType } from "../http/types";
+import { deleteType, getByCategoryId, getTypes, postType, putType } from "../http/types";
 import { ICreateUpdateType, IHttpResponse, IType } from "../types/types";
 
 
@@ -125,6 +125,30 @@ export const deleteTypeById = async (id: number): Promise<IHttpResponse<IType | 
         return {
             data: null,
             error: "Se produjo un error en deleteTypeById: " + error,
+            status: 500
+        };
+    }
+}
+
+export const getAllTypesByCategoryId = async (id: number): Promise<IHttpResponse<IType[]>> => {
+    try {
+        const types = await getByCategoryId(id);
+        if ('error' in types) {
+            return {
+                data: [],
+                error: types.error,
+                status: 404
+            };
+        }
+        return {
+            data: types,
+            error: "",
+            status: 200
+        };
+    } catch (error) {
+        return {
+            data: [],
+            error: "Se produjo un error en getAllTypesByCategoryId: " + error,
             status: 500
         };
     }

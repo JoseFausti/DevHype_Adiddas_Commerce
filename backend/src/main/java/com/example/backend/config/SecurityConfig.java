@@ -47,6 +47,7 @@ public class SecurityConfig {
 
                     // GET permitidos para todos
                     .requestMatchers(HttpMethod.GET, "/products").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
                     
                     .anyRequest().authenticated()
             )

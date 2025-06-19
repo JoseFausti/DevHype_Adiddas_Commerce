@@ -11,7 +11,7 @@ import lombok.*;
 @Entity
 @Table(
     name = "types",
-    uniqueConstraints = @UniqueConstraint(columnNames = "name")
+    uniqueConstraints = @UniqueConstraint(columnNames = {"category_id", "name"})
 )
 @AllArgsConstructor
 @NoArgsConstructor
