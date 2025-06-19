@@ -91,7 +91,7 @@ export const AdminProducts: React.FC = () => {
       <div className={styles.productsTitle}>
         <h1>Productos</h1>
       </div>
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "1rem" }}>
+      <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "1rem" }}>
         <Button
           onClick={handleAddProduct}
           variant="contained"
