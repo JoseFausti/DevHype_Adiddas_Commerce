@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import { setProductActive, setProducts } from "../../../store/slices/productSlice";
 import styles from "./Products.module.css";
 import { getAllProducts } from "../../../data/ProductsController";
+import { findCategoryByName } from "../../../data/CategoriesController";
 
 const Products: React.FC = () => {
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get("category");
+  const sort = searchParams.get("sort");
+  const type = searchParams.get("type");
   const name = searchParams.get("name");
 
   const navigate = useNavigate();
@@ -19,6 +22,7 @@ const Products: React.FC = () => {
   const [visibleCount, setVisibleCount] = useState(12);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [types, setTypes] = useState<string[]>([]);
 
   useEffect(() => {
     const initialize = async () => {
@@ -39,8 +43,22 @@ const Products: React.FC = () => {
       }
     }
     initialize();
-  }, []);
 
+    const fetchTypes = async () => {
+      try {
+        const res = await findCategoryByName(category!);
+        if (res.status === 200) {
+          const types = new Set(res.data!.types.map((type) => type.name));
+          setTypes(Array.from(types));
+        }
+      } catch (error) {
+        console.error('Error fetching types:', error);
+      }
+    };
+    fetchTypes();
+  }, [category]);
+
+  // Filtrado
   const filtered = category
   ? category === "discounts"
     ? products.filter((p) => p.discounts && p.discounts.length > 0)
@@ -55,7 +73,25 @@ const Products: React.FC = () => {
       )
     : products;
 
-  const visibleProducts = filtered.slice(0, (visibleCount < filtered.length) ? visibleCount : filtered.length);
+  // Ordenamiento
+    // Ordenar por precio
+  if (sort === "price_asc") {
+    filtered.sort((a, b) => a.price - b.price);
+  } else if (sort === "price_desc") {
+    filtered.sort((a, b) => b.price - a.price);
+    // Ordenar por nombre
+  } else if (sort === "name_asc") {
+    filtered.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sort === "name_desc") {
+    filtered.sort((a, b) => b.name.localeCompare(a.name));
+  } 
+
+  // Ordenar por Tipo de producto
+  const finalFiltered = type
+    ? filtered.filter((p) => p.type.name === type)
+    : filtered;
+
+  const visibleProducts = finalFiltered.slice(0, (visibleCount < filtered.length) ? visibleCount : finalFiltered.length);
 
   const handleLoadMore = () => {
     setLoading(true);
@@ -72,7 +108,64 @@ const Products: React.FC = () => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h1 className={styles.title}>{category}</h1>
+        
+        <div 
+          className={styles.sortContainer}
+          style={{display: filtered.length === 0 ? "none" : "flex"}}  
+        >
+          <div className={styles.sortGroup}>
+            <label className={styles.label}>Ordenar por:</label>
+            
+            <div className={styles.dropdownGroup}>
+              <select
+                className={styles.selectSort}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const updatedParams = new URLSearchParams(searchParams);
 
+                  if (value) {
+                    updatedParams.set("sort", value);
+                  } else {
+                    updatedParams.delete("sort");
+                  }
+
+                  setSearchParams(updatedParams);
+                }}
+                value={sort || ""}
+              >
+                <option value="">Sin ordenamiento</option>
+                <option value="price_asc">Precio: Menor a mayor</option>
+                <option value="price_desc">Precio: Mayor a menor</option>
+                <option value="name_asc">Nombre: A-Z</option>
+                <option value="name_desc">Nombre: Z-A</option>
+              </select>
+
+              <select
+                className={styles.selectSort}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const updatedParams = new URLSearchParams(searchParams);
+
+                  if (value) {
+                    updatedParams.set("type", value);
+                  } else {
+                    updatedParams.delete("type");
+                  }
+
+                  setSearchParams(updatedParams);
+                }}
+                value={types.includes(type ?? "") ? type ?? "" : ""}
+              >
+                <option value="">Filtrar por tipo</option>
+                {types.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
         <div className={styles.grid}>
           {visibleProducts.map((product) => (
             <div

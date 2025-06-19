@@ -43,6 +43,10 @@ public class Products extends Base {
     @JoinColumn(name = "category_id")
     private Categories category;
 
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private Types type;
+
     @ManyToMany
     @JoinTable(
             name = "product_discounts",

@@ -1,4 +1,3 @@
-// CategoryDTO.java
 package com.example.backend.dtos;
 
 import lombok.*;
@@ -7,7 +6,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CategoryDTO {
+public class TypeDTO {
     private Long id;
     private String name;
+    private Long categoryId;
 }

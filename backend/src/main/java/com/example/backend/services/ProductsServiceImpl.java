@@ -16,12 +16,14 @@ import com.example.backend.models.entities.Discounts;
 import com.example.backend.models.entities.ProductVariants;
 import com.example.backend.models.entities.Products;
 import com.example.backend.models.entities.Sizes;
+import com.example.backend.models.entities.Types;
 import com.example.backend.repositories.BaseRepository;
 import com.example.backend.repositories.CategoriesRepository;
 import com.example.backend.repositories.ColorsRepository;
 import com.example.backend.repositories.DiscountsRepository;
 import com.example.backend.repositories.ProductsRepository;
 import com.example.backend.repositories.SizesRepository;
+import com.example.backend.repositories.TypesRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -33,6 +35,9 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
 
     @Autowired
     private CategoriesRepository categoryRepository;
+
+    @Autowired
+    private TypesRepository typeRepository;
 
     @Autowired
     private DiscountsRepository discountRepository;
@@ -79,6 +84,10 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
         Categories category = categoryRepository.findByName(dto.getCategoryName())
                 .orElseThrow(() -> new Exception("Category not found"));
         product.setCategory(category);
+
+        Types type = typeRepository.findByName(dto.getTypeName())
+            .orElseThrow(() -> new Exception("Type not found: " + dto.getTypeName()));
+        product.setType(type);
 
         if (dto.getDiscountPercentages() != null && !dto.getDiscountPercentages().isEmpty()) {
             List<Discounts> discounts = new ArrayList<>();
@@ -138,8 +147,13 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
 
         // Categoría
         Categories category = categoryRepository.findByName(dto.getCategoryName())
-                .orElseThrow(() -> new Exception("Category not found"));
+            .orElseThrow(() -> new Exception("Category not found"));
         product.setCategory(category);
+
+        // Tipo
+        Types type = typeRepository.findByName(dto.getTypeName())
+            .orElseThrow(() -> new Exception("Type not found: " + dto.getTypeName()));
+        product.setType(type);
 
         // Descuentos
         List<Discounts> discounts = new ArrayList<>();

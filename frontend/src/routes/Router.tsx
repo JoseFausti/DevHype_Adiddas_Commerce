@@ -16,6 +16,7 @@ import Failure from "../components/ui/mp/Failure"
 import Pending from "../components/ui/mp/Pending"
 import Layout from "../components/ui/Layout"
 import { AdminProducts } from "../components/screens/admin/Products/Products"
+import Profile from "../components/screens/auth/Profile"
 
 const Router = () => {
   return (
@@ -46,6 +47,7 @@ const Router = () => {
             {/* Rutas sin Layout */}
             <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register/>} />
+            <Route path="/profile" element={<Profile/>} /> 
             <Route path="/logout" element={<Logout/>} />
 
             <Route path="/success" element={<Success/>} />

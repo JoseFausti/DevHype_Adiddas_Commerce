@@ -46,3 +46,14 @@ export const deleteType = async (id: number): Promise<IType | {error: string}> =
         }
     }
 }
+
+export const getByCategoryId = async (id: number): Promise<IType[] | {error: string}> => {
+    try {
+        const {data} = await axiosInstance.get<IType[]>(`${API_TYPES_URL}/category/${id}`);
+        return data;
+    } catch (error) {
+        return {
+            error: "Se produjo un error al obtener los tipos por categoria en getByCategoryId: " + error,
+        }
+    }
+}

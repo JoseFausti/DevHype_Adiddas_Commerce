@@ -7,7 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.backend.dtos.CategoryDTO;
+import com.example.backend.dtos.category.CategoryDTO;
 import com.example.backend.mappers.CategoryMapper;
 import com.example.backend.models.entities.Categories;
 import com.example.backend.repositories.BaseRepository;
@@ -71,4 +71,14 @@ public class CategoriesServiceImpl extends BaseServiceImpl<Categories, Long> imp
         return categories.stream().map(CategoryMapper::toDto).toList();
     }
 
+    @Transactional
+    public CategoryDTO findByName(String name) throws Exception {
+        try {
+            Categories category = categoriesRepository.findByName(name)
+                .orElseThrow(() -> new Exception("Categoría no encontrada con nombre: " + name));
+            return CategoryMapper.toDto(category);
+        } catch (Exception e) {
+            throw new Exception("Error al buscar categoría: " + e.getMessage());
+        }
+    }
 }

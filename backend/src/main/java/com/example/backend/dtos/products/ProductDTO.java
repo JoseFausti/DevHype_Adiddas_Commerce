@@ -4,8 +4,9 @@ package com.example.backend.dtos.products;
 import lombok.*;
 import java.util.List;
 
-import com.example.backend.dtos.CategoryDTO;
 import com.example.backend.dtos.DiscountDTO;
+import com.example.backend.dtos.TypeDTO;
+import com.example.backend.dtos.category.CategoryDTO;
 import com.example.backend.dtos.productVariants.ProductVariantDTO;
 
 @Data
@@ -20,6 +21,7 @@ public class ProductDTO {
     private String brand;
     private double price;
     private CategoryDTO category;
+    private TypeDTO type;
     private List<DiscountDTO> discounts;
     private List<ProductVariantDTO> productVariants;
 }

@@ -69,3 +69,18 @@ export const directionSchema = z.object({
 });
 
 export type DirectionFormData = z.infer<typeof directionSchema>;
+
+export const userSchema = z.object({
+  name: z.string().min(1, { message: "El nombre es requerido" }),
+  surname: z.string().min(1, { message: "El apellido es requerido" }),
+  email: z.string()
+    .min(1, { message: "El email es requerido" })
+    .email({ message: "El email no es válido" }),
+  password: z.string()
+    // Contraseña con al menos 8 caracteres, una mayúscula, un número y un símbolo
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/,
+      { message: "La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un símbolo" }
+    ),
+  directions: z.array(directionSchema),
+});
