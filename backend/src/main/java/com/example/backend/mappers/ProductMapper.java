@@ -30,16 +30,21 @@ public class ProductMapper {
         if (dto == null) return null;
 
         Products product = Products.builder()
-                .name(dto.getName())
-                .image(dto.getImage())
-                .description(dto.getDescription())
-                .brand(dto.getBrand())
-                .price(dto.getPrice())
-                .category(CategoryMapper.toEntity(dto.getCategory()))
-                .type(TypeMapper.toEntity(dto.getType()))
-                .discounts(dto.getDiscounts() != null ? dto.getDiscounts().stream().map(DiscountMapper::toEntity).collect(Collectors.toList()) : null)
-                .productVariants(dto.getProductVariants() != null ? dto.getProductVariants().stream().map(ProductVariantMapper::toEntity).collect(Collectors.toList()) : null)
-                .build();
+            .name(dto.getName())
+            .image(dto.getImage())
+            .description(dto.getDescription())
+            .brand(dto.getBrand())
+            .price(dto.getPrice())
+            .category(CategoryMapper.toEntity(dto.getCategory()))
+            .type(TypeMapper.toEntity(dto.getType(), dto.getCategory()))
+            .discounts(dto.getDiscounts() != null
+                ? dto.getDiscounts().stream().map(DiscountMapper::toEntity).collect(Collectors.toList())
+                : null)
+            .productVariants(dto.getProductVariants() != null
+                ? dto.getProductVariants().stream().map(ProductVariantMapper::toEntity).collect(Collectors.toList())
+                : null)
+            .build();
+
         product.setId(dto.getId());
 
         return product;
