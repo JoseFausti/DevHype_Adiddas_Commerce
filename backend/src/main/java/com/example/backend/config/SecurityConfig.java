@@ -40,6 +40,9 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/purchase_orders").authenticated()
                     .requestMatchers(HttpMethod.POST, "/pay/mp").authenticated()
 
+                    // DELETE permitidos para autenticados
+                    .requestMatchers(HttpMethod.DELETE, "/users/{id}").authenticated()
+
                     // POST, PUT, DELETE para todos los endpoints solo ADMIN
                     .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")

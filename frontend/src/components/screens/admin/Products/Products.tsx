@@ -47,7 +47,6 @@ export const AdminProducts: React.FC = () => {
         const response = await getAllProducts();
         if (response.status === 200) {
           dispatch(setProducts(response.data));
-          console.log("Productos cargados:", response.data);
         }
       } catch (error) {
         console.error("Error fetching products:", error);

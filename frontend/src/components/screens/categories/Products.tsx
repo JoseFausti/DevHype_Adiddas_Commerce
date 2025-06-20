@@ -49,7 +49,6 @@ const Products: React.FC = () => {
         const res = await findCategoryByName(category!);
         if (res.status === 200) {
           const types = new Set(res.data!.types.map((type) => type.name));
-          console.log(types);
           setTypes(Array.from(types));
         }
       } catch (error) {
