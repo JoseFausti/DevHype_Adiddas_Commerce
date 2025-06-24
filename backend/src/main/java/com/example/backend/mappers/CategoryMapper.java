@@ -31,11 +31,13 @@ public class CategoryMapper {
 
         if (dto.getTypes() != null) {
             List<Types> types = dto.getTypes().stream()
-                .map(TypeMapper::toEntity)
+                .map(typeDto -> TypeMapper.toEntity(typeDto, category))
                 .collect(Collectors.toList());
+
             for (Types type : types) {
-                type.setCategory(category); // muy importante para mantener la relación bidireccional
+                type.setCategory(category);
             }
+
             category.setTypes(types);
         }
 

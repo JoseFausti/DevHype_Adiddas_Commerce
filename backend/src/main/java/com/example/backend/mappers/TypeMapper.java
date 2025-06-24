@@ -17,13 +17,12 @@ public class TypeMapper {
             .build();
     }
 
-    public static Types toEntity(TypeDTO dto, CategoryDTO categoryDTO) {
-        if (dto == null || categoryDTO == null) return null;
+    public static Types toEntity(TypeDTO dto, Categories category) {
+        if (dto == null || category == null) return null;
 
         return Types.builder()
             .name(dto.getName())
-            .category(CategoryMapper.toEntity(categoryDTO))
+            .category(category)
             .build();
     }
-
 }

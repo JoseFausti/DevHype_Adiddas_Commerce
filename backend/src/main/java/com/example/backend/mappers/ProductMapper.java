@@ -29,14 +29,16 @@ public class ProductMapper {
     public static Products toEntity(ProductDTO dto) {
         if (dto == null) return null;
 
+        Categories category = CategoryMapper.toEntity(dto.getCategory());
+
         Products product = Products.builder()
             .name(dto.getName())
             .image(dto.getImage())
             .description(dto.getDescription())
             .brand(dto.getBrand())
             .price(dto.getPrice())
-            .category(CategoryMapper.toEntity(dto.getCategory()))
-            .type(TypeMapper.toEntity(dto.getType(), dto.getCategory()))
+            .category(category)
+            .type(TypeMapper.toEntity(dto.getType(), category))
             .discounts(dto.getDiscounts() != null
                 ? dto.getDiscounts().stream().map(DiscountMapper::toEntity).collect(Collectors.toList())
                 : null)
@@ -46,7 +48,6 @@ public class ProductMapper {
             .build();
 
         product.setId(dto.getId());
-
         return product;
     }
 }

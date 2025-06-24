@@ -44,6 +44,16 @@ public class ProductsController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
 
+/*************  ✨ Windsurf Command ⭐  *************/
+/**
+ * Deletes a product specified by the given ID.
+ *
+ * @param id the ID of the product to be deleted
+ * @return a ResponseEntity with HTTP status NO_CONTENT if the deletion is successful,
+ *         or BAD_REQUEST with an error message if an exception occurs
+ */
+
+/*******  80548ca4-f0fe-41cf-a354-19fc50e23854  *******/
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         try {
