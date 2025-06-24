@@ -1,0 +1,48 @@
+/* EditUser.module.css */
+.modalBox {
+  color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 24px rgba(0,0,0,0.2);
+  padding: 24px;
+  outline: none;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+/* Opcional: estilos para los inputs y botones */
+
+input,
+.MuiInputBase-input {
+  font-size: 1rem;
+}
+
+button {
+  cursor: pointer;
+}

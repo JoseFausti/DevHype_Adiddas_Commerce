@@ -7,6 +7,7 @@ import { createDirection } from "../../../data/DirectionsController";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { userSchema } from "../../../types/schemas";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Profile = () => {
 
@@ -40,8 +41,9 @@ const Profile = () => {
   const handleDeleteUser = async (id: number) => {
     try {
       const response = await deleteUserById(id);
-      if (response.status === 200) {
+      if (response) {
         console.log("Usuario eliminado correctamente");
+        Cookies.remove("token");
         navigate("/");
       }
     } catch (error) {

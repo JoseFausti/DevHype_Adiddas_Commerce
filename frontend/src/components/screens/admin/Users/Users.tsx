@@ -15,6 +15,8 @@ import { Eye } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setUserActive, setUsers } from "../../../../store/slices/userSlice";
 import { IUser } from "../../../../types/types";
+import ViewUser from "../../../ui/admin/ViewUser";
+import EditUser from "../../../ui/admin/EditUser";
 
 export const Users: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -53,9 +55,10 @@ export const Users: React.FC = () => {
 
   return (
     <>
-      {openModal ? (
-        openModal.view && <ViewUser user={userActive} />
-        openModal.edit && <EditUser user={userActive} />
+      {openModal.view && userActive ? (
+        <ViewUser user={userActive} setModal={setOpenModal} open={true} />
+      ) : openModal.edit && userActive ? (
+        <EditUser user={userActive} setModal={setOpenModal} open={true} />
       ) : (
         <div className={styles.usersContainer}>
           <div className={styles.usersTitle}>
