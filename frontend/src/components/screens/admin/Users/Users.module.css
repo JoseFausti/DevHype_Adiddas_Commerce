@@ -54,3 +54,23 @@
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
+
+.roleContainer {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editIconContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.editIcon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}

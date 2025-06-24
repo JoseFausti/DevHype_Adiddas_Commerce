@@ -9,18 +9,23 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Icono usuario
 import { getAllUsers } from "../../../../data/UsersController"; // Importa tu controlador
-
-// Interfaz para los usuarios según tu backend
-interface User {
-  id: number;
-  name: string;
-  role: string; // admin | usuario u otros roles que uses
-}
+import { Edit} from "@mui/icons-material";
+import { Role } from "../../../../utils/enums";
+import { Eye } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { setUserActive, setUsers } from "../../../../store/slices/userSlice";
+import { IUser } from "../../../../types/types";
 
 export const Users: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [openModal, setOpenModal] = useState({
+    view: false,
+    edit: false,
+  });
+
+  const { users, userActive } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -29,7 +34,7 @@ export const Users: React.FC = () => {
       try {
         const response = await getAllUsers();
         if (response.status === 200) {
-          setUsers(response.data);
+          dispatch(setUsers(response.data));
         } else {
           setError(response.error || "Error al cargar usuarios");
         }
@@ -47,34 +52,53 @@ export const Users: React.FC = () => {
   if (error) return <div className={styles.usersContainer}>Error: {error}</div>;
 
   return (
-    <div className={styles.usersContainer}>
-      <div className={styles.usersTitle}>
-        <h1>Usuarios Registrados</h1>
-      </div>
+    <>
+      {openModal ? (
+        openModal.view && <ViewUser user={userActive} />
+        openModal.edit && <EditUser user={userActive} />
+      ) : (
+        <div className={styles.usersContainer}>
+          <div className={styles.usersTitle}>
+            <h1>Usuarios Registrados</h1>
+          </div>
 
-      <div className={styles.tableContainer}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Icono</TableCell>
-              <TableCell align="center">Nombre</TableCell>
-              <TableCell align="center">Rol</TableCell>
-              {/* Quité la columna de acción */}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell align="center">
-                  <AccountCircleIcon fontSize="large" />
-                </TableCell>
-                <TableCell align="center">{user.name}</TableCell>
-                <TableCell align="center">{user.role}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+          <div className={styles.tableContainer}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">Icono</TableCell>
+                  <TableCell align="center">Nombre</TableCell>
+                  <TableCell align="center">Rol</TableCell>
+                  <TableCell align="center">Acciones</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {users.map((user_: IUser) => (
+                  <TableRow key={user_.id}>
+                    <TableCell align="center">
+                      <AccountCircleIcon fontSize="large" />
+                    </TableCell>
+                    <TableCell align="center">{user_.name}</TableCell>
+                    <TableCell align="center">
+                        {user_.role}
+                    </TableCell>
+                    <TableCell align="center">
+                      <div 
+                        className={styles.editIconContainer}
+                        onClick={() => dispatch(setUserActive(user_))}
+                      >
+                        <Eye className={styles.editIcon} onClick={() => setOpenModal({ ...openModal, view: true})}/>
+                        {user_.role !== Role.ADMIN && <Edit className={styles.editIcon} onClick={() => setOpenModal({ ...openModal, edit: true})} />}
+                      </div>
+                    </TableCell>
+                  </TableRow> 
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+        )
+      }
+    </>
   );
 };
