@@ -1,4 +1,4 @@
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { IDirection } from "../types/types";
 import { API_DIRECTIONS_URL } from "../utils/consts";
 

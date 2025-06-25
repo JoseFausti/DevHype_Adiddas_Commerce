@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { ICreateUpdateUser, IUser } from "../types/types";
 import { API_AUTH_URL, API_USERS_URL } from "../utils/consts";
 

@@ -42,6 +42,7 @@ export interface ICreateUpdateProduct {
   brand: string;
   price: number;
   categoryName: string;
+  typeName: string;
   discountPercentages: number[];
   productVariants: ICreateUpdateProductVariant[];
 }

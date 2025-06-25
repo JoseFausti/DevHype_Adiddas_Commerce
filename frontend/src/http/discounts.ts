@@ -1,4 +1,4 @@
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { IDiscount } from "../types/types";
 import { API_DISCOUNTS_URL } from "../utils/consts";
 

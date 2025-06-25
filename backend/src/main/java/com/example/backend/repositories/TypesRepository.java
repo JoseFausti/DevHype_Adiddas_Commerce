@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
+import com.example.backend.models.entities.Categories;
 import com.example.backend.models.entities.Types;
 
 
@@ -15,5 +16,5 @@ public interface TypesRepository extends BaseRepository<Types, Long> {
     boolean existsByNameAndCategoryIdAndIdNot(String name, Long categoryId, Long id);
 
     List<Types> findAllByCategoryId(Long categoryId);
-    Optional<Types> findByName(String name);
+    Optional<Types> findByNameAndCategory(String name, Categories category);
 }

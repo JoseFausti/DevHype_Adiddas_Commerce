@@ -8,13 +8,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { addProduct, editProduct, setProductActive, setProducts } from "../../../../store/slices/productSlice";
-import { ICreateUpdateProduct, IProduct } from "../../../../types/types";
+import { ICategory, IColor, ICreateUpdateProduct, IProduct, ISize, IType } from "../../../../types/types";
 import { useEffect, useState } from "react";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { adminProductFormSchema } from "../../../../types/schemas";
 import { ErrorMessage } from "formik";
 import { createProduct, updateProduct, deleteProductById, getAllProducts } from "../../../../data/ProductsController";
+import { UploadImageController } from "../../../../data/ImageController";
+import { getAllCategories } from "../../../../data/CategoriesController";
+import { getAllTypes } from "../../../../data/TypesController";
+import { getAllSizes } from "../../../../data/SizesController";
+import { getAllColors } from "../../../../data/ColorsController";
 
 // Estilos del modal
 const modalStyle = {
@@ -41,6 +46,18 @@ export const AdminProducts: React.FC = () => {
   const [productToDelete, setProductToDelete] = useState<IProduct | null>(null);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
 
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const categoriesNames = Array.from(new Set(categories.map((category) => category.name)));
+
+  const [types, setTypes] = useState<IType[]>([]);
+  const typesNames = Array.from(new Set(types.map((type) => type.name)));
+
+  const [sizes, setSizes] = useState<ISize[]>([]);
+  const sizesNumbers = Array.from(new Set(sizes.map((size) => size.size)));
+
+  const [colors, setColors] = useState<IColor[]>([]);
+  const colorsNames = Array.from(new Set(colors.map((color) => color.name)));
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -53,6 +70,55 @@ export const AdminProducts: React.FC = () => {
       }
     };
     fetchProducts();
+
+    const fetchCategories = async () => {
+      try {
+        const response = await getAllCategories();
+        if (response.status === 200) {
+          setCategories(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+
+    const fetchTypes = async () => {
+      try {
+        const response = await getAllTypes();
+        if (response.status === 200) {
+          setTypes(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching types:", error);
+      }
+    };
+    fetchTypes();
+
+    const fetchSizes = async () => {
+      try {
+        const response = await getAllSizes();
+        if (response.status === 200) {
+          setSizes(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching sizes:", error);
+      }
+    };
+    fetchSizes();
+
+    const fetchColors = async () => {
+      try {
+        const response = await getAllColors();
+        if (response.status === 200) {
+          setColors(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching colors:", error);
+      }
+    };
+    fetchColors();
+   
   }, [dispatch]);
 
   const handleAddProduct = () => {
@@ -166,11 +232,12 @@ export const AdminProducts: React.FC = () => {
             enableReinitialize
             initialValues={{
               name: productActive?.name || "",
-              image: productActive?.image || "",
+              image: productActive?.image || File,
               description: productActive?.description || "",
               brand: productActive?.brand || "",
               price: productActive?.price || 0,
               categoryName: productActive?.category?.name || "",
+              typeName: productActive?.type?.name || "",
               discountPercentages: productActive?.discounts?.map((d) => d.percentage) || [],
               productVariants:
                 productActive?.productVariants?.map((v) => ({
@@ -181,51 +248,88 @@ export const AdminProducts: React.FC = () => {
                 })) || [],
             }}
             validationSchema={toFormikValidationSchema(adminProductFormSchema)}
-            onSubmit={async (values, { setSubmitting }) => {
-              setLoadingSubmit(true);
-              const dto: ICreateUpdateProduct = {
-                name: values.name,
-                image: values.image,
-                description: values.description,
-                brand: values.brand,
-                price: values.price,
-                categoryName: values.categoryName,
-                discountPercentages: values.discountPercentages,
-                productVariants: values.productVariants.map((variant) => ({
-                  productName: values.name,
-                  sizeNumber: variant.sizeNumber,
-                  colorName: variant.colorName,
-                  stock: variant.stock,
-                })),
-              };
 
+            onSubmit={async (values, { setSubmitting }) => {
               try {
+                setLoadingSubmit(true);
+
+                // Subir imagen solo si es un nuevo archivo
+                if (values.image instanceof File) {
+                  const upload = await UploadImageController(values.image);
+                  if (upload.status === 200 && upload.data) {
+                    values.image = upload.data; // reemplazamos por URL
+                  } else {
+                    throw new Error("Error al subir la imagen");
+                  }
+                }
+
+                const dto: ICreateUpdateProduct = {
+                  name: values.name,
+                  image: values.image.toString(),
+                  description: values.description,
+                  brand: values.brand,
+                  price: values.price,
+                  categoryName: values.categoryName,
+                  typeName: values.typeName,
+                  discountPercentages: values.discountPercentages,
+                  productVariants: values.productVariants.map((variant) => ({
+                    productName: values.name,
+                    sizeNumber: variant.sizeNumber,
+                    colorName: variant.colorName,
+                    stock: variant.stock,
+                  })),
+                };
+
+                let response;
                 if (isEditing && productActive) {
-                  const response = await updateProduct(productActive.id, dto);
-                  if (response.status === 200) {
-                    dispatch(editProduct(response.data!));
+                  response = await updateProduct(productActive.id, dto);
+                  if (response.status === 200 && response.data) {
+                    dispatch(editProduct(response.data));
+                  } else {
+                    throw new Error("Error al editar producto");
                   }
                 } else {
-                  const response = await createProduct(dto);
-                  dispatch(addProduct(response.data!));
+                  response = await createProduct(dto);
+                  if (response.status === 201 && response.data) {
+                    dispatch(addProduct(response.data));
+                  } else {
+                    throw new Error("Error al crear producto");
+                  }
                 }
+
                 handleCloseModal();
               } catch (error) {
-                console.error("Error al guardar el producto:", error);
+                console.error("Error al enviar formulario:", error);
               } finally {
-                setLoadingSubmit(false);
                 setSubmitting(false);
+                setLoadingSubmit(false);
               }
-            }}
+            }
+          }
           >
-            {({ values, isSubmitting }) => (
+            {({ values, isSubmitting, setFieldValue }) => (
               <Form>
                 <h2 style={{ marginBottom: "1rem" }}>{isEditing ? "Editar Producto" : "Crear Producto"}</h2>
 
                 <Field name="name" as={TextField} label="Nombre" fullWidth margin="normal" />
                 <ErrorMessage name="name">{(msg) => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
-                <Field name="image" as={TextField} label="Imagen URL" fullWidth margin="normal" />
+                {typeof values.image === "string" && (
+                  <div style={{ margin: "0.5rem 0" }}>
+                    <img src={values.image} alt="Imagen actual" width={100} height={100} />
+                    <p style={{ fontSize: "0.8rem" }}>Imagen actual</p>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.currentTarget.files && e.currentTarget.files[0]) {
+                      setFieldValue("image", e.currentTarget.files[0]);
+                    }
+                  }}
+                  style={{ margin: "1rem 0", display: "block" }}
+                />
                 <ErrorMessage name="image">{(msg) => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
                 <Field name="description" as={TextField} label="Descripción" fullWidth margin="normal" />
@@ -234,17 +338,26 @@ export const AdminProducts: React.FC = () => {
                 <Field name="brand" as={TextField} label="Marca" fullWidth margin="normal" />
                 <ErrorMessage name="brand">{(msg) => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
-                <Field name="price" as={TextField} type="number" label="Precio" fullWidth margin="normal" />
+                <Field name="price" as={TextField} type="decimal" label="Precio" fullWidth margin="normal" />
                 <ErrorMessage name="price">{(msg) => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
                 <Field name="categoryName" as={TextField} select label="Categoría" fullWidth margin="normal">
-                  {["men", "woman", "shoes"].map((cat) => (
+                  {[...categoriesNames].map((cat) => (
                     <MenuItem key={cat} value={cat}>
                       {cat}
                     </MenuItem>
                   ))}
                 </Field>
                 <ErrorMessage name="categoryName">{(msg) => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
+
+                <Field name="typeName" as={TextField} select label="Tipo" fullWidth margin="normal">
+                  {[...typesNames].map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </Field>
+                <ErrorMessage name="typeName">{(msg) => <div style={{ color: "red" }}>{msg}</div>}</ErrorMessage>
 
                 <h4>Descuentos (%)</h4>
                 <FieldArray name="discountPercentages">
@@ -280,14 +393,14 @@ export const AdminProducts: React.FC = () => {
                         >
                           <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
                             <Field name={`productVariants.${idx}.sizeNumber`} as={TextField} select label="Talle" style={{ width: 120 }}>
-                              {[36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46].map((size) => (
+                              {[...sizesNumbers].map((size) => (
                                 <MenuItem key={size} value={size}>
                                   {size}
                                 </MenuItem>
                               ))}
                             </Field>
                             <Field name={`productVariants.${idx}.colorName`} as={TextField} select label="Color" style={{ width: 120 }}>
-                              {["Red", "Blue", "Green", "Black", "White", "Yellow", "Pink", "Orange", "Purple", "Gray"].map(
+                              {[...colorsNames].map(
                                 (color) => (
                                   <MenuItem key={color} value={color}>
                                     {color}

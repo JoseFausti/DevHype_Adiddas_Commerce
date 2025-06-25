@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { ICreateUpdateProduct, IProduct } from "../types/types";
 import { API_PRODUCTS_URL } from "../utils/consts";
 

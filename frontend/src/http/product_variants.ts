@@ -1,4 +1,4 @@
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { ICreateUpdateProductVariant, IProductVariant } from "../types/types";
 import { API_PRODUCT_VARIANTS_URL } from "../utils/consts";
 

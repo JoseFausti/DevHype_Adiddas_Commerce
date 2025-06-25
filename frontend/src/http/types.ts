@@ -1,4 +1,4 @@
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { ICreateUpdateType, IType } from "../types/types";
 import { API_TYPES_URL } from "../utils/consts";
 

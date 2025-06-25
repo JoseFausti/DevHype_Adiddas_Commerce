@@ -1,4 +1,4 @@
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { IColor } from "../types/types"
 import { API_COLORS_URL } from "../utils/consts"
 

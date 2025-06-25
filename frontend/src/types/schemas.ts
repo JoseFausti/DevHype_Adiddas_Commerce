@@ -34,18 +34,37 @@ export const registerSchema = z.object({
 
 export const adminProductFormSchema = z.object({
   name: z.string().min(1, "Nombre requerido"),
-  image: z.string().url("Debe ser una URL válida"),
+
+  image: z
+  .any()
+  .refine(
+    (file) => typeof file === "string" || file instanceof File,
+    { message: "Debe subir una imagen válida" }
+  ),
+
   description: z.string().min(1, "Descripción requerida"),
   brand: z.string().min(1, "Marca requerida"),
-  price: z.number().min(0, "El precio debe ser mayor a 0"),
+
+  price: z.preprocess((val) => {
+    if (typeof val === "string") {
+      if (val.includes(",")) {
+        return undefined; // Rechaza si tiene coma
+      }
+      const parsed = parseFloat(val);
+      return isNaN(parsed) ? undefined : parsed;
+    }
+    return val;
+  }, 
+  z.number().min(0.01, "El precio debe ser mayor a 0")),
+
   categoryName: z.string().min(1, "Nombre de categoría requerido"),
+  typeName: z.string().min(1, "Nombre de tipo requerido"),
   discountPercentages: z.array(
     z.preprocess((val) => {
       if (typeof val === "string") {
         val = val.replace(",", ".");
       }
       const parsed = parseFloat(val as string);
-      // Si no es un número válido, devolvemos undefined (falla la validación)
       return isNaN(parsed) ? undefined : parsed;
     }, z.number()
       .min(0, "El descuento debe ser ≥ 0")
