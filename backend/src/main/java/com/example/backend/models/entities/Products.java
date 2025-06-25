@@ -55,7 +55,7 @@ public class Products extends Base {
     )
     private List<Discounts> discounts;
 
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL}, orphanRemoval=true, fetch = FetchType.LAZY)
     private List<ProductVariants> productVariants;
 }
 

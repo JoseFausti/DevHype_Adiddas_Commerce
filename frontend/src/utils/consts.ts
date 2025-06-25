@@ -14,6 +14,7 @@ export const API_COLORS_URL = base + '/colors';
 export const API_USERS_URL = base + '/users';
 export const API_AUTH_URL = base + '/auth';
 export const API_PRODUCT_VARIANTS_URL = base + '/productVariants';
+export const API_IMAGE_URL = base + '/image/upload';
 //-------------------------------------------------------------------//
 
 

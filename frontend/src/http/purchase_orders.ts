@@ -1,4 +1,4 @@
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { ICreateUpdatePurchaseOrder, IPurchaseOrder } from "../types/types";
 import { API_PURCHASE_ORDERS_URL, API_PURCHASE_ORDER_MP_URL } from "../utils/consts";
 

@@ -81,12 +81,14 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
         product.setBrand(dto.getBrand());
         product.setPrice(dto.getPrice());
 
+        // Categoría
         Categories category = categoryRepository.findByName(dto.getCategoryName())
                 .orElseThrow(() -> new Exception("Category not found"));
         product.setCategory(category);
 
-        Types type = typeRepository.findByName(dto.getTypeName())
-            .orElseThrow(() -> new Exception("Type not found: " + dto.getTypeName()));
+        // Tipo
+        Types type = typeRepository.findByNameAndCategory(dto.getTypeName(), category)
+                .orElseThrow(() -> new Exception("Type not found: " + dto.getTypeName() + " in category " + category.getName()));
         product.setType(type);
 
         if (dto.getDiscountPercentages() != null && !dto.getDiscountPercentages().isEmpty()) {
@@ -139,6 +141,7 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
         Products product = productsRepository.findById(id)
                 .orElseThrow(() -> new Exception("Product not found"));
 
+        // Actualización de campos simples
         product.setName(dto.getName());
         product.setImage(dto.getImage());
         product.setDescription(dto.getDescription());
@@ -147,12 +150,12 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
 
         // Categoría
         Categories category = categoryRepository.findByName(dto.getCategoryName())
-            .orElseThrow(() -> new Exception("Category not found"));
+                .orElseThrow(() -> new Exception("Category not found"));
         product.setCategory(category);
 
         // Tipo
-        Types type = typeRepository.findByName(dto.getTypeName())
-            .orElseThrow(() -> new Exception("Type not found: " + dto.getTypeName()));
+        Types type = typeRepository.findByNameAndCategory(dto.getTypeName(), category)
+                .orElseThrow(() -> new Exception("Type not found: " + dto.getTypeName() + " in category " + category.getName()));
         product.setType(type);
 
         // Descuentos
@@ -166,13 +169,15 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
         }
         product.setDiscounts(discounts);
 
-        // Variantes
-        // Opción 1: borrar las existentes y agregar nuevas
-        product.getProductVariants().clear(); // si está en cascada, se borran de DB
-        List<ProductVariants> variants = new ArrayList<>();
+        // Variantes: modificar lista existente
+        // Limpia la lista actual (se borran en cascada porque orphanRemoval = true)
+        if (product.getProductVariants() != null) {
+            product.getProductVariants().clear();
+        }
+
+        // Cargar nuevas variantes en la misma lista
         if (dto.getProductVariants() != null) {
             for (CreateUpdateProductVariantDTO variantDTO : dto.getProductVariants()) {
-                // (opcional) Validación defensiva del nombre
                 if (!variantDTO.getProductName().equals(dto.getName())) {
                     throw new Exception("Variant productName does not match main product name");
                 }
@@ -186,15 +191,15 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
                 variant.setSize(size);
                 variant.setColor(color);
                 variant.setStock(variantDTO.getStock());
-                variant.setProduct(product); // relación bidireccional
+                variant.setProduct(product); // importante
 
-                variants.add(variant);
+                product.getProductVariants().add(variant); // Modificando directamente la colección
             }
         }
-        product.setProductVariants(variants);
 
         // Guardar
         Products updated = productsRepository.save(product);
         return ProductMapper.toDto(updated);
     }
+
 }

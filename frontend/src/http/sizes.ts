@@ -1,4 +1,4 @@
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { ISize } from "../types/types";
 import { API_SIZES_URL } from "../utils/consts";
 

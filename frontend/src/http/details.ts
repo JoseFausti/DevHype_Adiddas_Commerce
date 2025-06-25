@@ -1,4 +1,4 @@
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { ICreateUpdateDetail, IDetail } from "../types/types"
 import { API_DETAILS_URL } from "../utils/consts"
 

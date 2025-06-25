@@ -1,4 +1,4 @@
-import axiosInstance from "../config/axiosConfig";
+import { axiosInstance } from "../config/axiosConfig";
 import { ICategory } from "../types/types";
 import { API_CATEGORIES_URL } from "../utils/consts";
 
