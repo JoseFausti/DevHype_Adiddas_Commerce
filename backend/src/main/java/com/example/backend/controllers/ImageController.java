@@ -15,7 +15,7 @@ public class ImageController {
     private CloudinaryService cloudinaryService;
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadImage(@RequestBody MultipartFile file) {
         try {
             String url = cloudinaryService.uploadImage(file);
             return ResponseEntity.ok().body("Imagen subida correctamente: " + url);
