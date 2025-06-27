@@ -1,0 +1,66 @@
+/* 1) Banner full-width + altura fija */
+.banner {
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    width: 100vw;
+    height: 90vh;
+    /* ajústalo a tu gusto */
+    overflow: hidden;
+    transform: translateY(-50px);
+    /* SUBE TODO el banner 20px */
+}
+
+/* 2) Imagen absoluta + recorte */
+.banner img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    /* sube la img 10% de su propia altura */
+    min-width: 100vw;
+    height: 100vh;
+    /* debe ser mayor que el contenedor para cubrir espacios */
+    object-fit: cover;
+    object-position: top center;
+}
+
+/* 3) Main blog wrapper stays centered & capped at 900px */
+.blog__container {
+    position: relative;
+    z-index: 1;
+    /* above the banner */
+    width: 100%;
+    max-width: 1000px;
+    margin: 2rem auto 0;
+    /* pull it up over the banner if you like */
+    padding: 2rem;
+    background-color: #fdfdfd;
+    color: #222;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.163);
+    border-radius: 0.4rem;
+    border: 1px solid #d0d0d0;
+}
+
+/* 4) Your existing styles */
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #111;
+}
+
+.content {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    text-align: justify;
+}
+
+.promo {
+    background-color: #efefef;
+    padding: 1rem;
+    margin-top: 2rem;
+    border-left: 4px solid #000;
+    font-weight: bold;
+}

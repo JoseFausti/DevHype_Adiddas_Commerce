@@ -114,7 +114,7 @@ const Products: React.FC = () => {
           style={{display: filtered.length === 0 ? "none" : "flex"}}  
         >
           <div className={styles.sortGroup}>
-            <label className={styles.label}>Ordenar por:</label>
+            <label className={styles.label}>FILTRAR Y ORDENAR</label>
             
             <div className={styles.dropdownGroup}>
               <select

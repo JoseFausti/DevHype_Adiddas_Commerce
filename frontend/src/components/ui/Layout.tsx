@@ -11,7 +11,7 @@ import Footer from './footer/Footer';
 
 const discountMessages = [
     '50% OFF en zapatillas',
-    '2x1 en camisetas',
+    '40% OFF en camisetas',
     '30% OFF en accesorios',
     'Outlet: ¡Hasta 70% OFF'
 ];

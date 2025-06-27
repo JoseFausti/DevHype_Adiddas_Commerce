@@ -17,6 +17,7 @@ import Pending from "../components/ui/mp/Pending"
 import Layout from "../components/ui/Layout"
 import { AdminProducts } from "../components/screens/admin/Products/Products"
 import Profile from "../components/screens/auth/Profile"
+import MostInteresting from "../components/screens/most interesting/MostInteresting"
 
 const Router = () => {
   return (
@@ -27,8 +28,10 @@ const Router = () => {
               <Route path="/" element={<App/>} />
               <Route path="/products" element={<Products/>} />
               <Route path="/products/:id" element={<PurchaseProduct />} />
+              <Route path="/profile" element={<Profile/>} /> 
               <Route path="/shopcart" element={<Shopcart/>} />
               <Route path="/about" element={<About/>} />
+              <Route path="/most-interesting" element={<MostInteresting />} />
 
               {/* Rutas de Admin */}
               <Route 
@@ -47,7 +50,6 @@ const Router = () => {
             {/* Rutas sin Layout */}
             <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register/>} />
-            <Route path="/profile" element={<Profile/>} /> 
             <Route path="/logout" element={<Logout/>} />
 
             <Route path="/success" element={<Success/>} />
