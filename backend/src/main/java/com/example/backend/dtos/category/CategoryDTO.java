@@ -3,7 +3,7 @@ package com.example.backend.dtos.category;
 
 import java.util.List;
 
-import com.example.backend.dtos.TypeDTO;
+import com.example.backend.dtos.types.TypeDTO;
 
 import lombok.*;
 

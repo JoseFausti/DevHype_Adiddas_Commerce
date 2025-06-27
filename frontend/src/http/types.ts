@@ -1,5 +1,5 @@
 import { axiosInstance } from "../config/axiosConfig";
-import { ICreateUpdateType, IType } from "../types/types";
+import { ICreateType, IType } from "../types/types";
 import { API_TYPES_URL } from "../utils/consts";
 
 
@@ -14,7 +14,7 @@ export const getTypes = async (): Promise<IType[] | {error: string}> => {
     }
 }
 
-export const postType = async (type: ICreateUpdateType): Promise<IType | {error: string}> => {
+export const postType = async (type: ICreateType): Promise<IType | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<IType>(`${API_TYPES_URL}`, type);
         return data;
@@ -25,7 +25,7 @@ export const postType = async (type: ICreateUpdateType): Promise<IType | {error:
     }
 }
 
-export const putType = async (id: number, type: ICreateUpdateType): Promise<IType | {error: string}> => {
+export const putType = async (id: number, type: IType): Promise<IType | {error: string}> => {
     try {
         const {data} = await axiosInstance.put<IType>(`${API_TYPES_URL}/${id}`, type);
         return data;
@@ -54,6 +54,17 @@ export const getByCategoryId = async (id: number): Promise<IType[] | {error: str
     } catch (error) {
         return {
             error: "Se produjo un error al obtener los tipos por categoria en getByCategoryId: " + error,
+        }
+    }
+}
+
+export const restoreType = async (id: number): Promise<IType | {error: string}> => {
+    try {
+        const {data} = await axiosInstance.put<IType>(`${API_TYPES_URL}/deleted/${id}`);
+        return data;
+    } catch (err) {
+        return {
+            error: "Se produjo un error al restaurar el producto en restoreType: " + err,
         }
     }
 }

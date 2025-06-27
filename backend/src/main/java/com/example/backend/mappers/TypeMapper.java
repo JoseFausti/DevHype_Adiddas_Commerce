@@ -1,7 +1,7 @@
 package com.example.backend.mappers;
 
-import com.example.backend.dtos.TypeDTO;
 import com.example.backend.dtos.category.CategoryDTO;
+import com.example.backend.dtos.types.TypeDTO;
 import com.example.backend.models.entities.Categories;
 import com.example.backend.models.entities.Types;
 

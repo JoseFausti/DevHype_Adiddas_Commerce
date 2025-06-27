@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import com.example.backend.dtos.products.CreateUpdateProductDTO;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -52,4 +55,24 @@ public class ProductsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + e.getMessage() + "\"}");
         }
     }
+
+    @GetMapping("/deleted")
+    public ResponseEntity<?> getAllDeletedProducts() throws Exception {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(productsService.getAllDeleted());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
+    }
+
+    @PutMapping("/deleted/{id}")
+    public ResponseEntity<?> restoreProduct(@PathVariable Long id) throws Exception {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(productsService.backupProduct(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
+    }
+    
+    
 }

@@ -1,4 +1,4 @@
-import { deleteCategory, getCategories, getCategoryByName, postCategory, putCategory } from "../http/categories";
+import { deleteCategory, getCategories, getCategoriesWithDeletedTypes, getCategoryByName, getTypeDeletedInCategory, postCategory, putCategory } from "../http/categories";
 import { ICategory, IHttpResponse } from "../types/types";
 
 export const getAllCategories = async (): Promise<IHttpResponse<ICategory[]>> => {
@@ -25,6 +25,29 @@ export const getAllCategories = async (): Promise<IHttpResponse<ICategory[]>> =>
     }
 }
 
+export const getAllCategoriesWithDeletedTypes = async (): Promise<IHttpResponse<ICategory[]>> => {
+    try {
+        const categories = await getCategoriesWithDeletedTypes();
+        if ('error' in categories) {
+            return {
+                data: [],
+                error: categories.error,
+                status: 404
+            };
+        }
+        return {
+            data: categories,
+            error: "",
+            status: 200
+        };
+    } catch (error) {
+        return {
+            data: [],
+            error: "Se produjo un error en getAllCategoriesWithDeletedTypes: " + error,
+            status: 500
+        };
+    }
+}
 
 export const findCategoryById = async(id: number): Promise<IHttpResponse<ICategory | null>> => {
     try {
@@ -152,5 +175,29 @@ export const deleteCategoryById = async(id: number): Promise<IHttpResponse<ICate
             error: "Se produjo un error en deleteCategory: " + error,
             status: 500
         }
+    }
+}
+
+export const getAllCategoriesWithTypesDeleted = async(): Promise<IHttpResponse<ICategory[]>> => {
+    try {
+        const categories = await getTypeDeletedInCategory();
+        if ('error' in categories) {
+            return {
+                data: [],
+                error: categories.error,
+                status: 404
+            };
+        }
+        return {
+            data: categories,
+            error: "",
+            status: 200
+        };
+    } catch (error) {
+        return {
+            data: [],
+            error: "Se produjo un error en getAllCategoriesWithTypesDeleted: " + error,
+            status: 500
+        };
     }
 }

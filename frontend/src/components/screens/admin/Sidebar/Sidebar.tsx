@@ -25,6 +25,9 @@ const Sidebar: React.FC = () => {
             <Link to="/admin/products">Productos</Link>
           </li>
           <li>
+            <Link to="/admin/categories">Categorias</Link>
+          </li>
+          <li>
             <Link to="/">Salir</Link>
           </li>
         </ul>

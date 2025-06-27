@@ -13,6 +13,28 @@ export const getCategories = async (): Promise<ICategory[] | {error: string}> =>
     }
 }
 
+export const getTypeDeletedInCategory = async (): Promise<ICategory[] | {error: string}> => {
+    try {
+        const {data} = await axiosInstance.get<ICategory[]>(`${API_CATEGORIES_URL}/deleted`);
+        return data;
+    } catch (err) {
+        return {
+            error: "Se produjo un error al obtener los productos eliminados en getTypeDeletedInCategory: " + err,
+        }
+    }
+}
+
+export const getCategoriesWithDeletedTypes = async (): Promise<ICategory[] | {error: string}> => {
+    try {
+        const {data} = await axiosInstance.get<ICategory[]>(`${API_CATEGORIES_URL}/deletedTypes`);
+        return data;
+    } catch (err) {
+        return {
+            error: "Se produjo un error al obtener las categorias con tipos eliminados en getCategoriesWithDeletedTypes: " + err,
+        }
+    }
+}
+
 export const postCategory = async (category: Omit<ICategory, 'id'>): Promise<ICategory | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<ICategory>(`${API_CATEGORIES_URL}`, category);

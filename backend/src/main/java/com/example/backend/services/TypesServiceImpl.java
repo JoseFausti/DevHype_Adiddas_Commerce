@@ -1,6 +1,7 @@
 package com.example.backend.services;
 
-import com.example.backend.dtos.TypeDTO;
+import com.example.backend.dtos.types.CreateTypeDTO;
+import com.example.backend.dtos.types.TypeDTO;
 import com.example.backend.mappers.TypeMapper;
 import com.example.backend.models.entities.Types;
 import com.example.backend.repositories.BaseRepository;
@@ -34,8 +35,11 @@ public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements Ty
     }
 
   @Transactional
-    public TypeDTO save(TypeDTO dto) throws Exception {
+    public TypeDTO save(CreateTypeDTO dto) throws Exception {
         try {
+
+            Types type = new Types();
+
             if (dto.getCategoryId() == null) {
                 throw new Exception("La categoría es obligatoria");
             }
@@ -47,7 +51,9 @@ public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements Ty
             Categories category = categoriesRepository.findById(dto.getCategoryId())
                     .orElseThrow(() -> new Exception("Categoría no encontrada con ID: " + dto.getCategoryId()));
 
-            Types type = TypeMapper.toEntity(dto, category);
+            type.setName(dto.getName());
+            type.setCategory(category);
+
             type = typesRepository.save(type);
 
             return TypeMapper.toDto(type);
@@ -59,6 +65,7 @@ public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements Ty
     @Transactional
     public TypeDTO update(TypeDTO dto, Long id) throws Exception {
         try {
+
             Types type = typesRepository.findById(id)
                     .orElseThrow(() -> new Exception("Tipo no encontrado con ID: " + id));
 
@@ -87,7 +94,11 @@ public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements Ty
 
     @Transactional
     public List<TypeDTO> getAll() throws Exception {
-        List<Types> types = super.findAll();
+        List<Types> types = super.findAll()
+            .stream()
+            .filter(type -> !type.isDeleted())
+            .toList()    
+        ;
         return types.stream().map(TypeMapper::toDto).toList();
     }
 
@@ -99,4 +110,12 @@ public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements Ty
             throw new Exception("Error al obtener tipos por categoría: " + e.getMessage());
         }
     }
+    
+    @Transactional
+    public TypeDTO backupType(Long id) throws Exception {
+        Types type = super.findById(id);
+        type.setDeleted(false);
+        return TypeMapper.toDto(type);
+    }
+
 }

@@ -17,6 +17,9 @@ import Pending from "../components/ui/mp/Pending"
 import Layout from "../components/ui/Layout"
 import { AdminProducts } from "../components/screens/admin/Products/Products"
 import Profile from "../components/screens/auth/Profile"
+import { AdminProductsDeleted } from "../components/screens/admin/Products/DeletedProducts"
+import Categories from "../components/screens/admin/Categories/Categories"
+import CategoriesDeleted from "../components/screens/admin/Categories/DeletedCategories"
 
 const Router = () => {
   return (
@@ -32,15 +35,18 @@ const Router = () => {
 
               {/* Rutas de Admin */}
               <Route 
-                  path="/admin" 
-                  element={
-                    <RequireAdmin>
-                      <AdminLayout />
-                    </RequireAdmin>
-                  }>
+                path="/admin" 
+                element={
+                  <RequireAdmin>
+                    <AdminLayout />
+                  </RequireAdmin>
+              }>
                 <Route index element={<Dashboard />} />
                 <Route path="users" element={<Users/>} />
                 <Route path="products" element={<AdminProducts />} />
+                <Route path="products/deleted" element={<AdminProductsDeleted />} />
+                <Route path="categories" element={<Categories />} />
+                <Route path="categories/deleted" element={<CategoriesDeleted />} />
               </Route> 
             </Route>
 

@@ -47,3 +47,25 @@ export const deleteProduct = async (id: number): Promise<IProduct | {error: stri
         }
     }
 }
+
+export const getProductDeleted = async (): Promise<IProduct[] | {error: string}> => {
+    try {
+        const {data} = await axiosInstance.get<IProduct[]>(`${API_PRODUCTS_URL}/deleted`);
+        return data;
+    } catch (err) {
+        return {
+            error: "Se produjo un error al obtener los productos eliminados en getProductDeleted: " + err,
+        }
+    }
+}
+
+export const restoreProduct = async (id: number): Promise<IProduct | {error: string}> => {
+    try {
+        const {data} = await axiosInstance.put<IProduct>(`${API_PRODUCTS_URL}/deleted/${id}`);
+        return data;
+    } catch (err) {
+        return {
+            error: "Se produjo un error al restaurar el producto en restoreProduct: " + err,
+        }
+    }
+}

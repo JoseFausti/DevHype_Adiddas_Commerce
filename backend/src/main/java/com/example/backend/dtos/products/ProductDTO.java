@@ -5,9 +5,9 @@ import lombok.*;
 import java.util.List;
 
 import com.example.backend.dtos.DiscountDTO;
-import com.example.backend.dtos.TypeDTO;
 import com.example.backend.dtos.category.CategoryDTO;
 import com.example.backend.dtos.productVariants.ProductVariantDTO;
+import com.example.backend.dtos.types.TypeDTO;
 
 @Data
 @NoArgsConstructor

@@ -111,14 +111,20 @@ export interface ICategory extends Base {
   types: IType[];
 }
 
+export interface ICreateCategory {
+  name: string;
+  types: ICreateType[];
+}
+
 // Types
 export interface IType extends Base {
   name: string;
+  categoryId: number;
 }
 
-export interface ICreateUpdateType {
+export interface ICreateType {
   name: string;
-  categoryName: string;
+  categoryId: number;
 }
 
 export interface ISize extends Base {

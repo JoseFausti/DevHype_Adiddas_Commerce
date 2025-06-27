@@ -1,5 +1,5 @@
-import { deleteType, getByCategoryId, getTypes, postType, putType } from "../http/types";
-import { ICreateUpdateType, IHttpResponse, IType } from "../types/types";
+import { deleteType, getByCategoryId, getTypes, postType, putType, restoreType } from "../http/types";
+import { ICreateType, IHttpResponse, IType } from "../types/types";
 
 
 export const getAllTypes = async (): Promise<IHttpResponse<IType[]>> => {
@@ -58,7 +58,7 @@ export const getTypeById = async (id: number): Promise<IHttpResponse<IType | nul
     }
 }
 
-export const createType = async (newType: ICreateUpdateType): Promise<IHttpResponse<IType | null>> => {
+export const createType = async (newType: ICreateType): Promise<IHttpResponse<IType | null>> => {
     try {
         const type = await postType(newType);
         if ('error' in type) {
@@ -82,7 +82,7 @@ export const createType = async (newType: ICreateUpdateType): Promise<IHttpRespo
     }
 }
 
-export const updateType = async (id: number, updatedType: ICreateUpdateType): Promise<IHttpResponse<IType | null>> => {
+export const updateType = async (id: number, updatedType: IType): Promise<IHttpResponse<IType | null>> => {
     try {
         const type = await putType(id, updatedType);
         if ('error' in type) {
@@ -149,6 +149,30 @@ export const getAllTypesByCategoryId = async (id: number): Promise<IHttpResponse
         return {
             data: [],
             error: "Se produjo un error en getAllTypesByCategoryId: " + error,
+            status: 500
+        };
+    }
+}
+
+export const restoreTypeById = async(id: number): Promise<IHttpResponse<IType | null>> => {
+    try {
+        const type = await restoreType(id);
+        if ('error' in type) {
+            return {
+                data: null,
+                error: type.error,
+                status: 500
+            };
+        }
+        return {
+            data: type,
+            error: "",
+            status: 200
+        };        
+    } catch (error) {
+        return {
+            data: null,
+            error: "Se produjo un error en restoreTypeById: " + error,
             status: 500
         };
     }

@@ -1,0 +1,36 @@
+.categoriesContainer {
+  padding: 20px;
+  background-color: #f1f1f1;
+  min-height: 100vh;
+  color: #000000;
+}
+
+.categoriesTitle {
+  font-size: 8px;
+  /* Ajustamos tamaño más visible */
+  font-family: "Montserrat ExtraBold", sans-serif;
+  margin-bottom: 10px;
+  /* Reducimos margen inferior */
+}
+
+/* Línea debajo del título */
+.categoriesTitle::after {
+  content: "";
+  display: block;
+  height: 1px;
+  /* Grosor de la línea */
+  background-color: #000000;
+  /* Color de la línea (ajústalo si es necesario) */
+  margin: 10px auto 0;
+  /* Centra la línea y le da separación */
+}
+
+.tableContainer {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
