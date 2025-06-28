@@ -1,5 +1,6 @@
 package com.example.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
@@ -14,6 +15,13 @@ import com.example.backend.repositories.BaseRepository;
 import com.example.backend.repositories.CategoriesRepository;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.example.backend.dtos.category.CreateCategoryDTO;
+import com.example.backend.dtos.types.CreateTypeDTO;
+import com.example.backend.dtos.types.TypeDTO;
+import com.example.backend.models.entities.Types;
+import com.example.backend.repositories.TypesRepository;
 
 @Service
 public class CategoriesServiceImpl extends BaseServiceImpl<Categories, Long> implements CategoriesService{
@@ -21,18 +29,41 @@ public class CategoriesServiceImpl extends BaseServiceImpl<Categories, Long> imp
     @Autowired
     private CategoriesRepository categoriesRepository;
 
+    @Autowired
+    private TypesRepository typesRepository;
+
     public CategoriesServiceImpl(BaseRepository<Categories, Long> baseRepository) {
         super(baseRepository);
     }
-
     @Transactional
-    public CategoryDTO save(CategoryDTO categoryDTO) throws Exception {
+    public CategoryDTO save(CreateCategoryDTO categoryDTO) throws Exception {
         try {
             if (categoriesRepository.existsByName(categoryDTO.getName())) {
                 throw new Exception("Ya existe una categoría con el nombre: " + categoryDTO.getName());
             }
-            Categories category = CategoryMapper.toEntity(categoryDTO);
+
+            // 1. Crear la categoría vacía primero (sin tipos)
+            Categories category = new Categories();
+            category.setName(categoryDTO.getName());
+            category.setDeleted(false);
+            category.setTypes(new ArrayList<>());
             category = categoriesRepository.save(category);
+
+            // 2. Crear los tipos y asociarlos a la categoría
+            if (categoryDTO.getTypes() != null && !categoryDTO.getTypes().isEmpty()) {
+                List<Types> types = new ArrayList<>();
+                for (CreateTypeDTO typeDTO : categoryDTO.getTypes()) {
+                    Types type = new Types();
+                    type.setName(typeDTO.getName());
+                    type.setCategory(category);
+                    type.setDeleted(false);
+                    types.add(type);
+                }
+                // Guardar todos los tipos
+                typesRepository.saveAll(types);
+                category.setTypes(types); // para que el CategoryDTO incluya los tipos
+            }
+
             return CategoryMapper.toDto(category);
         } catch (Exception e) {
             throw new Exception("Error al guardar categoría: " + e.getMessage());
@@ -42,22 +73,42 @@ public class CategoriesServiceImpl extends BaseServiceImpl<Categories, Long> imp
     @Transactional
     public CategoryDTO update(CategoryDTO categoryDTO, Long id) throws Exception {
         try {
-            Optional<Categories> categoryOptional = categoriesRepository.findById(id);
-            if (!categoryOptional.isPresent()) {
-                throw new Exception("Categoría no encontrada con ID: " + id);
-            }
+            Categories category = categoriesRepository.findById(id)
+                .orElseThrow(() -> new Exception("Categoría no encontrada con ID: " + id));
 
             if (categoriesRepository.existsByNameAndIdNot(categoryDTO.getName(), id)) {
                 throw new Exception("Ya existe otra categoría con el nombre: " + categoryDTO.getName());
             }
 
-            Categories category = CategoryMapper.toEntity(categoryDTO);
-            category.setId(id); // Aseguramos que se actualice el correcto
-            return CategoryMapper.toDto(categoriesRepository.save(category));
+            // Actualizar nombre de la categoría
+            category.setName(categoryDTO.getName());
+
+            if (categoryDTO.getTypes() != null) {
+                for (TypeDTO typeDTO : categoryDTO.getTypes()) {
+                    String typeName = typeDTO.getName().trim();
+
+                    // Verificamos si el tipo ya existe en esta categoría por nombre
+                    boolean exists = typesRepository.existsByNameAndCategoryId(typeName, category.getId());
+
+                    if (!exists) {
+                        // No existe, entonces lo creamos
+                        Types newType = new Types();
+                        newType.setName(typeName);
+                        newType.setCategory(category);
+                        category.getTypes().add(newType);
+                    }
+                    // Si existe, no hacemos nada (no agregamos duplicados)
+                }
+            }
+
+            // Hibernate detecta cambios y guarda la entidad
+            return CategoryMapper.toDto(category);
+
         } catch (Exception e) {
-            throw new Exception("Error al actualizar categoría: " + e.getMessage());
+            throw new Exception("Error al actualizar categoría: " + e.getMessage(), e);
         }
     }
+
 
     @Transactional
     public CategoryDTO getById(Long id) throws Exception {
@@ -67,9 +118,57 @@ public class CategoriesServiceImpl extends BaseServiceImpl<Categories, Long> imp
 
     @Transactional
     public List<CategoryDTO> getAll() throws Exception {
-        List<Categories> categories = super.findAll();
-        return categories.stream().map(CategoryMapper::toDto).toList();
+        List<Categories> categories = super.findAll(); 
+        return categories
+            .stream()
+            .filter(category -> !category.isDeleted())
+            .map(category -> {
+                // Creamos una copia para no romper la integridad de JPA con orphanRemoval al modificar el elemento original
+                Categories filteredCategory = new Categories();
+                filteredCategory.setId(category.getId());
+                filteredCategory.setName(category.getName());
+                filteredCategory.setDeleted(category.isDeleted());
+                filteredCategory.setTypes(
+                    category.getTypes()
+                            .stream()
+                            .filter(type -> !type.isDeleted())
+                            .collect(Collectors.toList())
+                );
+
+                return CategoryMapper.toDto(filteredCategory);
+            })
+            .toList();
     }
+
+    @Transactional
+    public List<CategoryDTO> getAllWithOnlyDeletedTypes() throws Exception {
+        List<Categories> categories = super.findAll(); 
+
+        return categories
+            .stream()
+            .filter(category -> {
+                // Filtramos solo categorías que tengan al menos un tipo eliminado
+                return category.getTypes() != null &&
+                    category.getTypes().stream().anyMatch(Types::isDeleted);
+            })
+            .map(category -> {
+                // Creamos una nueva categoría con solo los tipos eliminados
+                Categories filteredCategory = new Categories();
+                filteredCategory.setId(category.getId());
+                filteredCategory.setName(category.getName());
+                filteredCategory.setDeleted(category.isDeleted());
+                filteredCategory.setTypes(
+                    category.getTypes()
+                            .stream()
+                            .filter(Types::isDeleted)
+                            .collect(Collectors.toList())
+                );
+
+                return CategoryMapper.toDto(filteredCategory);
+            })
+            .toList();
+    }
+
 
     @Transactional
     public CategoryDTO findByName(String name) throws Exception {
@@ -80,5 +179,31 @@ public class CategoriesServiceImpl extends BaseServiceImpl<Categories, Long> imp
         } catch (Exception e) {
             throw new Exception("Error al buscar categoría: " + e.getMessage());
         }
+    }
+
+    @Transactional
+    public List<CategoryDTO> getAllTypesDeletedInCategory () throws Exception {
+        
+        List<Categories> categories = super.findAll(); 
+        return categories
+            .stream()
+            .filter(category -> !category.isDeleted())
+            .map(category -> {
+                // Creamos una copia para no romper la integridad de JPA con orphanRemoval al modificar el elemento original
+                Categories filteredCategory = new Categories();
+                filteredCategory.setId(category.getId());
+                filteredCategory.setName(category.getName());
+                filteredCategory.setDeleted(category.isDeleted());
+                filteredCategory.setTypes(
+                    category.getTypes()
+                            .stream()
+                            .filter(type -> type.isDeleted())
+                            .collect(Collectors.toList())
+                );
+
+                return CategoryMapper.toDto(filteredCategory);
+            })
+            .toList();
+                    
     }
 }

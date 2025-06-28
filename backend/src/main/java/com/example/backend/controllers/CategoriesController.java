@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import com.example.backend.dtos.category.CreateCategoryDTO;
+
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,8 +32,13 @@ public class CategoriesController {
         return ResponseEntity.status(HttpStatus.OK).body(categoriesService.getAll());
     }
 
+    @GetMapping("/deletedTypes")
+    public ResponseEntity<List<CategoryDTO>> getAllWithDeletedTypes() throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(categoriesService.getAllWithOnlyDeletedTypes());
+    }
+
     @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) throws Exception {
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CreateCategoryDTO categoryDTO) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriesService.save(categoryDTO));
     }
 
@@ -51,5 +59,10 @@ public class CategoriesController {
     @GetMapping("/name/{name}")
     public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(categoriesService.findByName(name));
+    }
+
+    @GetMapping("/deleted")
+    public ResponseEntity<?> getAllTypesDeletedInCategories() throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(categoriesService.getAllTypesDeletedInCategory());
     }
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "../../../hooks/redux";
 import Styles from "./ProductSummary.module.css";
 import { getAllProducts } from "../../../data/ProductsController";
+import { calculateFinalPrice } from "../../../utils/functions";
 
 interface ProductSummaryProps {
   onGoToPay: () => void;
@@ -16,11 +17,22 @@ const ProductSummary = ({ onGoToPay }: ProductSummaryProps) => {
     const fetchProducts = async () => {
       const response = await getAllProducts();
       if (response.status === 200) {
-        const matched = cart.map(item => response.data.find(product => product.id === item.variant.productId)!);
-        const totalPrice = matched.map(product => product.price).reduce((total, price) => total + price, 0);
-        setTotalPrice(totalPrice);
+        const products = response.data;
+
+        const total = cart.reduce((acc, item) => {
+          const product = products.find(p => p.id === item.variant.productId);
+          if (!product) return acc;
+
+          const priceWithDiscount = product.discounts
+            ? calculateFinalPrice(product.price, product.discounts)
+            : product.price;
+
+          return acc + (priceWithDiscount * item.quantity);
+        }, 0);
+
+        setTotalPrice(Number(total.toFixed(2)));
       }
-    }
+    };
     fetchProducts();
   }, [cart])
 

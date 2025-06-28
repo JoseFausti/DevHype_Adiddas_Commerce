@@ -70,6 +70,24 @@ public class ProductsServiceImpl extends BaseServiceImpl<Products, Long> impleme
             .toList();
     }
 
+    @Transactional
+    public List<ProductDTO> getAllDeleted() throws Exception {
+        List<Products> products = super.findAll()
+            .stream()
+            .filter(product -> product.isDeleted()) // Solo los que están eliminados
+            .toList();
+
+        return products.stream()
+            .map(ProductMapper::toDto)
+            .toList();   
+    }
+
+    @Transactional
+    public ProductDTO backupProduct(Long id) throws Exception {
+        Products product = super.findById(id);
+        product.setDeleted(false);
+        return ProductMapper.toDto(product);
+    }
 
     @Transactional
     public ProductDTO save(CreateUpdateProductDTO dto) throws Exception {

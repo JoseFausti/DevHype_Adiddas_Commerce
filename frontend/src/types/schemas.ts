@@ -103,3 +103,29 @@ export const userSchema = z.object({
     ),
   directions: z.array(directionSchema),
 });
+
+export const createTypeSchema = z.object({
+  name: z.string().min(1, "El nombre del tipo es requerido"),
+});
+
+export const createCategorySchema = z.object({
+  name: z
+    .string()
+    .min(2, "El nombre de la categoría es obligatorio"),
+  types: z
+    .array(
+      z.object({
+        name: z
+          .string()
+          .min(2, "El nombre del tipo es obligatorio")
+          .regex(/^[A-ZÁÉÍÓÚÑ][a-záéíóúñ\s]*$/, "El tipo debe comenzar con mayúscula"),
+      })
+    )
+    .nonempty("Debe haber al menos un tipo")
+    .refine((types) => {
+      const names = types.map((t) => t.name.trim());
+      return new Set(names).size === names.length;
+    }, {
+      message: "No puede haber tipos duplicados",
+    }),
+});

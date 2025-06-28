@@ -20,6 +20,7 @@ import { getAllCategories } from "../../../../data/CategoriesController";
 import { getAllTypes } from "../../../../data/TypesController";
 import { getAllSizes } from "../../../../data/SizesController";
 import { getAllColors } from "../../../../data/ColorsController";
+import { useNavigate } from "react-router-dom";
 
 // Estilos del modal
 const modalStyle = {
@@ -45,6 +46,8 @@ export const AdminProducts: React.FC = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [productToDelete, setProductToDelete] = useState<IProduct | null>(null);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+
+  const navigate = useNavigate();
 
   const [categories, setCategories] = useState<ICategory[]>([]);
   const categoriesNames = Array.from(new Set(categories.map((category) => category.name)));
@@ -156,7 +159,21 @@ export const AdminProducts: React.FC = () => {
       <div className={styles.productsTitle}>
         <h1>Productos</h1>
       </div>
-      <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "1rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
+        <Button
+          onClick={() => navigate("/admin/products/deleted")}
+          variant="contained"
+          sx={{
+            backgroundColor: "black",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "white",
+              color: "black",
+            },
+          }}
+        >
+          Productos Eliminados
+        </Button>
         <Button
           onClick={handleAddProduct}
           variant="contained"

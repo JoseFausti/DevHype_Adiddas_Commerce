@@ -2,7 +2,7 @@ package com.example.backend.controllers;
 
 import java.util.List;
 
-import com.example.backend.dtos.TypeDTO;
+import com.example.backend.dtos.types.TypeDTO;
 import com.example.backend.services.TypesServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.backend.dtos.types.CreateTypeDTO;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -39,7 +41,7 @@ public class TypesController {
     }
 
     @PostMapping
-    public ResponseEntity<TypeDTO> createType(@RequestBody TypeDTO typeDTO) throws Exception {
+    public ResponseEntity<TypeDTO> createType(@RequestBody CreateTypeDTO typeDTO) throws Exception {
         TypeDTO createdType = typesService.save(typeDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdType);
     }
@@ -53,7 +55,7 @@ public class TypesController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(typesService.delete(id));
+            return ResponseEntity.status(HttpStatus.OK).body(typesService.delete(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + e.getMessage() + "\"}");
         }
@@ -63,5 +65,14 @@ public class TypesController {
     public ResponseEntity<List<TypeDTO>> getTypesByCategoryId(@PathVariable Long categoryId) throws Exception {
         List<TypeDTO> types = typesService.findByCategoryId(categoryId);
         return ResponseEntity.status(HttpStatus.OK).body(types);
+    }
+
+    @PutMapping("/deleted/{id}")
+    public ResponseEntity<?> restoreType(@PathVariable Long id) throws Exception {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(typesService.backupType(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
     }
 }

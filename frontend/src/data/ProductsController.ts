@@ -1,4 +1,4 @@
-import { deleteProduct, getProducts, postProduct, putProduct } from "../http/products";
+import { deleteProduct, getProductDeleted, getProducts, postProduct, putProduct, restoreProduct } from "../http/products";
 import { IProduct, IHttpResponse, ICreateUpdateProduct } from "../types/types";
 
 export const getAllProducts = async (): Promise<IHttpResponse<IProduct[]>> => {
@@ -124,6 +124,54 @@ export const deleteProductById = async(id: number): Promise<IHttpResponse<IProdu
         return {
             data: null,
             error: "Se produjo un error en deleteProductById: " + error,
+            status: 500
+        };
+    }
+}
+
+export const findAllProductsDeleted = async(): Promise<IHttpResponse<IProduct[]>> => {
+    try {
+        const products = await getProductDeleted();
+        if ('error' in products) {
+            return {
+                data: [],
+                error: products.error,
+                status: 404
+            };
+        }
+        return {
+            data: products,
+            error: "",
+            status: 200
+        };
+    } catch (error) {
+        return {
+            data: [],
+            error: "Se produjo un error en findAllProductsDeleted: " + error,
+            status: 500
+        };
+    }
+}
+
+export const restoreProductById = async(id: number): Promise<IHttpResponse<IProduct | null>> => {
+    try {
+        const product = await restoreProduct(id);
+        if ('error' in product) {
+            return {
+                data: null,
+                error: product.error,
+                status: 500
+            };
+        }
+        return {
+            data: product,
+            error: "",
+            status: 200
+        };        
+    } catch (error) {
+        return {
+            data: null,
+            error: "Se produjo un error en restoreProductById: " + error,
             status: 500
         };
     }
