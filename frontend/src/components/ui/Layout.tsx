@@ -9,19 +9,21 @@ import DiscountMarquee from './DiscountsMarquee/DiscountMarquee';
 import { motion } from "framer-motion";
 import Footer from './footer/Footer';
 
+
 const discountMessages = [
     '50% OFF en zapatillas',
-    '2x1 en camisetas',
+    '40% OFF en camisetas',
     '30% OFF en accesorios',
     'Outlet: ¡Hasta 70% OFF'
 ];
 
 const Layout: React.FC = () => {
+
     const navigate = useNavigate();
     const [displayUserMenu, setDisplayUserMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const token = getDecodedToken();
-    const isAdmin: boolean = token? token && token.role === Role.ADMIN : false;
+    const isAdmin: boolean = token ? token && token.role === Role.ADMIN : false;
 
     // Estado del header
     const [scrollDirection, setScrollDirection] = useState("up");
@@ -30,20 +32,20 @@ const Layout: React.FC = () => {
     useEffect(() => {
         const handleScroll = () => {
             const currentScrollPos = document.documentElement.scrollTop;
-    
+
             // Cambiar inmediatamente el estado sin suavizados
             if (currentScrollPos > prevScrollPosRef.current) {
                 setScrollDirection("down");
             } else {
                 setScrollDirection("up");
             }
-    
+
             prevScrollPosRef.current = currentScrollPos;
         };
-    
+
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, []);    
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -131,7 +133,7 @@ const Layout: React.FC = () => {
                                 </div>
                             )}
                         </div>
-                        <div style={{display: `${isAdmin ? 'none' : 'flex'}`}}>
+                        <div style={{ display: `${isAdmin ? 'none' : 'flex'}` }}>
                             <ShoppingCart
                                 size={24}
                                 color="#000"
@@ -146,7 +148,7 @@ const Layout: React.FC = () => {
             <main>
                 <Outlet /> {/* Aca se renderizan las rutas hijas, funciona como un children para las rutas */}
             </main>
-            {/* Footer */}        
+            {/* Footer */}
             <Footer />
         </div>
     )

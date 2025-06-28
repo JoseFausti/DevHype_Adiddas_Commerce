@@ -1,4 +1,4 @@
-import { deleteUser, getByUsername, getUsers, login, postUser, putUser, register } from "../http/users";
+import { deleteUser, getByUsername, getDeletedUsers, getUsers, login, postUser, putUser, register, restoreUser } from "../http/users";
 import { ICreateUpdateUser, IHttpResponse, IUser } from "../types/types";
 import Cookies from "js-cookie";
 
@@ -22,6 +22,30 @@ export const getAllUsers = async (): Promise<IHttpResponse<IUser[]>> => {
         return {
             data: [],
             error: "Se produjo un error en getAllUsers: " + error,
+            status: 500
+        };
+    }
+}
+
+export const getAllDeletedUsers = async (): Promise<IHttpResponse<IUser[]>> => {
+    try {
+        const users = await getDeletedUsers();
+        if ('error' in users) {
+            return {
+                data: [],
+                error: users.error,
+                status: 404
+            };
+        }
+        return {
+            data: users,
+            error: "",
+            status: 200
+        };
+    } catch (error) {
+        return {
+            data: [],
+            error: "Se produjo un error en getAllDeletedUsers: " + error,
             status: 500
         };
     }
@@ -210,6 +234,30 @@ export const registerUser = async (newUser: Omit<IUser, 'id' | 'deleted' | 'role
         return {
             data: null,
             error: "Se produjo un error en registerUser: " + error,
+            status: 500
+        };
+    }
+}
+
+export const restoreUserById = async (id: number): Promise<IHttpResponse<IUser | null>> => {
+    try {
+        const user = await restoreUser(id);
+        if ('error' in user) {
+            return {
+                data: null,
+                error: user.error,
+                status: 500
+            };
+        }
+        return {
+            data: user,
+            error: "",
+            status: 200
+        };
+    } catch (error) {
+        return {
+            data: null,
+            error: "Se produjo un error en restoreUserById: " + error,
             status: 500
         };
     }

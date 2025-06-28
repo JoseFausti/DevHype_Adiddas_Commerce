@@ -20,18 +20,24 @@ import Profile from "../components/screens/auth/Profile"
 import { AdminProductsDeleted } from "../components/screens/admin/Products/DeletedProducts"
 import Categories from "../components/screens/admin/Categories/Categories"
 import CategoriesDeleted from "../components/screens/admin/Categories/DeletedCategories"
+import DeletedUsers from "../components/screens/admin/Users/DeletedUsers"
+import MostInteresting from "../components/screens/most interesting/MostInteresting"
+import ScrollToTop from "../components/ui/ScrollToTop/ScrollToTop"
 
 const Router = () => {
   return (
     <BrowserRouter> 
+        <ScrollToTop /> 
         <Routes>
             {/* Rutas con Layout */}
             <Route element={<Layout/>}>
               <Route path="/" element={<App/>} />
               <Route path="/products" element={<Products/>} />
               <Route path="/products/:id" element={<PurchaseProduct />} />
+              <Route path="/profile" element={<Profile/>} /> 
               <Route path="/shopcart" element={<Shopcart/>} />
               <Route path="/about" element={<About/>} />
+              <Route path="/most-interesting" element={<MostInteresting />} />
 
               {/* Rutas de Admin */}
               <Route 
@@ -43,6 +49,7 @@ const Router = () => {
               }>
                 <Route index element={<Dashboard />} />
                 <Route path="users" element={<Users/>} />
+                <Route path="users/deleted" element={<DeletedUsers/>} />
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="products/deleted" element={<AdminProductsDeleted />} />
                 <Route path="categories" element={<Categories />} />
@@ -53,7 +60,6 @@ const Router = () => {
             {/* Rutas sin Layout */}
             <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register/>} />
-            <Route path="/profile" element={<Profile/>} /> 
             <Route path="/logout" element={<Logout/>} />
 
             <Route path="/success" element={<Success/>} />

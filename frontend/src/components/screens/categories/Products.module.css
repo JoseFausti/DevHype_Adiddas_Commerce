@@ -13,13 +13,69 @@
 }
 
 .title {
-  text-align: center;
+  text-align: start;
   font-size: 2rem;
   font-weight: bold;
   text-transform: uppercase;
   margin-bottom: 2rem;
   letter-spacing: 1px;
 }
+
+.sortContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  /* Hace que el ancho se adapte al contenido */
+  width: fit-content;
+  /* o: width: auto; */
+  max-width: 800px;
+  /* opcional: límite superior */
+
+  /* Empuja el contenedor hacia la derecha */
+  margin-left: auto;
+
+  padding: 1rem;
+  border: 1px solid black;
+  background-color: transparent;
+  border-radius: 0;
+  flex-wrap: wrap;
+  transform: translateY(-100%);
+}
+
+.sortGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dropdownGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.selectSort {
+  /* Ancho fijo */
+  width: 150px;
+  padding: 0.5rem 1rem;
+  border: 1px solid black;
+  background-color: transparent;
+  color: black;
+  font-size: 0.9rem;
+  border-radius: 0;
+  appearance: none;
+  cursor: pointer;
+}
+
+.selectSort:focus {
+  outline: 1px solid black;
+}
+
+.label {
+  font-weight: 600;
+  color: black;
+}
+
 
 /* 🧱 Grid responsive de productos */
 .grid {

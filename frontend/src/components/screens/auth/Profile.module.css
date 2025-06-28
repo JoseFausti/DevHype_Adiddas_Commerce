@@ -1,0 +1,217 @@
+.container {
+    width: 150vw;
+    height: auto;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #838383;
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 2rem auto;
+    border-radius: 6px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.09);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    align-self: center;
+}
+
+.formSpacing {
+    width: 100%;
+}
+
+.label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    /* <- lo importante */
+    margin: 1rem 0 0.25rem;
+    color: #000;
+}
+
+.input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #000;
+    max-width: 975px;
+    border-radius: 0.4rem;
+    background-color: #fff;
+    color: #000;
+    outline: none;
+}
+
+.input:focus {
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+    font-size: 0.75rem;
+    color: red;
+    margin-top: 0.25rem;
+}
+
+.subtitle {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 2rem;
+}
+
+.addressBox {
+    background-color: #f9f9f9;
+    border: 1px solid #000;
+    border-radius: 0.4rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.addressGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+.deleteDirection{
+    margin-top: 10px;
+    background: none;
+    border: 1px solid red;
+    color: red;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.addressInput {
+    width: 100%;
+    max-width: 450px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #000;
+    border-radius: 0.4rem;
+    background-color: #fff;
+    color: #000;
+    outline: none;
+}
+
+.grayButton {
+    margin-top: 1rem;
+    background-color: #eee;
+    color: #000;
+    border: 1px solid #000;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.grayButton:hover {
+    background-color: #ccc;
+    border: 1px solid #333;
+}
+
+.actionButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.blackButton {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.deleteLink {
+    background: none;
+    border: 1px solid red;
+    color: red;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.blackButton:hover {
+    background-color: #333;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    backdrop-filter: blur(4px);
+}
+
+.modalContent {
+    border: 1.5px solid #000;
+    font-weight: bold;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 20%;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.deleteWarning {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #d7d7d7;
+    border: 2px solid rgb(181, 181, 181);
+    border-radius: 6px;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.confirmButton {
+    min-width: 100px;
+    background-color: #000000;
+    border: 1px solid #000000;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+.confirmButton:hover {
+    background-color: #333;
+    border: 1px solid #202020;
+}
+
+.cancelButton {
+    min-width: 100px;
+    color: #000;
+    border: 1px solid #000;
+    background-color: #ccc;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancelButton:hover {
+    background-color: #3c3c3c;
+    border: 1px solid #333;
+}

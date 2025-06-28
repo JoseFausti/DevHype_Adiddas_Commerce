@@ -30,7 +30,7 @@ const userSlice = createSlice({
             localStorage.setItem("users", JSON.stringify(state.users));
         },
         removeUser: (state, action: PayloadAction<IUser>) => {
-            state.users.filter((user: IUser) => user.id !== action.payload.id);
+            state.users = state.users.filter((user: IUser) => user.id !== action.payload.id);
             localStorage.setItem("users", JSON.stringify(state.users));
         }
     },

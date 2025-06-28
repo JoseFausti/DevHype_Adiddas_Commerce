@@ -11,18 +11,21 @@
 
 .home_image_container {
     width: 100%;
-    height: auto;
+    height: 600px;
+    /* 👈 altura fija */
+    position: relative;
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
-.home_image_container img {
+.home_image_container video {
     width: 100%;
-    max-height: 1000px;
+    height: 100%;
     object-fit: cover;
     object-position: center;
+    display: block;
 }
 
 .home_content_container {
@@ -317,16 +320,11 @@
 
 .interesting__title_container {
     display: flex;
-    align-self: flex-start;
+    align-self: center;
     /* Hace que se ubique al inicio del eje horizontal */
     margin-left: 50px;
     margin-top: 30px;
 }
-
-.interesting__title_container:hover {
-    text-decoration: underline;
-    color: rgb(35, 35, 35);
-} 
 
 .interesting__title {
     color: black;
@@ -336,45 +334,43 @@
 }
 
 .placeholder__container {
-    /* Contenedor de las imágenes en fila */
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    /* Espacia equitativamente las imágenes */
-    align-items: stretch;
-    /* Todas las tarjetas se estiran a igual altura */
     gap: 1.5rem;
+    justify-content: space-between;
     width: 100%;
     padding: 3rem;
     box-sizing: border-box;
 }
 
 .placeholder__div {
-    /* Contenedor de cada imagen con forma vertical */
     flex: 1;
-    /* Cada link ocupa el mismo ancho */
     max-width: 25%;
-    /* Cuatro imágenes por fila */
-    aspect-ratio: 3 / 4;
-    /* Proporción vertical tipo póster o tarjeta */
-    /* Definimos un borde inicial transparente para evitar saltos de layout */
+    /* 4 items de igual ancho */
+    height: 450px;
+    /* Fija la altura en 250px */
     border: 2px solid transparent;
-    /* Añadimos transición para la propiedad border (o todas) durante 0.3s de forma suave */
-    transition: border 0.3s ease;
     overflow: hidden;
-    display: block;
+    position: relative;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.placeholder__div:hover {
+    transform: scale(1.05);
+    /* Zoom */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    /* Sombra más fuerte */
+    border-color: var(--color_oscuro, black);
+    /* Si quieres mantener el borde en hover */
+    cursor: pointer;
 }
 
 .placeholder__image {
-    /* Imagen interna ajustada verticalmente */
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
-
-}
-
-.placeholder__link:hover {
-    cursor: pointer;
-    border-color: black;
 }

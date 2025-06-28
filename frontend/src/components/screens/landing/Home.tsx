@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import { getAllProducts } from '../../../data/ProductsController';
 import { setProducts } from '../../../store/slices/productSlice';
 import ProductLandingCard from '../../ui/landing/ProductLandingCard';
-import { placeholderBlogPosts } from '../../../utils/consts';
 
 const Home: React.FC = () => {
   const { products } = useAppSelector((state) => state.product);
@@ -33,7 +32,7 @@ const Home: React.FC = () => {
     (product) =>
       product.category.name === 'shoes' && product.discounts.length === 0
   );
-  
+
   const {
     activeIndex: shoesActiveIndex,
     next: nextShoes,
@@ -53,11 +52,10 @@ const Home: React.FC = () => {
   return (
     <div className={Styles.home__container}>
       <div className={Styles.home_image_container}>
-        <img
-          src="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1747771633/Banner_Principal_jshu2w.png"
-          alt="Banner Adidas Mall"
-          className={Styles.imagen_responsive}
-        />
+        <video autoPlay muted loop playsInline poster='https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1750896205/691328_wenlpb.webp'>
+          <source src="https://res.cloudinary.com/dxiqjdiz6/video/upload/f_auto,q_auto/v1750880437/videoplayback_ftymtq.mp4" />
+          Tu navegador no soporta el video.
+        </video>
       </div>
       <div className={Styles.home_content_container}>
         <div className={Styles.home__products_and_benefits}>
@@ -158,18 +156,50 @@ const Home: React.FC = () => {
         <div className={Styles.interesting__title_container}>
           <h2 className={Styles.interesting__title}>MOST INTERESTING</h2>
         </div>
+
         <div className={Styles.placeholder__container}>
-          {placeholderBlogPosts.map((post, index) => (
-            <div className={Styles.placeholder__div} key={index}>
+          <div className={Styles.placeholder__div}>
+            <Link to={{ pathname: '/most-interesting', search: `?q=blog1` }}>
               <img
-                src={post.img}
-                alt={post.alt}
                 className={Styles.placeholder__image}
+                src="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1749581578/Most1_iszjth.webp"
+                alt="Blog1"
               />
-            </div>
-          ))}
+            </Link>
+          </div>
+
+          <div className={Styles.placeholder__div}>
+            <Link to={{ pathname: '/most-interesting', search: `?q=blog2` }}>
+              <img
+                className={Styles.placeholder__image}
+                src="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1749581577/Most_2_tcaebi.webp"
+                alt="Blog2"
+              />
+            </Link>
+          </div>
+
+          <div className={Styles.placeholder__div}>
+            <Link to={{ pathname: '/most-interesting', search: `?q=blog3` }}>
+              <img
+                className={Styles.placeholder__image}
+                src="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1749581577/Most_3_y5mezt.webp"
+                alt="Blog3"
+              />
+            </Link>
+          </div>
+
+          <div className={Styles.placeholder__div}>
+            <Link to={{ pathname: '/most-interesting', search: `?q=blog4` }}>
+              <img
+                className={Styles.placeholder__image}
+                src="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1749581578/Most_4_p0xedr.webp"
+                alt="Blog4"
+              />
+            </Link>
+          </div>
         </div>
       </div>
+
 
     </div>
   );

@@ -106,7 +106,7 @@ const Shopcart = () => {
             <div className={Styles.cartContainer}>
               {/* Main Carrito con productos */}
               <div className={Styles.cartContainer__main}>
-                <h2>Tu carrito</h2> {/* Vista del carrito con productos */}
+                <h2 className={Styles.cartContainer__main__title}>Tu carrito</h2> {/* Vista del carrito con productos */}
                 {cart.map((product) => {
                   return (
                     <CartItem key={product.variant.id} item={product} />

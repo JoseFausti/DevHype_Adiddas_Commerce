@@ -37,29 +37,22 @@
 /* Zona izquierda que contiene la imagen */
 .productShopcartCard__imageWrapper {
     flex: 1;
-    /* Ocupa mitad del espacio */
     display: flex;
-    /* Centrado de la imagen */
     justify-content: center;
     align-items: center;
-    padding: 2rem;
-    /* Espaciado interno */
+
     background-color: #eee;
-    /* Fondo gris claro */
     overflow: hidden;
-    transform-origin: center;
+    /* Puedes considerar establecer una altura específica aquí si es necesario */
 }
 
-/* Imagen del producto */
 .productShopcartCard__image {
     width: 100%;
-    /* Que no se desborde */
-    max-width: 450px;
-    /* Límite máximo de ancho */
-    object-fit: contain;
-    /* Mantiene proporción y visibilidad completa */
+    height: 100%;
+    /* Agregamos la altura completa */
+    object-fit: cover;
+    /* Cambiamos a cover para que se llene el contenedor */
     border-radius: 0.5rem;
-    /* Bordes redondeados */
     transition: transform 0.3s ease;
 }
 
@@ -247,4 +240,42 @@
 .productShopcartCard__button:hover {
     background-color: #222;
     /* Un gris oscuro como efecto hover */
+}
+
+.addedMessage {
+    position: fixed;
+    top: 80px;
+    left: 40%;
+    transform: translateX(-50%);
+    background-color: #000;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    z-index: 9999;
+    animation: fadeInOut 2s ease-in-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
 }
