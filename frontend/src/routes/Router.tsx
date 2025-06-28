@@ -21,10 +21,13 @@ import { AdminProductsDeleted } from "../components/screens/admin/Products/Delet
 import Categories from "../components/screens/admin/Categories/Categories"
 import CategoriesDeleted from "../components/screens/admin/Categories/DeletedCategories"
 import MostInteresting from "../components/screens/most interesting/MostInteresting"
+import ScrollToTop from "../components/ui/ScrollToTop/ScrollToTop" // 👈 importalo acá
+
 
 const Router = () => {
   return (
-    <BrowserRouter> 
+    <BrowserRouter>
+        <ScrollToTop /> 
         <Routes>
             {/* Rutas con Layout */}
             <Route element={<Layout/>}>

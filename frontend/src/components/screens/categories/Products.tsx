@@ -19,8 +19,14 @@ const Products: React.FC = () => {
   const { products } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
 
-  const [visibleCount, setVisibleCount] = useState(12);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(12);
+
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [category, type, name, sort]);
+
   const [error, setError] = useState<string | null>(null);
   const [types, setTypes] = useState<string[]>([]);
 
@@ -60,21 +66,21 @@ const Products: React.FC = () => {
 
   // Filtrado
   const filtered = category
-  ? category === "discounts"
-    ? products.filter((p) => p.discounts && p.discounts.length > 0)
-    : category === "shoes"
-      ? products.filter((p) =>
+    ? category === "discounts"
+      ? products.filter((p) => p.discounts && p.discounts.length > 0)
+      : category === "shoes"
+        ? products.filter((p) =>
           p.category.name === "shoes" && p.discounts.length === 0
         )
-      : products.filter((p) => p.category.name === category)
-  : name
-    ? products.filter((p) =>
+        : products.filter((p) => p.category.name === category)
+    : name
+      ? products.filter((p) =>
         p.name.toLowerCase().includes(name.toLowerCase())
       )
-    : products;
+      : products;
 
   // Ordenamiento
-    // Ordenar por precio
+  // Ordenar por precio
   if (sort === "price_asc") {
     filtered.sort((a, b) => a.price - b.price);
   } else if (sort === "price_desc") {
@@ -84,7 +90,7 @@ const Products: React.FC = () => {
     filtered.sort((a, b) => a.name.localeCompare(b.name));
   } else if (sort === "name_desc") {
     filtered.sort((a, b) => b.name.localeCompare(a.name));
-  } 
+  }
 
   // Ordenar por Tipo de producto
   const finalFiltered = type
@@ -94,28 +100,29 @@ const Products: React.FC = () => {
   const visibleProducts = finalFiltered.slice(0, (visibleCount < filtered.length) ? visibleCount : finalFiltered.length);
 
   const handleLoadMore = () => {
-    setLoading(true);
+    setLoadingMore(true);
     setTimeout(() => {
       setVisibleCount((prev) => prev + 12);
-      setLoading(false);
-    }, 500); // 500 ms de retardo simulado
+      setLoadingMore(false);
+    }, 500);
   };
 
-  if (loading) return <p className="text-center mt-10">Cargando productos...</p>;
-  if (error) return <p className="text-center mt-10 text-red-600">Error: {error}</p>;
-
+  if (loading)
+    return <p className="text-center mt-10">Cargando productos...</p>;
+  if (error)
+    return <p className="text-center mt-10 text-red-600">Error: {error}</p>;
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h1 className={styles.title}>{category}</h1>
-        
-        <div 
+
+        <div
           className={styles.sortContainer}
-          style={{display: filtered.length === 0 ? "none" : "flex"}}  
+          style={{ display: filtered.length === 0 ? "none" : "flex" }}
         >
           <div className={styles.sortGroup}>
             <label className={styles.label}>FILTRAR Y ORDENAR</label>
-            
+
             <div className={styles.dropdownGroup}>
               <select
                 className={styles.selectSort}
@@ -218,13 +225,14 @@ const Products: React.FC = () => {
 
         </div>
 
-        {visibleCount < filtered.length && (
+        {visibleCount < finalFiltered.length && (
           <div className={styles.buttonContainer}>
             <button
               onClick={handleLoadMore}
               className={styles.loadMoreButton}
+              disabled={loadingMore}
             >
-              Ver más
+              {loadingMore ? "Cargando..." : "Ver más"}
             </button>
           </div>
         )}
