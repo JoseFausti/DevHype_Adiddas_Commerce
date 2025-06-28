@@ -20,6 +20,7 @@ import Profile from "../components/screens/auth/Profile"
 import { AdminProductsDeleted } from "../components/screens/admin/Products/DeletedProducts"
 import Categories from "../components/screens/admin/Categories/Categories"
 import CategoriesDeleted from "../components/screens/admin/Categories/DeletedCategories"
+import MostInteresting from "../components/screens/most interesting/MostInteresting"
 
 const Router = () => {
   return (

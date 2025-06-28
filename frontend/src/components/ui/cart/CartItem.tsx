@@ -6,6 +6,7 @@ import { findProductById } from "../../../data/ProductsController";
 import { useAppDispatch } from "../../../hooks/redux";
 import { removeProduct } from "../../../store/slices/cartSlice";
 import { calculateFinalPrice } from "../../../utils/functions";
+import { Link } from "react-router-dom";
 
 interface CartItemProps {
   item: IDetail;
@@ -69,41 +70,47 @@ const CartItem = ({ item }: CartItemProps) => {
               />
             </button>
 
-          {/* Contenedor para la imagen del producto */}
-          <div className={Styles.imageWrapper}>
-            <img
-              src={product?.image}
-              alt="Imagen del producto"
-              className={Styles.productImage}
-            />
-          </div>
-
-          {/* Contenedor para la información del producto, organizado horizontalmente */}
-          <div className={Styles.infoWrapper}>
-            {/* Bloque para el nombre y la marca del producto */}
-            <div className={Styles.productInfo}>
-              <h3>{product?.name}</h3>
-              <p>{product?.brand}</p>
-            </div>
-
-            {/* Contenedor para la información del producto, organizado horizontalmente */}
-            <div className={Styles.infoWrapper}>
-              {/* Bloque para el nombre y la marca del producto */}
-              <div className={Styles.productInfo}>
-                <h3>{product?.name}</h3>
-                <p>{product?.brand}</p>
+            {/* Enlace a la vista del producto */}
+            <Link to={`/products/${item.variant.productId}`} className={Styles.clickableContent}>
+              <div className={Styles.imageWrapper}>
+                <img
+                  src={product?.image}
+                  alt="Imagen del producto"
+                  className={Styles.productImage}
+                />
               </div>
 
-              <div className={Styles.containerVariants}>
-                {/* Bloque para mostrar el color seleccionado en forma de redondel */}
-                <div className={Styles.colorInfo}>
-                  <div className={Styles.colorCircle} style={{ backgroundColor: item?.variant.color.name }}></div>
+              <div className={Styles.infoWrapper}>
+                <div className={Styles.productInfo}>
+                  <h3>{product?.name}</h3>
+                  <p>{product?.brand}</p>
                 </div>
 
-            {/* Bloque para mostrar el precio */}
-            <div className={Styles.priceInfo}>
-              <p>${product?.discounts? calculateFinalPrice(product?.price, product?.discounts) : product?.price}</p>
-            </div>
+                <div className={Styles.containerVariants}>
+                  <div className={Styles.colorInfo}>
+                    <div
+                      className={Styles.colorCircle}
+                      style={{ backgroundColor: item?.variant.color.name }}
+                    ></div>
+                  </div>
+                  <div className={Styles.quantityInfo}>
+                    <p>Cantidad: {item?.quantity}</p>
+                  </div>
+                  <div className={Styles.priceInfo}>
+                    {product?.discounts && product.discounts.length > 0 ? (
+                      <div className={Styles.discountBlock}>
+                        <p className={Styles.discountedPrice}>
+                          ${calculateFinalPrice(product.price, product.discounts)}
+                        </p>
+                        <p className={Styles.originalPrice}>${product.price}</p>
+                      </div>
+                    ) : (
+                      <p className={Styles.normalPrice}>${product?.price}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
