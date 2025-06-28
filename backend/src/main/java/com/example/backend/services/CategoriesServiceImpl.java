@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import com.example.backend.dtos.category.CreateCategoryDTO;
 import com.example.backend.dtos.types.CreateTypeDTO;
+import com.example.backend.dtos.types.TypeDTO;
 import com.example.backend.models.entities.Types;
 import com.example.backend.repositories.TypesRepository;
 
@@ -73,35 +74,41 @@ public class CategoriesServiceImpl extends BaseServiceImpl<Categories, Long> imp
     public CategoryDTO update(CategoryDTO categoryDTO, Long id) throws Exception {
         try {
             Categories category = categoriesRepository.findById(id)
-                    .orElseThrow(() -> new Exception("Categoría no encontrada con ID: " + id));
+                .orElseThrow(() -> new Exception("Categoría no encontrada con ID: " + id));
 
             if (categoriesRepository.existsByNameAndIdNot(categoryDTO.getName(), id)) {
                 throw new Exception("Ya existe otra categoría con el nombre: " + categoryDTO.getName());
             }
 
-            // Actualizar datos básicos
+            // Actualizar nombre de la categoría
             category.setName(categoryDTO.getName());
 
-            // Limpiar tipos actuales con cuidado para evitar errores por orphanRemoval
-            category.getTypes().forEach(t -> t.setCategory(null));
-            category.getTypes().clear();
-
-            // Setear los nuevos tipos
             if (categoryDTO.getTypes() != null) {
-                categoryDTO.getTypes().forEach(typeDTO -> {
-                    Types type = new Types();
-                    type.setName(typeDTO.getName());
-                    type.setCategory(category); // relación bidireccional
-                    category.getTypes().add(type);
-                });
+                for (TypeDTO typeDTO : categoryDTO.getTypes()) {
+                    String typeName = typeDTO.getName().trim();
+
+                    // Verificamos si el tipo ya existe en esta categoría por nombre
+                    boolean exists = typesRepository.existsByNameAndCategoryId(typeName, category.getId());
+
+                    if (!exists) {
+                        // No existe, entonces lo creamos
+                        Types newType = new Types();
+                        newType.setName(typeName);
+                        newType.setCategory(category);
+                        category.getTypes().add(newType);
+                    }
+                    // Si existe, no hacemos nada (no agregamos duplicados)
+                }
             }
 
-            // Hibernate detecta los cambios automáticamente al ser una entidad gestionada
+            // Hibernate detecta cambios y guarda la entidad
             return CategoryMapper.toDto(category);
+
         } catch (Exception e) {
-            throw new Exception("Error al actualizar categoría: " + e.getMessage());
+            throw new Exception("Error al actualizar categoría: " + e.getMessage(), e);
         }
     }
+
 
     @Transactional
     public CategoryDTO getById(Long id) throws Exception {

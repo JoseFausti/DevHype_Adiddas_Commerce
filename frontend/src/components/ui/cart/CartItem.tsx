@@ -5,6 +5,7 @@ import { JSX, useEffect, useState } from "react";
 import { findProductById } from "../../../data/ProductsController";
 import { useAppDispatch } from "../../../hooks/redux";
 import { removeProduct } from "../../../store/slices/cartSlice";
+import { calculateFinalPrice } from "../../../utils/functions";
 
 interface CartItemProps {
   item: IDetail;
@@ -70,7 +71,7 @@ const CartItem = ({ item }: CartItemProps) => {
           {/* Contenedor para la imagen del producto */}
           <div className={Styles.imageWrapper}>
             <img
-              src="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1749581777/w25_wangam.webp"
+              src={product?.image}
               alt="Imagen del producto"
               className={Styles.productImage}
             />
@@ -96,7 +97,7 @@ const CartItem = ({ item }: CartItemProps) => {
 
             {/* Bloque para mostrar el precio */}
             <div className={Styles.priceInfo}>
-              <p>${product?.price}</p>
+              <p>${product?.discounts? calculateFinalPrice(product?.price, product?.discounts) : product?.price}</p>
             </div>
           </div>
         </div>

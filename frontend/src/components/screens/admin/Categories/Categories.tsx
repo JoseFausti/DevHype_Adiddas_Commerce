@@ -1,13 +1,14 @@
-import { Box, Button, IconButton, Modal, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material"
+import { Box, Button, IconButton, MenuItem, Modal, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material"
 import styles from "./Categories.module.css"
 import { ArrowDown, ArrowUp, Trash } from "lucide-react"
 import { useEffect, useState } from "react"
 import { ICategory } from "../../../../types/types"
-import { getAllCategories } from "../../../../data/CategoriesController"
-import { deleteTypeById } from "../../../../data/TypesController"
-import { Formik } from "formik"
+import { findCategoryByName, getAllCategories, updateCategory } from "../../../../data/CategoriesController"
+import { createType, deleteTypeById, getAllTypesByCategoryId } from "../../../../data/TypesController"
+import { ErrorMessage, Field, FieldArray, Formik, Form } from "formik"
 import { toFormikValidationSchema } from "zod-formik-adapter"
-import { Form, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { createCategorySchema } from "../../../../types/schemas"
 
 const Categories = () => {
 
@@ -64,6 +65,10 @@ const Categories = () => {
         } catch (error) {
             console.error("Error deleting type:", error);
         }
+    };
+
+    const handleCloseModal = () => {
+        setOpenModal(false);
     };
 
     return (
@@ -159,56 +164,175 @@ const Categories = () => {
 
                 </Table>
 
-                {/* <Modal open={openModal} onClose={() => setOpenModal(false)}>
+                <Modal open={openModal} onClose={handleCloseModal}>
                     <Box sx={modalStyle}>
                         <Formik
-                            enableReinitialize
-                            validationSchema= {toFormikValidationSchema(categorySchema)}
-                            initialValues={{
-                            
+                        enableReinitialize
+                        initialValues={{
+                            name: "",
+                            types: [{ name: "" }],
                         }}
+                        validationSchema={toFormikValidationSchema(createCategorySchema)}
                         onSubmit={async (values, { setSubmitting }) => {
                             try {
-                                const response = await createCategory(values);
-                                if (response.status === 201) {
-                                    setCategories([...categories, response.data!]);
-                                    setOpenModal(false);
-                                } else {
-                                    throw new Error();
-                                }
-                            } catch (err) {
-                                console.error("Error creating category:", err);
+                            const capitalize = (str: string) => 
+                                str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+                            const categoryResponse = await findCategoryByName(values.name);
+                            const categoryId = categoryResponse.data!.id;
+
+                            const existingTypesResponse = await getAllTypesByCategoryId(categoryId);
+                            const existingTypeNames = existingTypesResponse.data.map((t) => t.name.toLowerCase());
+
+                            const normalizedExistingNames = existingTypeNames.map((name) =>
+                                capitalize(name.trim())
+                            );
+
+                            const newTypes = values.types
+                                .map((type) => ({
+                                    name: capitalize(type.name.trim()),
+                                }))
+                                .filter(
+                                    (type) => !normalizedExistingNames.includes(type.name)
+                                );
+
+                            // Insertás capitalizados
+                            for (const newType of newTypes) {
+                                await createType({ name: newType.name, categoryId });
+                            }
+
+                            const updatedTypesResponse = await getAllTypesByCategoryId(categoryId);
+                            const updatedTypes = updatedTypesResponse.data;
+
+                            const dto: ICategory = {
+                                id: categoryId,
+                                name: values.name,
+                                types: updatedTypes,
+                            };
+
+                            const updateRes = await updateCategory(categoryId, dto);
+                            if (updateRes.status === 200) {
+                                console.log("Categoría actualizada:", updateRes.data);
+                                setOpenModal(false);
+                            }
+                            } catch (error) {
+                            console.error("Error en el envío del formulario", error);
                             } finally {
-                                setSubmitting(false);
+                            setSubmitting(false);
                             }
                         }}
                         >
+                        {({ values, isSubmitting }) => (
                             <Form>
-                                <TextField
-                                    label="Nombre"
-                                    name="name"
-                                    type="text"
-                                    fullWidth
-                                />
-                                <Button
-                                    type="submit"
-                                    variant="contained"
+                            <h2 style={{ marginBottom: "1rem" }}>Actualizar Categoría</h2>
+
+                            <Field name="name" as={TextField} select label="Nombre" fullWidth margin="normal">
+                                {[...categories].map((cat) => (
+                                <MenuItem key={cat.id} value={cat.name}>
+                                    {cat.name}
+                                </MenuItem>
+                                ))}
+                            </Field>
+                            <ErrorMessage name="name">
+                                {(msg) => <div style={{ color: "red" }}>{msg}</div>}
+                            </ErrorMessage>
+
+                            <h4 style={{ marginTop: "1.5rem" }}>Tipos</h4>
+                            <FieldArray name="types">
+                                {({ push, remove }) => (
+                                <>
+                                    {values.types.map((_, idx) => (
+                                    <div
+                                        key={idx}
+                                        style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "1rem",
+                                        marginBottom: "1rem",
+                                        }}
+                                    >
+                                        <Field
+                                        name={`types.${idx}.name`}
+                                        as={TextField}
+                                        label="Nombre del Tipo"
+                                        fullWidth
+                                        />
+                                        <ErrorMessage name={`types.${idx}.name`}>
+                                        {(msg) => <div style={{ color: "red" }}>{msg}</div>}
+                                        </ErrorMessage>
+                                        <Button
+                                        onClick={() => remove(idx)}
+                                        color="error"
+                                        variant="outlined"
+                                        >
+                                        Eliminar
+                                        </Button>
+                                    </div>
+                                    ))}
+                                    <Button
+                                    onClick={() => push({ name: "" })}
+                                    variant="outlined"
                                     sx={{
+                                        borderColor: "black",
+                                        color: "black",
+                                        "&:hover": {
                                         backgroundColor: "black",
                                         color: "white",
-                                        "&:hover": {
-                                            backgroundColor: "white",
-                                            color: "black",
                                         },
                                     }}
+                                    >
+                                    Agregar Tipo
+                                    </Button>
+                                </>
+                                )}
+                            </FieldArray>
+
+                            <div
+                                style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginTop: "2rem",
+                                }}
+                            >
+                                <Button
+                                onClick={handleCloseModal}
+                                variant="outlined"
+                                sx={{
+                                    width: "200px",
+                                    borderColor: "black",
+                                    color: "black",
+                                    "&:hover": {
+                                    backgroundColor: "black",
+                                    color: "white",
+                                    },
+                                }}
+                                disabled={isSubmitting}
                                 >
-                                    Crear
+                                Cancelar
                                 </Button>
+
+                                <Button
+                                type="submit"
+                                variant="contained"
+                                sx={{
+                                    width: "200px",
+                                    backgroundColor: "black",
+                                    color: "white",
+                                    "&:hover": {
+                                    backgroundColor: "white",
+                                    color: "black",
+                                    },
+                                }}
+                                disabled={isSubmitting}
+                                >
+                                Guardar Cambios
+                                </Button>
+                            </div>
                             </Form>
+                        )}
                         </Formik>
                     </Box>
-
-                </Modal> */}
+                </Modal>
             </div>
         </div>
     )

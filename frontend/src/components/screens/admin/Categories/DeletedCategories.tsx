@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ICategory } from "../../../../types/types";
 import { useNavigate } from "react-router-dom";
 import { restoreTypeById } from "../../../../data/TypesController";
@@ -13,7 +13,7 @@ const CategoriesDeleted = () => {
     const [expandedCategoryId, setExpandedCategoryId] = useState<number | null>(null);
     const navigate = useNavigate();
 
-    const handleRestoreType = useCallback(async (id: number, category: ICategory) => {
+    const handleRestoreType = async (id: number, category: ICategory) => {
         try {
             const response = await restoreTypeById(id);
             if (response.status === 200 && response.data) {
@@ -25,7 +25,7 @@ const CategoriesDeleted = () => {
         } catch (error) {
             console.error('Error restoring type:', error);
         }
-    }, []);
+    } 
 
     useEffect(() => {
         const fetchCategoriesWithDeletedTypes = async () => {
