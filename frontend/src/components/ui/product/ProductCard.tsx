@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ColorSelector from '../variant selectors/ColorSelector';
 import SizeSelector from '../variant selectors/SizeSelector';
 import Styles from './ProductCard.module.css';
@@ -16,12 +17,11 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const token = getDecodedToken();
-  const isAdmin: boolean = token ? token && token.role === Role.ADMIN : false;
+  const isAdmin: boolean = token ? token.role === Role.ADMIN : false;
 
   const {
     availableColors,
@@ -37,15 +37,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
     decreaseQuantity,
   } = useProductVariants(product);
 
+  // Estado para mostrar el mensaje flotante
+  const [showMessage, setShowMessage] = useState(false);
+
   const handleAddToCart = () => {
     if (!token) return navigate("/login");
+
     if (selectedVariant && quantity > 0 && maxStock > 0 && quantity <= maxStock) {
       dispatch(addProduct({
         id: selectedVariant.id,
         variant: selectedVariant,
         quantity: quantity
       }));
-      // Actualizar la base de datos
+
       updateProductVariant(selectedVariant.id, {
         productName: product.name,
         colorName: selectedVariant.color.name,
@@ -53,10 +57,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
         stock: selectedVariant.stock - quantity,
       });
 
-      navigate("/")
+      // Mostrar mensaje por 2 segundos
+      setShowMessage(true);
+      setTimeout(() => setShowMessage(false), 2000);
     }
   };
-
 
   return (
     <div className={Styles.productShopcartContainer}>
@@ -125,7 +130,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 maxQuantity={maxStock}
                 increaseQuantity={increaseQuantity}
                 decreaseQuantity={decreaseQuantity}
-
               />
             ) : (
               <p>Seleccione un color y un talle primero</p>
@@ -139,10 +143,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
               backgroundColor: !selectedVariant || quantity < 1 || maxStock < 1 ? '#ccc' : '#000'
             }}
             disabled={!selectedVariant || quantity < 1 || maxStock < 1}
-            onClick={() => { handleAddToCart() }}
+            onClick={handleAddToCart}
           >
             AÑADIR AL CARRITO
           </button>
+
+          {/* Mensaje flotante de confirmación */}
+          {showMessage && (
+            <div className={Styles.addedMessage}>
+              ¡Producto agregado al carrito!
+            </div>
+          )}
         </div>
       </div>
     </div>

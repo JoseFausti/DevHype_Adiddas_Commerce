@@ -49,58 +49,63 @@ const CartItem = ({ item }: CartItemProps) => {
   return (
     <>
       {openModal && <HandleDeleteItem />}
-      <div className={Styles.cartItemWrapper}>
-        {/* Título de la vista "TU CARRITO" en la parte superior izquierda */}
+      <div className={Styles.containerWrapper}>
+        <div className={Styles.cartItemWrapper}>
+          {/* Título de la vista "TU CARRITO" en la parte superior izquierda */}
 
-        <div className={Styles.cartItemContainer}>
-          {/* Botón eliminar posicionado en la esquina superior derecha 
+          <div className={Styles.cartItemContainer}>
+            {/* Botón eliminar posicionado en la esquina superior derecha 
               Se usa el icono X importado desde lucide-react */}
-          <button className={Styles.deleteButton}>
-            <X
-              size={20}
-              style={{
-                border: "none",
-                cursor: "pointer",
-                outline: "none", // Esto remueve el borde negro
-              }}
-              onClick={() => { setOpenModal(true) }}
-            />
-          </button>
+            <button className={Styles.deleteButton}>
+              <X
+                size={20}
+                style={{
+                  border: "none",
+                  cursor: "pointer",
+                  outline: "none", // Esto remueve el borde negro
+                }}
+                onClick={() => { setOpenModal(true) }}
+              />
+            </button>
 
-          {/* Contenedor para la imagen del producto */}
-          <div className={Styles.imageWrapper}>
-            {product ? (
-              <img src={product.image} alt={product.name} className={Styles.productImage} />
-            ) : (
-              <div className={Styles.imagePlaceholder}>Cargando imagen...</div>
-            )}
-          </div>
-
-          {/* Contenedor para la información del producto, organizado horizontalmente */}
-          <div className={Styles.infoWrapper}>
-            {/* Bloque para el nombre y la marca del producto */}
-            <div className={Styles.productInfo}>
-              <h3>{product?.name}</h3>
-              <p>{product?.brand}</p>
+            {/* Contenedor para la imagen del producto */}
+            <div className={Styles.imageWrapper}>
+              {product ? (
+                <img src={product.image} alt={product.name} className={Styles.productImage} />
+              ) : (
+                <div className={Styles.imagePlaceholder}>Cargando imagen...</div>
+              )}
             </div>
 
-            {/* Bloque para mostrar el color seleccionado en forma de redondel */}
-            <div className={Styles.colorInfo}>
-              <div className={Styles.colorCircle} style={{ backgroundColor: item?.variant.color.name }}></div>
-            </div>
+            {/* Contenedor para la información del producto, organizado horizontalmente */}
+            <div className={Styles.infoWrapper}>
+              {/* Bloque para el nombre y la marca del producto */}
+              <div className={Styles.productInfo}>
+                <h3>{product?.name}</h3>
+                <p>{product?.brand}</p>
+              </div>
 
-            {/* Bloque para mostrar la cantidad */}
-            <div className={Styles.quantityInfo}>
-              <p>Cantidad: {item?.quantity}</p>
-            </div>
+              <div className={Styles.containerVariants}>
+                {/* Bloque para mostrar el color seleccionado en forma de redondel */}
+                <div className={Styles.colorInfo}>
+                  <div className={Styles.colorCircle} style={{ backgroundColor: item?.variant.color.name }}></div>
+                </div>
 
-            {/* Bloque para mostrar el precio */}
-            <div className={Styles.priceInfo}>
-              <p>${product?.price}</p>
+                {/* Bloque para mostrar la cantidad */}
+                <div className={Styles.quantityInfo}>
+                  <p>Cantidad: {item?.quantity}</p>
+                </div>
+
+                {/* Bloque para mostrar el precio */}
+                <div className={Styles.priceInfo}>
+                  <p>${product?.price}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
     </>
   );
 };

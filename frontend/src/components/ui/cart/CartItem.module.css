@@ -1,272 +1,270 @@
+/* Tipografía global coherente */
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.cartItemWrapper {
+  min-height: 20vh;
+  margin-bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 0px; /* o el valor que te dé ese look ajustado */
+}
+
 /* Contenedor general que agrupa el título y la tarjeta del carrito */
 .cartItemWrapper {
-    width: 85%;
-    /* Ancho completo del contenedor */
-    margin: 20px auto;
-    /* Margen vertical de 20px y centrado horizontal */
-    padding: 0 20px;
-    /* Espaciado horizontal interior de 20px */
-    margin-left: 10px;
+  width: 85%;
+  height: auto;
+  margin: -15px auto 10px 10px;
+  padding: 0 45px;
+
 }
 
 /* Tarjeta que contiene cada ítem del carrito */
 .cartItemContainer {
-    display: flex;
-    /* Usa Flexbox para organizar los elementos horizontalmente */
-    align-items: center;
-    /* Centra los elementos verticalmente */
-    position: relative;
-    /* Posicionamiento relativo para ubicar elementos absolutos (como el botón eliminar) */
-    background-color: #fff;
-    /* Fondo blanco para la tarjeta */
-    border: 1px solid #000;
-    /* Borde negro de 1px */
-    border-radius: 0.1rem;
-    /* Bordes levemente redondeados; ajusta el valor para mayor redondeo */
-    padding: 16px 8px;
-    /* Espaciado interno de 16px */
-    margin-bottom: 8px;
-    /* Separación inferior entre tarjetas */
-    transition: transform 0.2s ease,
-        /* Transición suave para cambios de posición */
-        box-shadow 0.2s ease;
-    /* Transición suave para cambios en la sombra */
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #afafaf;
+  border-radius: 0.25rem;
+  padding: 16px 8px;
+  margin: -5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.300);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: fadeInUp 0.3s ease;
 }
 
-/* Efecto hover para levantar la tarjeta y agregar sombra */
 .cartItemContainer:hover {
-    transform: translateY(-2px);
-    /* Mueve la tarjeta 2px hacia arriba al pasar el cursor */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.349);
-    /* Aplica una sombra, ajusta rgba para mayor o menor intensidad */
+  transform: scale(1.02);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.300);
 }
 
-/* Botón de eliminación (la "X") ubicado en la esquina superior derecha */
+/* Animación de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Botón de eliminación */
 .deleteButton {
-    position: absolute;
-    top: 1px;
-    /* Valor reducido para acercar el icono al borde superior */
-    right: 1px;
-    /* Valor reducido para acercar el icono al borde derecho */
-    background: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #000000;
-    transition: color 0.2s ease;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #3c3c3c;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
+.deleteButton:focus,
+.deleteButton:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
 
+.deleteButton:hover svg {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
 
 /* Contenedor de la imagen del producto */
 .imageWrapper {
-    flex-shrink: 0;
-    /* Evita que el contenedor se reduzca al tener espacio limitado */
-    width: 100px;
-    /* Ancho fijo para la imagen */
-    height: 100px;
-    /* Alto fijo para la imagen */
-    border-radius: 0.1rem;
-    /* Bordes redondeados para la imagen; ajusta el valor para mayor redondeo */
-    border: 1px solid #555555;
-    /* Borde gris claro alrededor de la imagen */
-    overflow: hidden;
-    /* Oculta cualquier parte de la imagen que se salga del contenedor */
-    margin-right: 16px;
-    /* Espacio a la derecha para separar de los demás elementos */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.349);
-    /* Aplica una sombra, ajusta rgba para mayor o menor intensidad */
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 0;
+  border: 1px solid #555555;
+  overflow: hidden;
+  margin-right: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-/* Estilo para la imagen del producto */
 .productImage {
-    width: 100%;
-    /* La imagen ocupa el 100% del ancho del contenedor */
-    height: 100%;
-    /* La imagen ocupa el 100% de la altura del contenedor */
-    object-fit: cover;
-    /* La imagen se recorta manteniendo la proporción para cubrir el contenedor */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* Contenedor horizontal para los detalles del ítem del carrito */
+/* Detalles del producto */
 .infoWrapper {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    /* Opción 1: Alinear todos al inicio para que estén juntos */
-    justify-content: space-around;
-    gap: 16px;
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
-/* Sección para el nombre y la marca del producto */
 .productInfo {
-    display: flex;
-    /* Usa Flexbox para organizar los textos */
-    flex-direction: column;
-    /* Los organiza en columna (uno sobre otro) */
-    justify-content: center;
-    /* Centra verticalmente el contenido dentro de este bloque */
-    min-width: 150px;
-    /* Ancho mínimo para garantizar que el texto tenga suficiente espacio */
-
+  max-width: 55%;
+  flex: 0 0 55%;
+  word-break: break-word;
 }
 
-/* Estilos para el nombre del producto en la sección de productInfo */
+
 .productInfo h3 {
-    text-align: start;
-    margin: 0;
-    font-size: 18px;
-    /* Tamaño de fuente para el nombre, se puede ajustar */
-    color: #000000;
-    /* Color de texto gris oscuro */
+  font-size: 17px;
+  margin: 0;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #000;
 }
 
-/* Estilos para la marca del producto en la sección de productInfo */
+
 .productInfo p {
-    margin: 0;
-    /* Sin margen */
-    font-size: 15px;
-    /* Tamaño de fuente para el texto de la marca */
-    font-family: 'Open Sans', sans-serif;
-    /* Para textos corrientes */
-    color: #555;
-    /* Color de texto ligeramente más claro */
+  margin: 0;
+  font-size: 15px;
+  color: #555;
 }
 
-/* Contenedor para la representación del color (redondel) */
+.containerVariants {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-width: 300px;
+  gap: 1rem;
+}
+
+
+/* Color seleccionado */
 .colorInfo {
-    display: flex;
-    /* Usa Flexbox para centrar el redondel */
-    align-items: center;
-    /* Centra verticalmente */
-    justify-content: center;
-    /* Centra horizontalmente */
-    width: 40px;
-    /* Ancho fijo del contenedor para el color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
 }
 
-/* Estilos para el círculo que representa el color seleccionado */
 .colorCircle {
-    width: 20px;
-    /* Ancho del círculo */
-    height: 20px;
-    /* Alto del círculo */
-    border-radius: 20%;
-    /* Borde redondeado; se puede cambiar a 50% para un círculo perfecto */
-    background-color: #ff0000;
-    /* Color de fondo. Actualmente rojo (#ff0000), modifícalo para cambiar el color */
-    border: 1px solid #000;
-    /* Borde negro alrededor del círculo */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.349);
-    /* Sombra que da profundidad, ajusta la opacidad y tamaño si deseas */
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-/* Estilos para los bloques de Cantidad y Precio */
+.colorInfo,
 .quantityInfo,
 .priceInfo {
-    display: flex;
-    /* Usa Flexbox para centrar el contenido */
-    align-items: center;
-    /* Centra verticalmente */
-    justify-content: center;
-    /* Centra horizontalmente */
-    min-width: 80px;
-    /* Ancho mínimo asignado a estos bloques */
-    font-size: 17px;
-    /* Tamaño de fuente para el texto */
-    font-weight: bold;
-    font-family: 'Open Sans', sans-serif;
-    /* Para textos corrientes */
-    color: #000000;
-    /* Color de texto: gris oscuro */
-    padding: 0 8px;
-    /* Padding horizontal para dar espacio al contenido */
+  width: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
 }
 
+/* Cantidad y precio */
+.quantityInfo,
+.priceInfo {
+  display: flex;
+  justify-content: center;
+  min-width: 80px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #000;
+  padding: 0 8px;
+}
+
+/* Modal de confirmación de eliminación */
 .deleteConfirmationContainer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    backdrop-filter: blur(4px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
 }
 
 .deleteConfirmation {
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    padding: 40px 30px;
-    border-radius: 16px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
-    text-align: center;
-    width: 400px;
-    max-width: 90%;
-    animation: fadeInScale 0.3s ease-in-out;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  padding: 40px 30px;
+  border: 1.5px solid #000;
+  border-radius: 0.4rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  width: 400px;
+  max-width: 90%;
+  animation: fadeInScale 0.3s ease-in-out;
 }
 
 @keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .confirmationTitle {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 22px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 24px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .confirmationButtonsContainer {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
 }
 
 .confirmButton,
 .cancelButton {
-    flex: 1;
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: 500;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.25s ease;
+  flex: 1;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .confirmButton {
-    background-color: #e63946;
-    color: #fff;
+  background-color: #000;
+  color: #fff;
 }
 
 .confirmButton:hover {
-    background-color: #d62839;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+  background-color: #555;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .cancelButton {
-    background-color: #e0e0e0;
-    color: #333;
+  border: 1px solid #000;
+  background-color: #e0e0e0;
+  color: #000;
 }
 
 .cancelButton:hover {
-    background-color: #d5d5d5;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(100, 100, 100, 0.2);
+  background-color: #9d9d9d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(100, 100, 100, 0.2);
 }

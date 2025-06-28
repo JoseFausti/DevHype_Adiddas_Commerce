@@ -40,7 +40,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     background-color: #eee;
     overflow: hidden;
     /* Puedes considerar establecer una altura específica aquí si es necesario */
@@ -48,8 +48,10 @@
 
 .productShopcartCard__image {
     width: 100%;
-    height: 100%; /* Agregamos la altura completa */
-    object-fit: cover; /* Cambiamos a cover para que se llene el contenedor */
+    height: 100%;
+    /* Agregamos la altura completa */
+    object-fit: cover;
+    /* Cambiamos a cover para que se llene el contenedor */
     border-radius: 0.5rem;
     transition: transform 0.3s ease;
 }
@@ -238,4 +240,42 @@
 .productShopcartCard__button:hover {
     background-color: #222;
     /* Un gris oscuro como efecto hover */
+}
+
+.addedMessage {
+    position: fixed;
+    top: 80px;
+    left: 40%;
+    transform: translateX(-50%);
+    background-color: #000;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    z-index: 9999;
+    animation: fadeInOut 2s ease-in-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
 }
