@@ -6,20 +6,20 @@ import { Modal, IconButton, Typography } from "@mui/material";
 
 interface ViewUserProps {
   user: IUser;
-  setModal: Dispatch<SetStateAction<{ view: boolean; edit: boolean }>>;
+  setModal: Dispatch<SetStateAction<{ view: boolean; edit: boolean, create: boolean }>>;
   open: boolean;
 }
 
 const ViewUser = ({ user, setModal, open }: ViewUserProps) => {
   return (
-    <Modal open={open} onClose={() => setModal({ view: false, edit: false })}>
+    <Modal open={open} onClose={() => setModal({ view: false, edit: false, create: false })}>
       <div className={styles.modalBox}>
         <header className={styles.modalHeader}>
           <Typography component="h2" className={styles.modalTitle}>
             {user.username}
           </Typography>
           <IconButton
-            onClick={() => setModal({ view: false, edit: false })}
+            onClick={() => setModal({ view: false, edit: false, create: false })}
             className={styles.closeButton}
             aria-label="Cerrar"
           >

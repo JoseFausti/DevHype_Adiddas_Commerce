@@ -1,5 +1,5 @@
 import { Close } from "@mui/icons-material";
-import { IUser, ICreateUpdateUser } from "../../../types/types";
+import { ICreateUpdateUser } from "../../../types/types";
 import styles from "./EditUser.module.css";
 import { Dispatch, SetStateAction } from "react";
 import {
@@ -11,46 +11,42 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
-import { updateUser } from "../../../data/UsersController";
 import { Role } from "../../../utils/enums";
+import { createUser } from "../../../data/UsersController";
 import { useAppDispatch } from "../../../hooks/redux";
-import { editUser } from "../../../store/slices/userSlice";
+import { addUser } from "../../../store/slices/userSlice";
 
-interface EditUserProps {
-  user: IUser;
-  setModal: Dispatch<SetStateAction<{ view: boolean; edit: boolean, create: boolean }>>;
+interface CreateUserProps {
+  setModal: Dispatch<SetStateAction<{ view: boolean; edit: boolean; create: boolean }>>;
   open: boolean;
 }
 
-const EditUser = ({ user, setModal, open }: EditUserProps) => {
+const CreateUser = ({ setModal, open }: CreateUserProps) => {
   const dispatch = useAppDispatch();
 
-  const initialValues = {
-    username: user.username,
-    name: user.name,
-    surname: user.surname,
-    email: user.email,
-    role: user.role,
+  const initialValues: ICreateUpdateUser = {
+    username: "",
+    name: "",
+    surname: "",
+    email: "",
+    password: "",
+    role: Role.USER,
+    directionIds: [], // se puede dejar vacío al crear
   };
 
   const onSubmit = async (
-    values: typeof initialValues,
-    { setSubmitting, setErrors }: FormikHelpers<typeof initialValues>
+    values: ICreateUpdateUser,
+    { setSubmitting, setErrors, resetForm }: FormikHelpers<ICreateUpdateUser>
   ) => {
-    const updatedUser: ICreateUpdateUser = {
-      ...values,
-      password: undefined,
-      directionIds: user.directions.map((d) => d.id),
-    };
-
     try {
-      const response = await updateUser(user.id, updatedUser);
-      if (response.status === 200 && response.data) {
-        dispatch(editUser(response.data));
-        console.log("Usuario actualizado:", response.data);
+      const response = await createUser(values);
+      if (response.status === 201 && response.data) {
+        dispatch(addUser(response.data));
+        console.log("Usuario creado:", response.data);
         setModal({ view: false, edit: false, create: false });
+        resetForm();
       } else {
-        setErrors({ email: response.error || "Error al actualizar" });
+        setErrors({ email: response.error || "Error al crear usuario" });
       }
     } catch (error) {
       setErrors({ email: "Error inesperado: " + error });
@@ -64,7 +60,7 @@ const EditUser = ({ user, setModal, open }: EditUserProps) => {
       <div className={styles.modalBox}>
         <header className={styles.modalHeader}>
           <Typography component="h2" className={styles.modalTitle}>
-            Editar usuario: {user.username}
+            Crear nuevo usuario
           </Typography>
           <IconButton
             onClick={() => setModal({ view: false, edit: false, create: false })}
@@ -115,6 +111,16 @@ const EditUser = ({ user, setModal, open }: EditUserProps) => {
               <ErrorMessage name="email" component="p" className={styles.error} />
 
               <Field
+                name="password"
+                as={TextField}
+                label="Contraseña"
+                type="password"
+                fullWidth
+                margin="normal"
+              />
+              <ErrorMessage name="password" component="p" className={styles.error} />
+
+              <Field
                 name="role"
                 as={TextField}
                 select
@@ -143,7 +149,7 @@ const EditUser = ({ user, setModal, open }: EditUserProps) => {
                   Cancelar
                 </Button>
                 <Button type="submit" variant="contained" disabled={isSubmitting}>
-                  Guardar
+                  Crear
                 </Button>
               </div>
             </Form>
@@ -154,4 +160,4 @@ const EditUser = ({ user, setModal, open }: EditUserProps) => {
   );
 };
 
-export default EditUser;
+export default CreateUser;
