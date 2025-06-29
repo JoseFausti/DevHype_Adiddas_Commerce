@@ -49,6 +49,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userDTOs);
     }
 
+    @GetMapping("/deleted")
+    public ResponseEntity<List<UserDTO>> getAllDeletedUsers() throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllDeleted());
+    }
+    
+
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody CreateUpdateUserDTO dto) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(dto));
@@ -64,6 +70,15 @@ public class UserController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(userService.delete(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
+    }
+
+    @PutMapping("/deleted/{id}")
+    public ResponseEntity<?> restoreUser(@PathVariable Long id) throws Exception {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.backupUser(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + e.getMessage() + "\"}");
         }

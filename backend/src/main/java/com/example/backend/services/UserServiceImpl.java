@@ -5,10 +5,13 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.backend.dtos.types.TypeDTO;
 import com.example.backend.dtos.user.CreateUpdateUserDTO;
 import com.example.backend.dtos.user.UserDTO;
+import com.example.backend.mappers.TypeMapper;
 import com.example.backend.mappers.UserMapper;
 import com.example.backend.models.entities.Directions;
+import com.example.backend.models.entities.Types;
 import com.example.backend.models.entities.Users;
 import com.example.backend.repositories.BaseRepository;
 import com.example.backend.repositories.UserRepository;
@@ -123,6 +126,27 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Long> implements Use
     @Transactional
     public List<UserDTO> getAll() throws Exception {
         List<Users> users = super.findAll();
-        return users.stream().map(UserMapper::toDto).toList();
+        return users
+            .stream()
+            .filter(user -> !user.isDeleted())
+            .map(UserMapper::toDto)
+            .toList();
+    }
+
+    @Transactional
+    public List<UserDTO> getAllDeleted() throws Exception {
+        List<Users> users = super.findAll();
+        return users
+            .stream()
+            .filter(user -> user.isDeleted())
+            .map(UserMapper::toDto)
+            .toList();
+    }
+
+    @Transactional
+    public UserDTO backupUser(Long id) throws Exception {
+        Users user = super.findById(id);
+        user.setDeleted(false);
+        return UserMapper.toDto(user);
     }
 }

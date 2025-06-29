@@ -20,13 +20,16 @@ import Profile from "../components/screens/auth/Profile"
 import { AdminProductsDeleted } from "../components/screens/admin/Products/DeletedProducts"
 import Categories from "../components/screens/admin/Categories/Categories"
 import CategoriesDeleted from "../components/screens/admin/Categories/DeletedCategories"
+import DeletedUsers from "../components/screens/admin/Users/DeletedUsers"
+import MostInteresting from "../components/screens/most interesting/MostInteresting"
+import ScrollToTop from "../components/ui/ScrollToTop/ScrollToTop"
 import MostInteresting from "../components/screens/most interesting/MostInteresting"
 import ScrollToTop from "../components/ui/ScrollToTop/ScrollToTop" // 👈 importalo acá
 
 
 const Router = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter> 
         <ScrollToTop /> 
         <Routes>
             {/* Rutas con Layout */}
@@ -49,6 +52,7 @@ const Router = () => {
               }>
                 <Route index element={<Dashboard />} />
                 <Route path="users" element={<Users/>} />
+                <Route path="users/deleted" element={<DeletedUsers/>} />
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="products/deleted" element={<AdminProductsDeleted />} />
                 <Route path="categories" element={<Categories />} />

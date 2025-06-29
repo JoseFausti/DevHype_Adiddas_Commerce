@@ -15,6 +15,17 @@ export const getUsers = async (): Promise<IUser[] | {error: string}> => {
     }
 }
 
+export const getDeletedUsers = async (): Promise<IUser[] | {error: string}> => {
+    try {
+        const {data} = await axiosInstance.get<IUser[]>(`${API_USERS_URL}/deleted`);
+        return data;
+    } catch (err) {
+        return {
+            error: "Se produjo un error al obtener los usuarios eliminados en getDeletedUsers: " + err,
+        }
+    }
+}
+
 export const postUser = async (user: ICreateUpdateUser): Promise<IUser | {error: string}> => {
     try {
         const {data} = await axiosInstance.post<IUser>(`${API_USERS_URL}`, user);
@@ -78,6 +89,17 @@ export const getByUsername = async (username: string): Promise<IUser | {error: s
     } catch (err) {
         return {
             error: "Se produjo un error al obtener el usuario por nombre de usuario en getUserByUsername: " + err,
+        }
+    }
+}
+
+export const restoreUser = async (id: number): Promise<IUser | {error: string}> => {
+    try {
+        const {data} = await axiosInstance.put<IUser>(`${API_USERS_URL}/deleted/${id}`);
+        return data;
+    } catch (err) {
+        return {
+            error: "Se produjo un error al restaurar el usuario en restoreUser: " + err,
         }
     }
 }

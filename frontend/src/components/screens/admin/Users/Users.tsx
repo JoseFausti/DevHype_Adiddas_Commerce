@@ -6,17 +6,19 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Button,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Icono usuario
-import { getAllUsers } from "../../../../data/UsersController"; // Importa tu controlador
+import { deleteUserById, getAllUsers } from "../../../../data/UsersController"; // Importa tu controlador
 import { Edit} from "@mui/icons-material";
 import { Role } from "../../../../utils/enums";
-import { Eye } from "lucide-react";
+import { Eye, Trash } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import { setUserActive, setUsers } from "../../../../store/slices/userSlice";
+import { removeUser, setUserActive, setUsers } from "../../../../store/slices/userSlice";
 import { IUser } from "../../../../types/types";
 import ViewUser from "../../../ui/admin/ViewUser";
 import EditUser from "../../../ui/admin/EditUser";
+import { useNavigate } from "react-router-dom";
 
 export const Users: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -25,6 +27,8 @@ export const Users: React.FC = () => {
     view: false,
     edit: false,
   });
+
+  const navigate = useNavigate();
 
   const { users, userActive } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -53,6 +57,17 @@ export const Users: React.FC = () => {
   if (loading) return <div className={styles.usersContainer}>Cargando usuarios...</div>;
   if (error) return <div className={styles.usersContainer}>Error: {error}</div>;
 
+  const handleDeleteUser = async (user: IUser) => {
+    try {
+      const response = await deleteUserById(user.id);
+      if (response) {
+        dispatch(removeUser(user));
+      }
+    } catch (error) {
+      console.log("Error eliminando usuario:", error);
+      }
+  };
+
   return (
     <>
       {openModal.view && userActive ? (
@@ -63,6 +78,22 @@ export const Users: React.FC = () => {
         <div className={styles.usersContainer}>
           <div className={styles.usersTitle}>
             <h1>Usuarios Registrados</h1>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
+              <Button
+                  onClick={() => navigate("/admin/users/deleted")}
+                  variant="contained"
+                  sx={{
+                  backgroundColor: "black",
+                  color: "white",
+                  "&:hover": {
+                      backgroundColor: "white",
+                      color: "black",
+                  },
+                  }}
+              >
+                  Usuarios Eliminados
+              </Button>
           </div>
 
           <div className={styles.tableContainer}>
@@ -91,7 +122,12 @@ export const Users: React.FC = () => {
                         onClick={() => dispatch(setUserActive(user_))}
                       >
                         <Eye className={styles.editIcon} onClick={() => setOpenModal({ ...openModal, view: true})}/>
-                        {user_.role !== Role.ADMIN && <Edit className={styles.editIcon} onClick={() => setOpenModal({ ...openModal, edit: true})} />}
+                        {user_.role !== Role.ADMIN && 
+                          <>
+                            <Edit className={styles.editIcon} onClick={() => setOpenModal({ ...openModal, edit: true})} />
+                            <Trash className={styles.editIcon} onClick={() => handleDeleteUser(user_)} />
+                          </>
+                        }
                       </div>
                     </TableCell>
                   </TableRow> 
