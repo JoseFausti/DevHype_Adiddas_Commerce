@@ -11,7 +11,6 @@ import {
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Icono usuario
 import { deleteUserById, getAllUsers } from "../../../../data/UsersController"; // Importa tu controlador
 import { Edit} from "@mui/icons-material";
-import { Role } from "../../../../utils/enums";
 import { Eye, Trash } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { removeUser, setUserActive, setUsers } from "../../../../store/slices/userSlice";
@@ -19,6 +18,7 @@ import { IUser } from "../../../../types/types";
 import ViewUser from "../../../ui/admin/ViewUser";
 import EditUser from "../../../ui/admin/EditUser";
 import { useNavigate } from "react-router-dom";
+import CreateUser from "../../../ui/admin/CreateUser";
 
 export const Users: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -26,6 +26,7 @@ export const Users: React.FC = () => {
   const [openModal, setOpenModal] = useState({
     view: false,
     edit: false,
+    create: false,
   });
 
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ export const Users: React.FC = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [openModal.create, openModal.edit]);
 
   if (loading) return <div className={styles.usersContainer}>Cargando usuarios...</div>;
   if (error) return <div className={styles.usersContainer}>Error: {error}</div>;
@@ -70,10 +71,12 @@ export const Users: React.FC = () => {
 
   return (
     <>
-      {openModal.view && userActive ? (
-        <ViewUser user={userActive} setModal={setOpenModal} open={true} />
+      { openModal.create 
+        ? <CreateUser setModal={setOpenModal} open={true} />
+        : openModal.view && userActive ? (
+          <ViewUser user={userActive} setModal={setOpenModal} open={true} />
       ) : openModal.edit && userActive ? (
-        <EditUser user={userActive} setModal={setOpenModal} open={true} />
+          <EditUser user={userActive} setModal={setOpenModal} open={true} />
       ) : (
         <div className={styles.usersContainer}>
           <div className={styles.usersTitle}>
@@ -93,6 +96,20 @@ export const Users: React.FC = () => {
                   }}
               >
                   Usuarios Eliminados
+              </Button>
+                <Button
+                  onClick={() => setOpenModal({ ...openModal, create: true})}
+                  variant="contained"
+                  sx={{
+                  backgroundColor: "black",
+                  color: "white",
+                  "&:hover": {
+                      backgroundColor: "white",
+                      color: "black",
+                  },
+                  }}
+              >
+                  Crear Usuario
               </Button>
           </div>
 
@@ -122,12 +139,8 @@ export const Users: React.FC = () => {
                         onClick={() => dispatch(setUserActive(user_))}
                       >
                         <Eye className={styles.editIcon} onClick={() => setOpenModal({ ...openModal, view: true})}/>
-                        {user_.role !== Role.ADMIN && 
-                          <>
-                            <Edit className={styles.editIcon} onClick={() => setOpenModal({ ...openModal, edit: true})} />
-                            <Trash className={styles.editIcon} onClick={() => handleDeleteUser(user_)} />
-                          </>
-                        }
+                        <Edit className={styles.editIcon} onClick={() => setOpenModal({ ...openModal, edit: true})} />
+                        <Trash className={styles.editIcon} onClick={() => handleDeleteUser(user_)} />
                       </div>
                     </TableCell>
                   </TableRow> 
