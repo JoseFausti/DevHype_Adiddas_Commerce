@@ -5,6 +5,7 @@ import { setProductActive, setProducts } from "../../../store/slices/productSlic
 import styles from "./Products.module.css";
 import { getAllProducts } from "../../../data/ProductsController";
 import { findCategoryByName } from "../../../data/CategoriesController";
+import { motion } from "framer-motion";
 
 const Products: React.FC = () => {
 
@@ -108,7 +109,22 @@ const Products: React.FC = () => {
   };
 
   if (loading)
-    return <p className="text-center mt-10">Cargando productos...</p>;
+    return (
+      <div className="flex flex-col items-center mt-10 gap-4">
+        <motion.img
+          src="https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771634/Logotipo_Adidas_Gris_afktgc.png"
+          alt="Adidas"
+          initial={{ scale: 1 }}
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ repeat: Infinity, duration: 1.2 }}
+          className="w-20 h-20"
+        />
+        <p className="text-lg font-medium text-neutral-700">
+          Cargando productos Adidas...
+        </p>
+      </div>
+    );
+
   if (error)
     return <p className="text-center mt-10 text-red-600">Error: {error}</p>;
   return (
