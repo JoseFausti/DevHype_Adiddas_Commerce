@@ -148,45 +148,46 @@
     font-family: Calibri, system-ui, sans-serif;
 }
 
-/* Fila horizontal para selector de color y cantidad */
-/* Aplica a los botones dentro del contenedor del ColorSelector (primer hijo de la fila) */
-.productShopcartCard__row>div:first-child button {
-    width: 20px;
-    /* Ancho fijo */
-    height: 20px;
-    /* Alto fijo (deben ser iguales) */
-    padding: 0;
-    /* Eliminamos cualquier padding */
-    margin: 0;
-    /* Eliminamos márgenes extra */
-    border-radius: 70%;
-    /* Esto fuerza la forma circular */
-    border: 2px solid #ccc;
-    /* Borde por defecto */
-    text-indent: -9999px;
-    /* Oculta cualquier texto interno */
-    overflow: hidden;
-    /* Previene que se muestre contenido extra */
-    appearance: none;
-    /* Quita estilos por defecto del navegador */
-    -webkit-appearance: none;
-    /* Para compatibilidad con WebKit */
-    display: inline-block;
-    /* Asegura comportamiento de bloque en línea */
-    cursor: pointer;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.586);
+/* Contenedor de botones de color */
+.productShopcartCard__row {
+  display: flex;
+  flex-wrap: wrap;           /* ✅ Permite que los botones pasen a otra línea si es necesario */
+  gap: 8px;                  /* Espacio entre botones */
+  padding-top: 0.5rem;
 }
 
-/* Si por alguna razón se generan más de dos botones, se ocultan los extra */
-.productShopcartCard__row>div:first-child button:nth-child(n+3) {
-    display: none;
+/* Estilos base de los botones de color */
+.productShopcartCard__row > div:first-child button {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  border-radius: 70%;
+  border: 2px solid #ccc;
+  text-indent: -9999px;
+  overflow: hidden;
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-block;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.586);
+  transition: transform 0.2s ease-in-out;
 }
 
-/* Efecto hover para agrandar suavemente */
-.productShopcartCard__row>div:first-child button:hover {
-    transform: scale(1.1);
+/* 🔥 Eliminar esta regla: ocultaba los colores extras */
+.productShopcartCard__row > div:first-child button:nth-child(n+3) {
+  display: inline-block;
 }
 
+/* Efecto hover */
+.productShopcartCard__row > div:first-child button:hover {
+  transform: scale(1.1);
+}
+
+/* Botón seleccionado: borde más visible */
+.productShopcartCard__row > div:first-child button.selected {
+  border: 2px solid black;
+}
 
 /* Contenedor para los talles */
 .productShopcartCard__sizes {
