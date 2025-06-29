@@ -23,8 +23,7 @@ import CategoriesDeleted from "../components/screens/admin/Categories/DeletedCat
 import DeletedUsers from "../components/screens/admin/Users/DeletedUsers"
 import MostInteresting from "../components/screens/most interesting/MostInteresting"
 import ScrollToTop from "../components/ui/ScrollToTop/ScrollToTop"
-import MostInteresting from "../components/screens/most interesting/MostInteresting"
-import ScrollToTop from "../components/ui/ScrollToTop/ScrollToTop" // 👈 importalo acá
+
 
 
 const Router = () => {
