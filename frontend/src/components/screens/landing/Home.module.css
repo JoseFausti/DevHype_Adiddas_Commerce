@@ -66,19 +66,6 @@
 
 .shoes__title:hover {
     text-decoration: underline;
-    color: rgb(35, 35, 35);
-}
-
-.shoes__title {
-    color: black;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-
-}
-
-.shoes__title:hover {
-    text-decoration: underline;
-    color: rgb(35, 35, 35);
 }
 
 .home__products {
@@ -176,7 +163,6 @@
 
 .discount__title:hover {
     text-decoration: underline;
-    color: rgb(35, 35, 35);
 }
 
 .home__history_container {
@@ -320,8 +306,10 @@
 
 .interesting__title_container {
     display: flex;
-    flex-direction: column;   /* 🔧 Esto los apila uno debajo del otro */
-    align-items: center;      /* 🔧 Centra el contenido horizontalmente */
+    flex-direction: column;
+    /* 🔧 Esto los apila uno debajo del otro */
+    align-items: center;
+    /* 🔧 Centra el contenido horizontalmente */
     margin-top: 30px;
     margin-left: 0;
     text-align: center;
@@ -331,9 +319,10 @@
 .interesting__title {
     color: black;
     font-size: 1.5rem;
-    margin: 0rem; /* 🔧 Antes tenías 1rem */
+    margin: 0rem;
+    /* 🔧 Antes tenías 1rem */
     text-align: center;
-  }
+}
 
 .placeholder__container {
     display: flex;
@@ -348,59 +337,41 @@
     flex: 1;
     max-width: 25%;
     /* 4 items de igual ancho */
-    height: 450px;
+    height: 550px;
     /* Fija la altura en 250px */
     border: 2px solid transparent;
     overflow: hidden;
     position: relative;
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ffffff;
+}
+
+.placeholder__div h1 {
+    letter-spacing: 1px;
+    font-size: 20px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    text-align: start;
+    margin: 1rem;
+    /* margen en todos lados */
+}
+
+.placeholder__div p {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: start;
+    margin: 1rem;
+    /* margen para separar del borde */
 }
 
 .placeholder__div:hover {
-    transform: scale(1.05);
-    /* Zoom */
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-    /* Sombra más fuerte */
-    border-color: var(--color_oscuro, black);
-    /* Si quieres mantener el borde en hover */
+    border: 1px solid #000;
     cursor: pointer;
 }
 
 .placeholder__image {
     width: 100%;
-    height: 100%;
+    height: 60vh;
     object-fit: cover;
     object-position: center;
 }
-
-.section__subtitle {
-    font-size: 17px;
-    /* Claro y legible */
-    color: #4e4e4e;
-    /* Gris oscuro, moderno */
-    margin-bottom: 1.5rem;
-    /* Espaciado hacia abajo */
-    line-height: 1.5;
-    max-width: 600px;
-    /* Limita el ancho para no desbordar */
-    text-align: left;
-    /* Alineado según diseño general */
-    font-weight: 400;
-    /* Ligero pero no invisible */
-    opacity: 0.9;
-    /* Un toque de suavidad */
-}
-
-.section__subtitle__interesting {
-    font-size: 1rem;
-    line-height: 0;
-    color: #555;
-    opacity: 0.9;
-    max-width: 600px;
-    display: block;
-    margin: 0; /* 🔧 Por si había margen automático */
-  }

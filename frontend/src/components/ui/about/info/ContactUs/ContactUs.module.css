@@ -1,65 +1,138 @@
+/* ContactUs.module.css */
+
+/* 📦 CONTENEDOR GENERAL */
 .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem;
-    font-family: 'Arial', sans-serif;
-    color: #222;
+  background-color: #000000e4;
+  color: #ffffff;
+  padding: 4rem 2rem;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  max-width: 1200px;
+  margin: 4rem auto;
+  border: 1px solid #e4e4e4;
+  border-radius: 50px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.527);
+  box-sizing: border-box;
+}
+
+/* 🧱 TÍTULO PRINCIPAL */
+.container h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffffff;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 1rem;
+}
+
+/* PÁRRAFO INTRO */
+.container > p {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #fafafa;
+  line-height: 1.7;
+  max-width: 700px;
+  margin: 0 auto 3rem auto;
+  text-align: center;
+}
+
+/* MENSAJE DE GRACIAS */
+.thanksMessage {
+  text-align: center;
+  padding: 2rem;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+  background-color: #000000;
+}
+
+.thanksMessage h2 {
+  font-size: 2rem;
+  color: #064d06;
+  margin-bottom: 1rem;
+}
+
+.thanksMessage p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d7a2d;
+}
+
+/* FORMULARIO */
+.form {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* LABELS */
+.form label {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #e6e6e6;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+/* INPUTS Y TEXTAREA */
+.form input,
+.form textarea {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1.5px solid #999;
+  border-radius: 6px;
+  outline-offset: 2px;
+  transition: border-color 0.3s ease;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: #ffffff;
+  box-shadow: 4px 4px 0px rgb(0, 0, 0);
+}
+
+/* BOTÓN ENVIAR */
+.submitBtn {
+  background-color: #ffffff;
+  box-shadow: 4px 4px 0px rgb(81, 81, 81);
+  color: #000000;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 0.9rem 1.2rem;
+  border: none;
+  border-radius: 0rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
+}
+
+.submitBtn:hover,
+.submitBtn:focus {
+  background-color: #cecece;
+  outline: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+    margin: 2rem 1rem;
   }
-  
-  h1 {
+
+  .container h1 {
     font-size: 2rem;
-    margin-bottom: 1.5rem;
-    text-transform: uppercase;
-    color: #000;
   }
-  
-  p {
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
+
+  .form {
+    max-width: 100%;
   }
-  
-  .form label {
-    display: block;
-    margin-bottom: 0.4rem;
-    font-weight: 600;
-    color: #111;
-  }
-  
-  .form input,
-  .form textarea {
-    width: 100%;
-    padding: 0.6rem 1rem;
-    margin-bottom: 1.2rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: border-color 0.3s ease;
-  }
-  
-  .form input:focus,
-  .form textarea:focus {
-    outline: none;
-    border-color: #0073e6;
-  }
-  
+
   .submitBtn {
-    background-color: #000;
-    color: #fff;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    cursor: pointer;
-    font-weight: 700;
-    border-radius: 3px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submitBtn:hover {
-    background-color: #444;
-  }
-  
-  .thanksMessage {
+    width: 100%;
     text-align: center;
-    color: #003264;
   }
-  
+}

@@ -35,7 +35,7 @@ const Home: React.FC = () => {
   const productsWithDiscount = products
     .filter(product => product.discounts.length > 0)
     .slice(0, 15);
-  
+
   // Refs para medir contenedores
   const shoesContainerRef = useRef<HTMLDivElement>(null);
   const discountContainerRef = useRef<HTMLDivElement>(null);
@@ -89,8 +89,7 @@ const Home: React.FC = () => {
       <div className={Styles.home_content_container}>
         <div className={Styles.home__products_and_benefits}>
           <Link className={Styles.link_shoes} to="/products?category=shoes">
-            <h2 className={Styles.shoes__title}>Shoes<span> that might interest you</span></h2>
-            <p className={Styles.section__subtitle}><i>Handpicked for you. Discover shoes that match your style and needs.</i></p>
+            <h2 className={Styles.shoes__title}>Shoes<span> that might interest you and help you perform at your best every step of the way</span></h2>
           </Link>
 
           <div className={Styles.home__products} ref={shoesContainerRef}>
@@ -124,8 +123,7 @@ const Home: React.FC = () => {
 
           <div className={Styles.home__discounts}>
             <div className={Styles.link_discounts}>
-              <h2 className={Styles.discount__title}>Discounted Picks</h2>
-              <p className={Styles.section__subtitle}><i>Limited-time offers. Grab exclusive discounts before they’re gone.</i></p>
+              <h2 className={Styles.discount__title}>Discounted picks featuring top-quality gear at unbeatable prices just for you</h2>
             </div>
 
             {productsWithDiscount.length > 0 ? (
@@ -189,8 +187,7 @@ const Home: React.FC = () => {
       </div>
       <div className={Styles.most_interesting__container}>
         <div className={Styles.interesting__title_container}>
-          <h2 className={Styles.interesting__title}>Adidas Highlights</h2>
-          <p className={Styles.section__subtitle__interesting}><i>The latest from the Adidas world. New drops, stories, and collabs you shouldn't miss.</i></p>
+          <h2 className={Styles.interesting__title}>Adidas highlights showcasing the latest innovations and styles</h2>
         </div>
 
         <div className={Styles.placeholder__container}>
@@ -202,6 +199,8 @@ const Home: React.FC = () => {
                 alt="Blog1"
               />
             </Link>
+            <h1>BUILT FOR THE COURT</h1>
+            <p>Lightweight and responsive—made to move with every play.</p>
           </div>
 
           <div className={Styles.placeholder__div}>
@@ -212,6 +211,8 @@ const Home: React.FC = () => {
                 alt="Blog2"
               />
             </Link>
+            <h1>MESSI MEETS BAD BUNNY</h1>
+            <p>Where football greatness and style icons collide in one sneaker.</p>
           </div>
 
           <div className={Styles.placeholder__div}>
@@ -222,6 +223,8 @@ const Home: React.FC = () => {
                 alt="Blog3"
               />
             </Link>
+            <h1>STYLE THAT STEPS OUT</h1>
+            <p>Sleek, versatile sneakers designed to go wherever you do.</p>
           </div>
 
           <div className={Styles.placeholder__div}>
@@ -232,6 +235,8 @@ const Home: React.FC = () => {
                 alt="Blog4"
               />
             </Link>
+            <h1>GEAR UP FOR THE PEAK</h1>
+            <p>All-terrain shoes built for grip, comfort, and elevation.</p>
           </div>
         </div>
       </div>

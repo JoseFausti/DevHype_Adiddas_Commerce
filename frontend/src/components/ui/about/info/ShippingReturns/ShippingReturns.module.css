@@ -1,33 +1,82 @@
+/* 📦 CONTENEDOR GENERAL */
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    font-family: 'Arial', sans-serif;
-    color: #222;
-    line-height: 1.6;
+  background-color: #efefef;
+  /* gris claro */
+  color: #111;
+  /* texto negro */
+  padding: 4rem 2rem;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  max-width: 1200px;
+  margin: 4rem auto;
+  border: 1px solid #999999;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.157);
+  /* sombra suave */
+  box-sizing: border-box;
+}
+
+/* 🧱 TÍTULO PRINCIPAL */
+.container h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #000;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 1rem;
+}
+
+/* 🔹 SECCIONES INTERNAS */
+.section {
+  margin-bottom: 3rem;
+  padding: 0 0.5rem;
+}
+
+/* 🔠 TÍTULOS DE SECCIÓN */
+.section h2 {
+  font-size: 1.5rem;
+  color: #111;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  position: relative;
+}
+
+.section h2::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background-color: #111;
+  margin-top: 0.4rem;
+}
+
+/* 📄 PÁRRAFOS */
+.section p {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+    margin: 2rem 1rem;
   }
-  
+
   .container h1 {
     font-size: 2rem;
-    margin-bottom: 1.5rem;
-    color: #000;
-    text-transform: uppercase;
   }
-  
-  .container h2 {
+
+  .section h2 {
     font-size: 1.2rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.8rem;
-    font-weight: bold;
-    color: #111;
   }
-  
-  .container p {
-    margin-bottom: 1rem;
+
+  .section p {
+    font-size: 0.95rem;
   }
-  
-  .container ol {
-    margin-left: 1.5rem;
-    list-style-type: decimal;
-  }
-  
+}

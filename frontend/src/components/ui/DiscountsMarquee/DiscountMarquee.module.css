@@ -14,8 +14,8 @@
     margin: auto;
     white-space: nowrap;
     font-size: 1rem;
-    font-weight:500;
-    color: rgb(255, 255, 24);
+    font-weight:600;
+    color: rgb(255, 253, 243);
     /* Se inicia centrado, pero la animación lo desplaza completamente */
     animation: marquee 20s linear infinite;
 }
