@@ -23,6 +23,7 @@ body {
 
 /* Tarjeta que contiene cada ítem del carrito */
 .cartItemContainer {
+  min-width: 760px;
   display: flex;
   align-items: center;
   position: relative;

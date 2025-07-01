@@ -100,7 +100,8 @@ export const userSchema = z.object({
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/,
       { message: "La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un símbolo" }
-    ),
+    )
+    .optional(),
   directions: z.array(directionSchema),
 });
 

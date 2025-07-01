@@ -92,9 +92,13 @@ const Profile = () => {
         name: values.name,
         surname: values.surname,
         email: values.email,
-        password: values.password,
         directionIds
       };
+
+      // Solo si el usuario escribió una nueva contraseña
+      if (values.password && values.password.trim() !== "") {
+        updatedUser.password = values.password;
+      }
 
       await updateUser(user.id, updatedUser);
       console.log("Usuario actualizado correctamente");
