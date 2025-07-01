@@ -1,3 +1,10 @@
+.container {
+    min-width: 1220px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
 /* Contenedor del modal: ocupa toda la pantalla con un overlay semitransparente */
 .modal {
     position: fixed;

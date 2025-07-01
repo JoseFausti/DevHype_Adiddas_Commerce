@@ -74,7 +74,7 @@ const Shopcart = () => {
   }
 
   return (
-    <>
+    <div className={Styles.container}>
       {openModal ? (
         <div className={Styles.modal}>
           <div className={Styles.modalContent}>
@@ -126,7 +126,7 @@ const Shopcart = () => {
           }
         </div>
       )}
-    </>
+    </div>
   )
 }
 

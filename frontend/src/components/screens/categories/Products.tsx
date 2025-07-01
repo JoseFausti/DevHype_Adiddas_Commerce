@@ -66,7 +66,7 @@ const Products: React.FC = () => {
 
   // Filtrado
   const filtered = category
-    ? category === "discounts"
+    ? category === "interesting"
       ? products.filter((p) => p.discounts && p.discounts.length > 0)
       : category === "shoes"
         ? products.filter((p) =>

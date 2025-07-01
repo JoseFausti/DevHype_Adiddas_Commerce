@@ -32,4 +32,4 @@ public class Categories extends Base {
 
     @OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Types> types;
-}
+}   

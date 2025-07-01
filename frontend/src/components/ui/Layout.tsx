@@ -87,8 +87,8 @@ const Layout: React.FC = () => {
                             <Link to={{ pathname: "/products", search: '?category=woman' }}>WOMAN</Link>
                             <Link to={{ pathname: "/products", search: '?category=men' }}>MEN</Link>
                             <Link to={{ pathname: "/products", search: '?category=shoes' }}>SHOES</Link>
-                            <Link to={{ pathname: "/products", search: '?category=discounts' }}>
-                                <span className={styles.discount}>DISCOUNTS</span>
+                            <Link to={{ pathname: "/products", search: '?category=interesting' }}>
+                                <span className={styles.discount}>INTERESTING</span>
                             </Link>
                         </div>
                     </div>

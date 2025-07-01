@@ -3,12 +3,17 @@
     width: 100%;
     max-width: 400px;
     /* Margin en el orden: top, right, bottom, left */
-    margin: 50px auto 0 -85px;
+    margin: 93px auto 0 -85px;
     padding: 20px;
+    border: 1px solid #afafaf;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 /* Título principal */
 .summaryTitle {
+    text-align: center;
     font-size: 24px;
     /* Tamaño del título */
     margin-bottom: 20px;
@@ -66,13 +71,35 @@
     background-color: #000;
     color: #fff;
     border: none;
-    padding: 12px;
-    margin-top: 20px;
-    /* Espacio superior para separar el botón de los totales */
+    padding: 14px 20px;
+    margin-top: 24px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: 600;
     text-align: start;
+    letter-spacing: 0.5px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    animation: fadeInUpButton 0.4s ease;
+}
+
+.payButton:hover {
+    background-color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes fadeInUpButton {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Contenedor para los iconos de método de pago (se alinean horizontalmente y centrados) */
