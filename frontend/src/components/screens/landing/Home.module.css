@@ -320,18 +320,20 @@
 
 .interesting__title_container {
     display: flex;
-    align-self: center;
-    /* Hace que se ubique al inicio del eje horizontal */
-    margin-left: 50px;
+    flex-direction: column;   /* 🔧 Esto los apila uno debajo del otro */
+    align-items: center;      /* 🔧 Centra el contenido horizontalmente */
     margin-top: 30px;
+    margin-left: 0;
+    text-align: center;
 }
+
 
 .interesting__title {
     color: black;
     font-size: 1.5rem;
-    margin-bottom: 1rem;
-    text-align: left;
-}
+    margin: 0rem; /* 🔧 Antes tenías 1rem */
+    text-align: center;
+  }
 
 .placeholder__container {
     display: flex;
@@ -374,3 +376,31 @@
     object-fit: cover;
     object-position: center;
 }
+
+.section__subtitle {
+    font-size: 17px;
+    /* Claro y legible */
+    color: #4e4e4e;
+    /* Gris oscuro, moderno */
+    margin-bottom: 1.5rem;
+    /* Espaciado hacia abajo */
+    line-height: 1.5;
+    max-width: 600px;
+    /* Limita el ancho para no desbordar */
+    text-align: left;
+    /* Alineado según diseño general */
+    font-weight: 400;
+    /* Ligero pero no invisible */
+    opacity: 0.9;
+    /* Un toque de suavidad */
+}
+
+.section__subtitle__interesting {
+    font-size: 1rem;
+    line-height: 0;
+    color: #555;
+    opacity: 0.9;
+    max-width: 600px;
+    display: block;
+    margin: 0; /* 🔧 Por si había margen automático */
+  }

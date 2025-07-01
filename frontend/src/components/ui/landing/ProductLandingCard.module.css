@@ -9,7 +9,8 @@
 
 /* 🧱 TRACK DEL CARRUSEL */
 .productCard {
-  overflow: hidden; /* Oculta overflow al hacer slide */
+  overflow: hidden;
+  /* Oculta overflow al hacer slide */
   width: 100%;
   max-width: 1200px;
   padding: 1rem 2rem;
@@ -17,13 +18,15 @@
 
 .productTrack {
   display: flex;
-  gap: 16px; /* Este valor debe coincidir con el usado en JS */
+  gap: 16px;
+  /* Este valor debe coincidir con el usado en JS */
   transition: transform 0.5s ease-out;
 }
 
 /* 🎴 TARJETA INDIVIDUAL DE PRODUCTO */
 .productCardItem {
-  position: relative; /* 👈 Necesario para posicionamiento absoluto hijo */
+  position: relative;
+  /* 👈 Necesario para posicionamiento absoluto hijo */
   flex: 0 0 auto;
   width: 250px;
   padding: 1rem;
@@ -170,6 +173,28 @@
   }
 
   .navButton {
-    display: none; /* Opcional: ocultar navegación en mobile */
+    display: none;
+    /* Opcional: ocultar navegación en mobile */
   }
+}
+
+.seeMoreCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #f2f2f2;
+  border: 1px dashed #ccc;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+.seeMoreCard:hover {
+  background-color: #e0e0e0;
+}
+
+.seeMoreContent {
+  padding: 20px;
 }

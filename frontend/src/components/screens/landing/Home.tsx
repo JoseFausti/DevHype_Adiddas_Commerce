@@ -3,9 +3,9 @@ import Styles from './Home.module.css';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { IProduct } from '../../../types/types';
 import { useCarrousel } from '../../../hooks/useCarrousel'; // Hook actualizado
-import { useEffect } from 'react';
 import { getAllProducts } from '../../../data/ProductsController';
 import { setProducts } from '../../../store/slices/productSlice';
+import { useEffect, useRef, useState } from 'react';
 import ProductLandingCard from '../../ui/landing/ProductLandingCard';
 
 const Home: React.FC = () => {
@@ -27,53 +27,85 @@ const Home: React.FC = () => {
     fetchProducts();
   }, [dispatch]);
 
-  // Shoes carrusel
-  const shoes = products.filter(
-    (product) =>
-      product.category.name === 'shoes' && product.discounts.length === 0
-  );
+  // Filtros
+  const shoes = products
+    .filter(product => product.category.name === 'shoes' && product.discounts.length === 0)
+    .slice(0, 15);
 
+  const productsWithDiscount = products
+    .filter(product => product.discounts.length > 0)
+    .slice(0, 15);
+  
+  // Refs para medir contenedores
+  const shoesContainerRef = useRef<HTMLDivElement>(null);
+  const discountContainerRef = useRef<HTMLDivElement>(null);
+
+  const [shoesContainerWidth, setShoesContainerWidth] = useState(0);
+  const [discountContainerWidth, setDiscountContainerWidth] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (shoesContainerRef.current) {
+        setShoesContainerWidth(shoesContainerRef.current.offsetWidth);
+      }
+      if (discountContainerRef.current) {
+        setDiscountContainerWidth(discountContainerRef.current.offsetWidth);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Carrusel de Shoes
   const {
     activeIndex: shoesActiveIndex,
     next: nextShoes,
     prev: prevShoes,
-  } = useCarrousel<IProduct>(shoes, 3);
+    canScrollLeft: shoesCanScrollLeft,
+    canScrollRight: shoesCanScrollRight,
+    visibleQuantity: shoesVisibleQuantity,
+  } = useCarrousel<IProduct>(shoes, 250, 16, shoesContainerWidth, 2);
 
-  // Descuentos
-  const productsWithDiscount = products.filter(
-    (product) => product.discounts.length > 0
-  );
+  // Carrusel de descuentos
   const {
     activeIndex: discountActiveIndex,
     next: nextDiscount,
     prev: prevDiscount,
-  } = useCarrousel<IProduct>(productsWithDiscount, 1);
+    canScrollLeft: discountCanScrollLeft,
+    canScrollRight: discountCanScrollRight,
+    visibleQuantity: discountVisibleQuantity,
+  } = useCarrousel<IProduct>(productsWithDiscount, 250, 16, discountContainerWidth, 1);
 
   return (
     <div className={Styles.home__container}>
       <div className={Styles.home_image_container}>
-        <video autoPlay muted loop playsInline poster='https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1750896205/691328_wenlpb.webp'>
+        <video autoPlay muted loop playsInline poster="https://res.cloudinary.com/dxiqjdiz6/image/upload/f_auto,q_auto/v1750896205/691328_wenlpb.webp">
           <source src="https://res.cloudinary.com/dxiqjdiz6/video/upload/f_auto,q_auto/v1750880437/videoplayback_ftymtq.mp4" />
           Tu navegador no soporta el video.
         </video>
       </div>
+
       <div className={Styles.home_content_container}>
         <div className={Styles.home__products_and_benefits}>
-          <Link
-            className={Styles.link_shoes}
-            to={{ pathname: '/products', search: '?category=shoes' }}
-          >
+          <Link className={Styles.link_shoes} to="/products?category=shoes">
             <h2 className={Styles.shoes__title}>Shoes<span> that might interest you</span></h2>
+            <p className={Styles.section__subtitle}><i>Handpicked for you. Discover shoes that match your style and needs.</i></p>
           </Link>
-          <div className={Styles.home__products}>
-            {/* Se pasa la lista completa junto con activeIndex */}
+
+          <div className={Styles.home__products} ref={shoesContainerRef}>
             <ProductLandingCard
               carrousel={shoes}
               activeIndex={shoesActiveIndex}
               next={nextShoes}
               prev={prevShoes}
+              canScrollLeft={shoesCanScrollLeft}
+              canScrollRight={shoesCanScrollRight}
+              visibleQuantity={shoesVisibleQuantity}
+              showSeeMoreCard={true}
             />
           </div>
+
           <div className={Styles.home__benefits}>
             <div className={Styles.home__benefit_image}>
               <img
@@ -83,29 +115,32 @@ const Home: React.FC = () => {
             </div>
             <div className={Styles.home__benefit_text}>
               <h2 className={Styles.benefits__title}>
-                OUTFITS FOR <br />
-                <span>BENEFITS</span>
+                OUTFITS FOR <br /><span>BENEFITS</span>
               </h2>
-              <p className={Styles.benefits__text}>
-                <span>60% OFF + free shipping:</span> only for Adidas clients.
-              </p>
-              <p className={Styles.benefits__text}>
-                Check your account and start buying for benefits on{' '}
-                <span>Adidas</span>
-              </p>
+              <p className={Styles.benefits__text}><span>60% OFF + free shipping:</span> only for Adidas clients.</p>
+              <p className={Styles.benefits__text}>Check your account and start buying for benefits on <span>Adidas</span></p>
             </div>
           </div>
+
           <div className={Styles.home__discounts}>
             <div className={Styles.link_discounts}>
-              <h2 className={Styles.discount__title}>DISCOUNTED PRODUCTS</h2>
+              <h2 className={Styles.discount__title}>Discounted Picks</h2>
+              <p className={Styles.section__subtitle}><i>Limited-time offers. Grab exclusive discounts before they’re gone.</i></p>
             </div>
+
             {productsWithDiscount.length > 0 ? (
-              <ProductLandingCard
-                carrousel={productsWithDiscount}
-                activeIndex={discountActiveIndex}
-                next={nextDiscount}
-                prev={prevDiscount}
-              />
+              <div ref={discountContainerRef}>
+                <ProductLandingCard
+                  carrousel={productsWithDiscount}
+                  activeIndex={discountActiveIndex}
+                  next={nextDiscount}
+                  prev={prevDiscount}
+                  canScrollLeft={discountCanScrollLeft}
+                  canScrollRight={discountCanScrollRight}
+                  visibleQuantity={discountVisibleQuantity}
+                  showSeeMoreCard={true}
+                />
+              </div>
             ) : (
               <p>There are no discounts at the moment</p>
             )}
@@ -154,7 +189,8 @@ const Home: React.FC = () => {
       </div>
       <div className={Styles.most_interesting__container}>
         <div className={Styles.interesting__title_container}>
-          <h2 className={Styles.interesting__title}>MOST INTERESTING</h2>
+          <h2 className={Styles.interesting__title}>Adidas Highlights</h2>
+          <p className={Styles.section__subtitle__interesting}><i>The latest from the Adidas world. New drops, stories, and collabs you shouldn't miss.</i></p>
         </div>
 
         <div className={Styles.placeholder__container}>
