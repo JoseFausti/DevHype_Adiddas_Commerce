@@ -48,7 +48,7 @@ const Categories = () => {
         };
 
         fetchCategories();
-    }, []);
+    }, [openModal === false]);
 
     const toggleExpand = (id: number) => {
         setExpandedCategoryId(prev => prev === id ? null : id);

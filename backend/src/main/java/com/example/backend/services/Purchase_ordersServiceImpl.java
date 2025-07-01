@@ -170,12 +170,27 @@ public PreferenceRequest buildPreference(Purchase_orders order) throws Exception
         if (product == null) {
             throw new IllegalStateException("La variante del detalle con ID " + detail.getId() + " no tiene producto asociado");
         }
+
+        // Precio base del producto
+        double basePrice = product.getPrice();
+
+        // Sumar todos los descuentos
+        double totalDiscount = 0.0;
+        if (product.getDiscounts() != null && !product.getDiscounts().isEmpty()) {
+            totalDiscount = product.getDiscounts()
+                    .stream()
+                    .mapToDouble(discount -> discount.getPercentage())
+                    .sum();
+        }
+
+        // Aplicar el descuento acumulado
+        double discountedPrice = basePrice - (basePrice * totalDiscount / 100.0);
         
         items.add(PreferenceItemRequest.builder()
                 .id(product.getId().toString())
                 .title(product.getName())
                 .description(product.getDescription())
-                .unitPrice(BigDecimal.valueOf(product.getPrice()))
+                .unitPrice(BigDecimal.valueOf(discountedPrice))
                 .quantity(detail.getQuantity())
                 .build());
     }
