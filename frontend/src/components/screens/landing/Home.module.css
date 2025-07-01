@@ -346,6 +346,7 @@
 }
 
 .placeholder__div h1 {
+    color: #000;
     letter-spacing: 1px;
     font-size: 20px;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
