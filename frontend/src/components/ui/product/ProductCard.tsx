@@ -11,6 +11,9 @@ import { useAppDispatch } from '../../../hooks/redux';
 import { addProduct } from '../../../store/slices/cartSlice';
 import { updateProductVariant } from '../../../data/ProductVariantsController';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../../hooks/redux';
+import { setProductActive } from '../../../store/slices/productSlice'; // Import necesario si no lo tenías
+
 
 interface ProductCardProps {
   product: IProduct;
@@ -37,13 +40,28 @@ const ProductCard = ({ product }: ProductCardProps) => {
     decreaseQuantity,
   } = useProductVariants(product);
 
-  // Estado para mostrar el mensaje flotante
   const [showMessage, setShowMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleAddToCart = () => {
     if (!token) return navigate("/login");
 
-    if (selectedVariant && quantity > 0 && maxStock > 0 && quantity <= maxStock) {
+    if (!selectedColor) {
+      setErrorMessage("Debes seleccionar un color.");
+      return;
+    }
+
+    if (!selectedSize) {
+      setErrorMessage("Debes seleccionar un talle.");
+      return;
+    }
+
+    if (quantity < 1) {
+      setErrorMessage("Debes seleccionar una cantidad válida.");
+      return;
+    }
+
+    if (selectedVariant && maxStock > 0 && quantity <= maxStock) {
       dispatch(addProduct({
         id: selectedVariant.id,
         variant: selectedVariant,
@@ -57,11 +75,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
         stock: selectedVariant.stock - quantity,
       });
 
-      // Mostrar mensaje por 2 segundos
       setShowMessage(true);
+      setErrorMessage("");
       setTimeout(() => setShowMessage(false), 2000);
     }
   };
+
+  const { products } = useAppSelector((state) => state.product);
+
+  // Obtener 4 productos al azar, distintos del actual
+  const relatedProducts = products
+    .filter(p => p.id !== product.id)
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 4);
 
   return (
     <div className={Styles.productShopcartContainer}>
@@ -111,44 +137,36 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
           <div className={Styles.productShopcartCard__sizes}>
             <p className={Styles.productShopcartCard__sizesLabel}>TALLES:</p>
-            {selectedColor ? (
-              <SizeSelector
-                sizes={availableSizes}
-                selectedSize={selectedSize}
-                toggleSize={handleSizeSelect}
-              />
-            ) : (
-              <p>Seleccione un color primero</p>
-            )}
+            <SizeSelector
+              sizes={availableSizes}
+              selectedSize={selectedSize}
+              toggleSize={handleSizeSelect}
+            />
           </div>
 
           <div className={Styles.productShopcartCard__quantity}>
             <p className={Styles.productShopcartCard__quantityLabel}>CANTIDAD:</p>
-            {selectedColor && selectedSize ? (
-              <QuantitySelector
-                quantity={quantity}
-                maxQuantity={maxStock}
-                increaseQuantity={increaseQuantity}
-                decreaseQuantity={decreaseQuantity}
-              />
-            ) : (
-              <p>Seleccione un color y un talle primero</p>
-            )}
+            <QuantitySelector
+              quantity={quantity}
+              maxQuantity={maxStock}
+              increaseQuantity={increaseQuantity}
+              decreaseQuantity={decreaseQuantity}
+              selectedVariant={selectedVariant}
+            />
           </div>
 
           <button
             className={Styles.productShopcartCard__button}
-            style={{
-              display: isAdmin ? 'none' : 'block',
-              backgroundColor: !selectedVariant || quantity < 1 || maxStock < 1 ? '#ccc' : '#000'
-            }}
-            disabled={!selectedVariant || quantity < 1 || maxStock < 1}
+            style={{ display: isAdmin ? 'none' : 'block' }}
             onClick={handleAddToCart}
           >
             AÑADIR AL CARRITO
           </button>
 
-          {/* Mensaje flotante de confirmación */}
+          {errorMessage && (
+            <p className={Styles.errorMessage}>{errorMessage}</p>
+          )}
+
           {showMessage && (
             <div className={Styles.addedMessage}>
               ¡Producto agregado al carrito!
@@ -156,6 +174,58 @@ const ProductCard = ({ product }: ProductCardProps) => {
           )}
         </div>
       </div>
+      {relatedProducts.length > 0 && (
+        <div className={Styles.relatedContainer}>
+          <h3 className={Styles.relatedTitle}>TE PUEDE INTERESAR</h3>
+          <div className={Styles.relatedGrid}>
+            {relatedProducts.map((product) => (
+              <div
+                key={product.id}
+                className={Styles.card}
+                onClick={() => {
+                  dispatch(setProductActive(product));
+                  navigate(`/products/${product.id}`);
+                }}
+              >
+                <div className={Styles.imageContainer}>
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className={Styles.image}
+                  />
+                </div>
+
+                <div className={Styles.info}>
+                  <div className={Styles.left}>
+                    <h2 className={Styles.name}>
+                      {product.name}
+                      {product.discounts && product.discounts.length > 0 && (
+                        <span className={Styles.discountTag}>
+                          {" "}
+                          -{product.discounts[0].percentage}%
+                        </span>
+                      )}
+                    </h2>
+                    {product.discounts && product.discounts.length > 0 ? (
+                      <>
+                        <p className={Styles.oldPrice}>${product.price.toFixed(2)}</p>
+                        <p className={Styles.discountPrice}>
+                          ${(
+                            product.price * (1 - product.discounts[0].percentage / 100)
+                          ).toFixed(2)}
+                        </p>
+                      </>
+                    ) : (
+                      <p className={Styles.price}>${product.price.toFixed(2)}</p>
+                    )}
+                  </div>
+                  <button className={Styles.readMore}>Read More</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

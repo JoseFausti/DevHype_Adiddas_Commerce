@@ -2,7 +2,7 @@
 .productShopcartContainer {
     width: 100vw;
     /* Ancho completo de la ventana */
-    height: 100vh;
+    height: 184vh;
     /* Alto completo de la ventana */
     color: black;
     /* Color de texto por defecto */
@@ -14,6 +14,8 @@
     /* Centrado horizontal */
     align-items: center;
     /* Centrado vertical */
+    flex-direction: column;
+    gap: 2rem;
 }
 
 /* Tarjeta del producto dividida en imagen e info */
@@ -150,43 +152,45 @@
 
 /* Contenedor de botones de color */
 .productShopcartCard__row {
-  display: flex;
-  flex-wrap: wrap;           /* ✅ Permite que los botones pasen a otra línea si es necesario */
-  gap: 8px;                  /* Espacio entre botones */
-  padding-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    /* ✅ Permite que los botones pasen a otra línea si es necesario */
+    gap: 8px;
+    /* Espacio entre botones */
+    padding-top: 0.5rem;
 }
 
 /* Estilos base de los botones de color */
-.productShopcartCard__row > div:first-child button {
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  margin: 0;
-  border-radius: 70%;
-  border: 2px solid #ccc;
-  text-indent: -9999px;
-  overflow: hidden;
-  appearance: none;
-  -webkit-appearance: none;
-  display: inline-block;
-  cursor: pointer;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.586);
-  transition: transform 0.2s ease-in-out;
+.productShopcartCard__row>div:first-child button {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin: 0;
+    border-radius: 70%;
+    border: 2px solid #ccc;
+    text-indent: -9999px;
+    overflow: hidden;
+    appearance: none;
+    -webkit-appearance: none;
+    display: inline-block;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.586);
+    transition: transform 0.2s ease-in-out;
 }
 
 /* 🔥 Eliminar esta regla: ocultaba los colores extras */
-.productShopcartCard__row > div:first-child button:nth-child(n+3) {
-  display: inline-block;
+.productShopcartCard__row>div:first-child button:nth-child(n+3) {
+    display: inline-block;
 }
 
 /* Efecto hover */
-.productShopcartCard__row > div:first-child button:hover {
-  transform: scale(1.1);
+.productShopcartCard__row>div:first-child button:hover {
+    transform: scale(1.1);
 }
 
 /* Botón seleccionado: borde más visible */
-.productShopcartCard__row > div:first-child button.selected {
-  border: 2px solid black;
+.productShopcartCard__row>div:first-child button.selected {
+    border: 2px solid black;
 }
 
 /* Contenedor para los talles */
@@ -279,4 +283,136 @@
         opacity: 0;
         transform: translateY(20px);
     }
+}
+
+.errorMessage {
+    color: red;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.relatedContainer {
+    margin-top: 0rem;
+    padding: 1rem;
+}
+
+.relatedTitle {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+}
+
+
+.relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 0.2rem;
+    overflow: hidden;
+    padding: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    border: 1px solid black;
+}
+
+.imageContainer {
+    width: calc(100% + 2rem);
+    object-fit: cover;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    margin-top: -15px;
+    display: block;
+}
+
+.image {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.name {
+    color: #000;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.price {
+    color: #000000;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.oldPrice {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.discountPrice {
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.discountTag {
+    color: red;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.readMore {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    user-select: none;
+}
+
+.readMore:hover {
+    color: #1f1f1f;
 }

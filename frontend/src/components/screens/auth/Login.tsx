@@ -5,14 +5,24 @@ import { Formik, Form, Field } from "formik";
 import { loginSchema } from "../../../types/schemas";
 import { loginUser } from "../../../data/UsersController";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { useState } from "react";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
 
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [loginError, setLoginError] = useState(false);
+
   const handleSubmit = async (values: { username: string; password: string }) => {
     const response = await loginUser(values.username, values.password);
     if (response.status === 200) {
-      navigate('/');
+      setShowSuccess(true);
+      setLoginError(false);
+      setTimeout(() => {
+        navigate('/');
+      }, 1500); // Damos un pequeño delay para mostrar el cartel
+    } else {
+      setLoginError(true);
     }
   };
 
@@ -22,12 +32,23 @@ const Login: React.FC = () => {
         <Home />
       </div>
       <div className={Styles.loginForm}>
+        {showSuccess && (
+          <div className={Styles.login_formMessageSuccess}>
+            ¡Bienvenido!
+          </div>
+        )}
+
+        {loginError && (
+          <div className={Styles.login_formMessageError}>
+            Usuario o contraseña incorrectos
+          </div>
+        )}
         <Formik
           initialValues={{ username: '', password: '' }}
           validationSchema={toFormikValidationSchema(loginSchema)}
           onSubmit={handleSubmit}
         >
-        {({ errors, touched }) => (
+          {({ errors, touched }) => (
             <Form className={Styles.loginForm__container}>
               <div className={Styles.login_formHeader}>
                 <img className={Styles.login_formImage} src="https://res.cloudinary.com/dxiqjdiz6/image/upload/v1747771636/Logotipo_Adidas_Negro_kmqyhs.png" alt="adidas" />
