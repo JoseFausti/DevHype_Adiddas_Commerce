@@ -105,6 +105,8 @@
 
 /* 🃏 Tarjeta individual del producto */
 .card {
+  position: relative;
+  /* 👈 agregar esto */
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -204,6 +206,12 @@
 
 /* 🔗 Botón "Read More" */
 .readMore {
+  position: absolute;
+  /* 👈 fijar posición */
+  bottom: 1rem;
+  /* 👈 distancia desde abajo */
+  right: 1rem;
+  /* 👈 distancia desde la derecha */
   background: none;
   border: none;
   color: #000;

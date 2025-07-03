@@ -154,9 +154,7 @@
 .productShopcartCard__row {
     display: flex;
     flex-wrap: wrap;
-    /* ✅ Permite que los botones pasen a otra línea si es necesario */
     gap: 8px;
-    /* Espacio entre botones */
     padding-top: 0.5rem;
 }
 
@@ -164,33 +162,36 @@
 .productShopcartCard__row>div:first-child button {
     width: 20px;
     height: 20px;
-    padding: 0;
-    margin: 0;
     border-radius: 70%;
-    border: 2px solid #ccc;
-    text-indent: -9999px;
-    overflow: hidden;
-    appearance: none;
-    -webkit-appearance: none;
-    display: inline-block;
-    cursor: pointer;
+    border: 2px solid transparent;
+    /* borde siempre con 2px, pero invisible */
+    box-sizing: border-box;
+    /* incluye borde en tamaño total */
+    padding: 0;
+    margin: 0 5px;
+    /* margen para separación, no cambies en :selected */
+    outline: none;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.586);
-    transition: transform 0.2s ease-in-out;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+    background-color: currentColor;
 }
 
-/* 🔥 Eliminar esta regla: ocultaba los colores extras */
-.productShopcartCard__row>div:first-child button:nth-child(n+3) {
-    display: inline-block;
-}
-
-/* Efecto hover */
+/* Hover solo escala (opcional) */
 .productShopcartCard__row>div:first-child button:hover {
     transform: scale(1.1);
 }
 
-/* Botón seleccionado: borde más visible */
+/* Cuando está seleccionado */
 .productShopcartCard__row>div:first-child button.selected {
-    border: 2px solid black;
+    border-color: black;
+    /* solo cambia color, mismo grosor */
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    /* sombra, no afecta tamaño */
+    transform: none !important;
+    /* quitar cualquier transform */
+    margin: 0 5px;
+    /* mantener margen igual que sin seleccionar */
 }
 
 /* Contenedor para los talles */

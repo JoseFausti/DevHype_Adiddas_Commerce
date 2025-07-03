@@ -8,7 +8,7 @@ const ColorSelector = ({
     colors,
     selectedColor,
     toggleColor,
-    }: ColorSelectorProps 
+}: ColorSelectorProps
 ) => {
     return (
         <div>
@@ -17,17 +17,22 @@ const ColorSelector = ({
                     key={color}
                     style={{
                         backgroundColor: color,
-                        border: selectedColor === color ? '2px solid black' : 'none',
-                        borderRadius: '3px',
+                        border: '2px solid transparent',  // borde siempre presente pero transparente
+                        borderColor: selectedColor === color ? 'black' : 'transparent', // cambiar solo color
+                        borderRadius: '50%',
                         color: 'white',
                         margin: '5px',
                         cursor: 'pointer',
+                        boxSizing: 'border-box', // clave para que borde no cambie tamaño
+                        width: '26px',
+                        height: '26px',
+                        padding: 0,
                     }}
                     onClick={() => {
-                        toggleColor(color); 
+                        toggleColor(color);
                     }}
-                    >
-                    {color}
+                >
+                    {/* el texto puede estar oculto o vacío */}
                 </button>
             ))}
         </div>
