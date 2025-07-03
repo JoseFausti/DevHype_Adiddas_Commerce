@@ -35,3 +35,9 @@ build/
 # .env
 .env
 
+# Ignorar certificados SSL locales
+*.pem
+*.p12
+key.pem
+cert.pem
+keystore.p12
