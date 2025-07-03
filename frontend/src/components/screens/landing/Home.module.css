@@ -66,19 +66,6 @@
 
 .shoes__title:hover {
     text-decoration: underline;
-    color: rgb(35, 35, 35);
-}
-
-.shoes__title {
-    color: black;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-
-}
-
-.shoes__title:hover {
-    text-decoration: underline;
-    color: rgb(35, 35, 35);
 }
 
 .home__products {
@@ -176,7 +163,6 @@
 
 .discount__title:hover {
     text-decoration: underline;
-    color: rgb(35, 35, 35);
 }
 
 .home__history_container {
@@ -320,17 +306,22 @@
 
 .interesting__title_container {
     display: flex;
-    align-self: center;
-    /* Hace que se ubique al inicio del eje horizontal */
-    margin-left: 50px;
+    flex-direction: column;
+    /* 🔧 Esto los apila uno debajo del otro */
+    align-items: center;
+    /* 🔧 Centra el contenido horizontalmente */
     margin-top: 30px;
+    margin-left: 0;
+    text-align: center;
 }
+
 
 .interesting__title {
     color: black;
     font-size: 1.5rem;
-    margin-bottom: 1rem;
-    text-align: left;
+    margin: 0rem;
+    /* 🔧 Antes tenías 1rem */
+    text-align: center;
 }
 
 .placeholder__container {
@@ -346,31 +337,42 @@
     flex: 1;
     max-width: 25%;
     /* 4 items de igual ancho */
-    height: 450px;
+    height: 550px;
     /* Fija la altura en 250px */
     border: 2px solid transparent;
     overflow: hidden;
     position: relative;
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ffffff;
+}
+
+.placeholder__div h1 {
+    color: #000;
+    letter-spacing: 1px;
+    font-size: 20px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    text-align: start;
+    margin: 1rem;
+    /* margen en todos lados */
+}
+
+.placeholder__div p {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: start;
+    margin: 1rem;
+    /* margen para separar del borde */
 }
 
 .placeholder__div:hover {
-    transform: scale(1.05);
-    /* Zoom */
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-    /* Sombra más fuerte */
-    border-color: var(--color_oscuro, black);
-    /* Si quieres mantener el borde en hover */
+    border: 1px solid #000;
     cursor: pointer;
 }
 
 .placeholder__image {
     width: 100%;
-    height: 100%;
+    height: 60vh;
     object-fit: cover;
     object-position: center;
 }

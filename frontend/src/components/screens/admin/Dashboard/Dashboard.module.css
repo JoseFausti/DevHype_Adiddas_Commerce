@@ -16,6 +16,8 @@
   flex-grow: 1;
   padding: 10px 20px;
   /* Reducimos el padding superior */
+  width: 80%; /* o lo que prefieras */
+  margin: 0 auto; /* centrado horizontal */
 }
 
 /* Estilo del título */

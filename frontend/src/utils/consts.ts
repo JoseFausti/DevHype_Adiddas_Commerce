@@ -16,27 +16,3 @@ export const API_AUTH_URL = base + '/auth';
 export const API_PRODUCT_VARIANTS_URL = base + '/productVariants';
 export const API_IMAGE_URL = base + '/image/upload';
 //-------------------------------------------------------------------//
-
-
-// HOME PAGE
-
-// Blog Most Interesting
-export const placeholderBlogPosts = [
-{
-    img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1749581578/Most1_iszjth.webp",
-    alt: "Interesting Product 1",
-},
-{
-    img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1749581577/Most_2_tcaebi.webp",
-    alt: "Interesting Product 2",
-},
-{
-    img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1749581577/Most_3_y5mezt.webp",
-    alt: "Interesting Product 3",
-},
-{
-    img: "https://res.cloudinary.com/dxiqjdiz6/image/upload/v1749581578/Most_4_p0xedr.webp",
-    alt: "Interesting Product 4",
-},
-];
-//--------------------------------------------------------------------//

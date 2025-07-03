@@ -3,7 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  --color_oscuro: #0e0e0e;
+  --color_oscuro: #000000;
   --color_claro_fondo: #ffffff;
   --color_claro: #ECEFF1;
   --color_naranja: #F87C02;
@@ -17,7 +17,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #0e0e0e;
+  background-color: #000000;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

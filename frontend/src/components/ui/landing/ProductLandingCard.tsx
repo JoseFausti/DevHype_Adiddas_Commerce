@@ -10,6 +10,10 @@ interface ProductLandingCardProps {
   activeIndex: number;
   next: () => void;
   prev: () => void;
+  canScrollLeft: boolean;
+  canScrollRight: boolean;
+  visibleQuantity: number;
+  showSeeMoreCard?: boolean;
 }
 
 const ProductLandingCard: React.FC<ProductLandingCardProps> = ({
@@ -17,6 +21,10 @@ const ProductLandingCard: React.FC<ProductLandingCardProps> = ({
   activeIndex,
   next,
   prev,
+  canScrollLeft,
+  canScrollRight,
+  visibleQuantity,
+  showSeeMoreCard,
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -26,24 +34,29 @@ const ProductLandingCard: React.FC<ProductLandingCardProps> = ({
     navigate(`/products/${product.id}`);
   };
 
-  // Se asume un ancho fijo para la tarjeta y un gap correspondiente (deben coincidir con el CSS)
-  const cardWidth = 250; // ancho de la tarjeta en píxeles
-  const gap = 16; // gap entre tarjetas en píxeles
-  const trackTranslate = activeIndex * (cardWidth + gap);
+  // 🔹 Cálculo de desplazamiento seguro
+  const cardWidth = 250; // px
+  const gap = 16; // px
+  const translateX = activeIndex * (cardWidth + gap);
+  const maxTranslate =
+    Math.max(0, (carrousel.length + 2.3 - visibleQuantity) * (cardWidth + gap));
+  const safeTranslate = Math.min(translateX, maxTranslate);
 
   return (
     <div className={Styles.productCardWrapper}>
-      <button
-        className={`${Styles.navButton} ${Styles.leftButton}`}
-        onClick={prev}
-      >
-        <ChevronLeft size={32} />
-      </button>
+      {canScrollLeft && (
+        <button
+          className={`${Styles.navButton} ${Styles.leftButton}`}
+          onClick={prev}
+        >
+          <ChevronLeft size={32} />
+        </button>
+      )}
 
       <div className={Styles.productCard}>
         <div
           className={Styles.productTrack}
-          style={{ transform: `translateX(-${trackTranslate}px)` }}
+          style={{ transform: `translateX(-${safeTranslate}px)` }}
         >
           {carrousel.map((product) => (
             <div
@@ -51,6 +64,7 @@ const ProductLandingCard: React.FC<ProductLandingCardProps> = ({
               className={Styles.productCardItem}
               onClick={() => goToProduct(product)}
             >
+              {/* Tarjeta normal */}
               <img src={product.image} alt={product.name} />
               <div className={Styles.info}>
                 <div className={Styles.left}>
@@ -58,7 +72,7 @@ const ProductLandingCard: React.FC<ProductLandingCardProps> = ({
                     <h3 className={Styles.name}>{product.name}</h3>
                     {product.discounts.length > 0 && (
                       <span className={Styles.discountTag}>
-                        -{Math.max(...product.discounts.map(d => d.percentage))}%
+                        -{Math.max(...product.discounts.map((d) => d.percentage))}%
                       </span>
                     )}
                   </div>
@@ -67,9 +81,10 @@ const ProductLandingCard: React.FC<ProductLandingCardProps> = ({
                     <>
                       <p className={Styles.oldPrice}>${product.price.toFixed(2)}</p>
                       <p className={Styles.discountPrice}>
-                        ${(
+                        $
+                        {(
                           product.price *
-                          (1 - Math.max(...product.discounts.map(d => d.percentage)) / 100)
+                          (1 - Math.max(...product.discounts.map((d) => d.percentage)) / 100)
                         ).toFixed(2)}
                       </p>
                     </>
@@ -77,23 +92,34 @@ const ProductLandingCard: React.FC<ProductLandingCardProps> = ({
                     <p className={Styles.price}>${product.price.toFixed(2)}</p>
                   )}
                 </div>
-                <button
-                  className={Styles.readMore}
-                >
-                  Read More
-                </button>
+                <button className={Styles.readMore}>Read More</button>
               </div>
             </div>
           ))}
+
+          {/* Tarjeta de "ver más productos" */}
+
+          {showSeeMoreCard && (
+            <div
+              className={`${Styles.productCardItem} ${Styles.seeMoreCard}`}
+              onClick={() => navigate('/products')}
+            >
+              <div className={Styles.seeMoreContent}>
+                <p>Click aquí para ver más productos</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      <button
-        className={`${Styles.navButton} ${Styles.rightButton}`}
-        onClick={next}
-      >
-        <ChevronRight size={32} />
-      </button>
+      {canScrollRight && (
+        <button
+          className={`${Styles.navButton} ${Styles.rightButton}`}
+          onClick={next}
+        >
+          <ChevronRight size={32} />
+        </button>
+      )}
     </div>
   );
 };

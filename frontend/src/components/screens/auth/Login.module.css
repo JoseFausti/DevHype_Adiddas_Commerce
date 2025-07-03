@@ -34,7 +34,7 @@
   border-radius: 5px;
   width: 100%;
   max-width: 400px;
-  height: 50%;
+  height: 60%;
   max-height: 450px;
   display: flex;
   flex-direction: column;
@@ -159,4 +159,40 @@
 
 .login_formText span a:hover {
   text-decoration: underline;
+}
+
+.login_formMessageSuccess {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #000000;
+  color: #ffffff;
+  padding: 1rem 2rem;
+  border: 1px solid #d4d4d4;
+  border-radius: 0.4rem;
+  font-weight: bold;
+  z-index: 1000;
+  animation: fadeOut 2s ease-in-out forwards;
+}
+
+.login_formMessageError {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #000000;
+  color: #ff0000;
+  padding: 1rem 2rem;
+  border: 1px solid #d4d4d4;
+  border-radius: 0.4rem;
+  font-weight: bold;
+  z-index: 1000;
+  animation: fadeOut 2s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
 }

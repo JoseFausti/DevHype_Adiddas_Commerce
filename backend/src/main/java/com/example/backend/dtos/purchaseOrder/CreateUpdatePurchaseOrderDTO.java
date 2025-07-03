@@ -2,6 +2,7 @@ package com.example.backend.dtos.purchaseOrder;
 
 import com.example.backend.dtos.detail.CreateUpdateDetailDTO;
 import com.example.backend.models.enums.PaymentMethod;
+import com.example.backend.models.enums.Status;
 
 import lombok.*;
 

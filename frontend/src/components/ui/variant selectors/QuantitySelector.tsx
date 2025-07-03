@@ -6,6 +6,7 @@ interface QuantitySelectorProps {
   maxQuantity: number;
   increaseQuantity: () => void;
   decreaseQuantity: () => void;
+  selectedVariant: any | null; // o el tipo correcto si lo tenés (por ejemplo: IProductVariant)
 }
 
 const QuantitySelector = ({
@@ -13,6 +14,7 @@ const QuantitySelector = ({
   maxQuantity,
   increaseQuantity,
   decreaseQuantity,
+  selectedVariant
 }: QuantitySelectorProps) => {
   return (
     <Box display="flex" alignItems="center" gap={1}>
@@ -36,11 +38,12 @@ const QuantitySelector = ({
         <Add />
       </IconButton>
 
-      {maxQuantity === 0 && (
+      {selectedVariant && maxQuantity === 0 && (
         <Typography variant="body2" color="error" ml={2}>
           Sin stock
         </Typography>
       )}
+
     </Box>
   );
 };

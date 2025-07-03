@@ -3,7 +3,6 @@
     position: relative;
     width: 100%;
     height: 20px;
-    background-color: #231F20;
     /* Opcional, para resaltar el fondo */
     padding: 0.5rem 0;
 }
@@ -15,7 +14,8 @@
     margin: auto;
     white-space: nowrap;
     font-size: 1rem;
-    color: yellow;
+    font-weight:600;
+    color: rgb(255, 253, 243);
     /* Se inicia centrado, pero la animación lo desplaza completamente */
     animation: marquee 20s linear infinite;
 }

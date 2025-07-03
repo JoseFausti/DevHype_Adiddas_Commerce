@@ -6,14 +6,20 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { registerSchema } from "../../../types/schemas";
 import { registerUser } from "../../../data/UsersController";
 import { IUser } from "../../../types/types";
+import { useState } from "react";
 
 const Register = () => {
   const navigate = useNavigate();
 
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const handleSubmit = async (values: Omit<IUser, 'id' | 'deleted' | 'role' | 'address' | 'directions' | 'purchaseOrders'>) => {
     const response = await registerUser(values);
     if (response.status === 201) {
-      navigate('/');
+      setShowSuccess(true);
+      setTimeout(() => {
+        navigate('/');
+      }, 1500); // Esperamos a mostrar el mensaje antes de redirigir
     }
   };
 
@@ -23,6 +29,11 @@ const Register = () => {
         <Home />
       </div>
       <div className={Styles.registerForm}>
+        {showSuccess && (
+          <div className={Styles.login_formMessageSuccess}>
+            ¡Usuario creado exitosamente!
+          </div>
+        )}
         <Formik
           initialValues={{
             username: '',

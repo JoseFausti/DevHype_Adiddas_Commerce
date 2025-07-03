@@ -34,7 +34,8 @@ import com.example.backend.repositories.ProductsRepository;
 import com.example.backend.repositories.Purchase_ordersRepository;
 
 @Service
-public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders, Long> implements Purchase_ordersService{
+public class Purchase_ordersServiceImpl extends BaseServiceImpl<Purchase_orders, Long>
+        implements Purchase_ordersService {
 
     @Autowired
     private Purchase_ordersRepository purchase_ordersRepository;

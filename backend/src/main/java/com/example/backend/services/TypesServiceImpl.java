@@ -19,7 +19,6 @@ import java.util.Optional;
 import com.example.backend.models.entities.Categories;
 
 
-
 @Service
 public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements TypesService {
 

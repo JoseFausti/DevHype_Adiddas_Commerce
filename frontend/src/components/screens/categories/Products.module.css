@@ -108,6 +108,7 @@
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  border: 1px solid rgb(255, 255, 255);
   border-radius: 0.2rem;
   overflow: hidden;
   padding: 1rem;
@@ -115,18 +116,23 @@
 }
 
 .card:hover {
-  transform: scale(1.01);
   border: 1px solid black;
 }
 
 /* 🖼 Contenedor de imagen del producto */
 .imageContainer {
-  width: 100%;
-  height: 250px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  width: calc(100% + 2rem);
+  /* para sobresalir del padding izquierdo y derecho (1rem + 1rem) */
+  height: auto;
+  /* altura fija o la que prefieras */
+  object-fit: cover;
+  margin-left: -1rem;
+  /* corrige para alinear a borde izquierdo */
+  margin-right: -1rem;
+  /* corrige para alinear a borde derecho */
+  margin-top: -15px;
+  border-radius: 0;
+  display: block;
 }
 
 .image {

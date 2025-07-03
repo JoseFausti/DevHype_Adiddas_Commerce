@@ -32,7 +32,7 @@ const productSlice = createSlice({
         removeProduct: (state, action: PayloadAction<IProduct>) => {
             state.products = state.products.filter((product) => product.id !== action.payload.id);
             localStorage.setItem("products", JSON.stringify(state.products));
-        }
+        }        
     }
 })
 
