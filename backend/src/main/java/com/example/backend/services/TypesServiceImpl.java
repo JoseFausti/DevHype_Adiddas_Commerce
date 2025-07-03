@@ -33,33 +33,40 @@ public class TypesServiceImpl extends BaseServiceImpl<Types, Long> implements Ty
         super(baseRepository);
     }
 
-  @Transactional
+ @Transactional
     public TypeDTO save(CreateTypeDTO dto) throws Exception {
         try {
-
-            Types type = new Types();
-
             if (dto.getCategoryId() == null) {
                 throw new Exception("La categoría es obligatoria");
             }
 
-            if (typesRepository.existsByNameAndCategoryId(dto.getName(), dto.getCategoryId())) {
-                throw new Exception("Ya existe un tipo con el nombre: " + dto.getName() + " en esta categoría.");
+            // Buscar si ya existe el tipo con ese nombre y categoría
+            Optional<Types> existingType = typesRepository.findByNameAndCategoryId(dto.getName(), dto.getCategoryId());
+            if (existingType.isPresent()) {
+                // Ya existe, devolver el DTO sin crear uno nuevo
+                return TypeMapper.toDto(existingType.get());
             }
 
+            // Buscar la categoría
             Categories category = categoriesRepository.findById(dto.getCategoryId())
                     .orElseThrow(() -> new Exception("Categoría no encontrada con ID: " + dto.getCategoryId()));
 
+            // Crear nuevo tipo
+            Types type = new Types();
             type.setName(dto.getName());
             type.setCategory(category);
+            type.setDeleted(false);
 
+            // Guardar
             type = typesRepository.save(type);
 
             return TypeMapper.toDto(type);
+
         } catch (Exception e) {
             throw new Exception("Error al guardar tipo: " + e.getMessage());
         }
     }
+
 
     @Transactional
     public TypeDTO update(TypeDTO dto, Long id) throws Exception {

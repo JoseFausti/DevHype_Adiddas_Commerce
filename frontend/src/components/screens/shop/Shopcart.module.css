@@ -22,15 +22,19 @@
 
 /* Contenido del modal: centralizado, con fondo blanco y borde negro */
 .modalContent {
-    position: relative;
-    background: #fff;
-    padding: 2rem;
-    border: 1px solid #000;
-    border-radius: 4px;
-    max-width: 500px;
-    width: 90%;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+  background: #fff;
+  padding: 2rem;
+  border: 1px solid #000;
+  border-radius: 4px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+
+  /* 🔥 Esta línea soluciona todo */
+  color: #000 !important;
 }
+
 
 /* Estilo para el título dentro del modal */
 .modalContent h3 {

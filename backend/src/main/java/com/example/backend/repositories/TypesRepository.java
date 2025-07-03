@@ -17,4 +17,6 @@ public interface TypesRepository extends BaseRepository<Types, Long> {
 
     List<Types> findAllByCategoryId(Long categoryId);
     Optional<Types> findByNameAndCategory(String name, Categories category);
+    Optional<Types> findByNameAndCategoryId(String name, Long categoryId);
+
 }

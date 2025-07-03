@@ -18,7 +18,7 @@ const Shopcart = () => {
   const token = getDecodedToken();
   const { cart } = useAppSelector((state) => state.cart)
 
-  const { userActive, users } = useAppSelector((state) => state.user)
+  const { userActive } = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -63,14 +63,7 @@ const Shopcart = () => {
   }
 
   const handleGoToPay = () => {
-    const user = users.find(user => user.id === userActive?.id);
-    if (!user?.directions || user.directions.length === 0) {
-      console.log(user)
-      setOpenModal(true);
-    } else {
-      setOpenModal(false);
-      createOrder();
-    }
+    setOpenModal(true);
   }
 
   return (
@@ -81,6 +74,7 @@ const Shopcart = () => {
             <h3>Ingrese una Dirección</h3>
             <DirectionForm
               user={userActive!}
+              createOrder={() => createOrder()}
               onSuccess={() => setOpenModal(false)}
               onClose={() => setOpenModal(false)} 
             />

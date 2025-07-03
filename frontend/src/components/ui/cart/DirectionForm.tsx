@@ -1,4 +1,4 @@
-// components/forms/DirectionForm.tsx
+import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Styles from "./DirectionForm.module.css";
 import { toFormikValidationSchema } from "zod-formik-adapter";
@@ -11,12 +11,16 @@ import { editUser } from "../../../store/slices/userSlice";
 
 type Props = {
   user: IUser;
+  createOrder: () => void;
   onSuccess: () => void;
-  onClose: () => void; // Nueva prop para gestionar el cierre
+  onClose: () => void;
 };
 
-export const DirectionForm = ({ user, onSuccess }: Props) => {
+export const DirectionForm = ({ user, createOrder,  onSuccess, onClose }: Props) => {
   const dispatch = useAppDispatch();
+
+  const [selectedDirectionId, setSelectedDirectionId] = useState<number | null>(null);
+  const [showForm, setShowForm] = useState(user.directions.length === 0); // Mostrar form si no hay direcciones
 
   const initialValues: DirectionFormData = {
     street: "",
@@ -27,75 +31,147 @@ export const DirectionForm = ({ user, onSuccess }: Props) => {
     postalCode: 0,
   };
 
-  const handleSubmit = async (values: DirectionFormData) => {
+  const handleSelectDirection = () => {
+    const selected = user.directions.find((d) => d.id === selectedDirectionId);
+    if (selected) {
+      console.log("Dirección seleccionada:", selected);
+      onClose();
+      onSuccess(); // o pasar la dirección seleccionada si hace falta
+    }
+  };
+
+  const handleAddDirection = async (values: DirectionFormData) => {
     try {
       const directionResponse = await createDirection(values);
       if (directionResponse.status === 201) {
-        const directionIds = directionResponse.data!.id;
-        console.log(directionIds);
+        const directionId = directionResponse.data!.id;
 
-        const userResponse = await updateUser(user.id, {
+        const updatedUser = await updateUser(user.id, {
           ...user,
-          directionIds: [directionIds],
+          directionIds: [...user.directions.map((d) => d.id), directionId],
         });
 
-        dispatch(editUser(userResponse.data!));
+        dispatch(editUser(updatedUser.data!));
+        console.log("Dirección agregada y usuario actualizado");
 
-        console.log("Dirección creada y usuario actualizado");
+        setShowForm(false);
         onSuccess();
       }
     } catch (error) {
-      console.error("Error al crear dirección y actualizar usuario", error);
+      console.error("Error al agregar dirección", error);
     }
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={toFormikValidationSchema(directionSchema)}
-      onSubmit={handleSubmit}
-    >
-      <Form className={Styles.form}>
-        <div className={Styles.formGrid}>
-          <div>
-            <label>Calle</label>
-            <Field name="street" />
-            <ErrorMessage name="street" component="div" />
-          </div>
+    <div className={Styles.wrapper}>
+      {!showForm ? (
+        <>
+          {user.directions.length > 0 ? (
+            <>
+              <ul className={Styles.directionList}>
+                {user.directions.map((dir) => (
+                  <li key={dir.id} className={Styles.directionItem}>
+                    <label>
+                      <input
+                        type="radio"
+                        name="selectedDirection"
+                        value={dir.id}
+                        onChange={() => setSelectedDirectionId(dir.id)}
+                      />
+                      {`${dir.street}, ${dir.number}, ${dir.locality}, ${dir.city}, ${dir.country}, CP ${dir.postalCode}`}
+                    </label>
+                  </li>
+                ))}
+              </ul>
 
-          <div>
-            <label>Número</label>
-            <Field name="number" type="number" />
-            <ErrorMessage name="number" component="div" />
-          </div>
+              <div className={Styles.buttons}>
+                <button
+                  className={Styles.primaryButton}
+                  onClick={() => { handleSelectDirection(); createOrder(); }}
+                  disabled={selectedDirectionId === null}
+                  
+                >
+                  Confirmar dirección
+                </button>
+                <button
+                  onClick={() => setShowForm(true)}
+                  className={Styles.secondaryButton}
+                >
+                  Agregar nueva dirección
+                </button>
+              </div>
+            </>
+          ) : (
+            <p>No hay direcciones cargadas.</p>
+          )}
+        </>
+      ) : (
+        <>
+          <h4>Agregar nueva dirección</h4>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={toFormikValidationSchema(directionSchema)}
+            onSubmit={handleAddDirection}
+          >
+            {() => (
+              <div className={Styles.formContainer}>
+                <Form className={Styles.form}>
+                  <div className={Styles.formGrid}>
+                    <div>
+                      <label>Calle</label>
+                      <Field name="street" />
+                      <ErrorMessage name="street" component="div" />
+                    </div>
 
-          <div>
-            <label>Localidad</label>
-            <Field name="locality" />
-            <ErrorMessage name="locality" component="div" />
-          </div>
+                    <div>
+                      <label>Número</label>
+                      <Field name="number" type="number" />
+                      <ErrorMessage name="number" component="div" />
+                    </div>
 
-          <div>
-            <label>Ciudad</label>
-            <Field name="city" />
-            <ErrorMessage name="city" component="div" />
-          </div>
+                    <div>
+                      <label>Localidad</label>
+                      <Field name="locality" />
+                      <ErrorMessage name="locality" component="div" />
+                    </div>
 
-          <div>
-            <label>País</label>
-            <Field name="country" />
-            <ErrorMessage name="country" component="div" />
-          </div>
+                    <div>
+                      <label>Ciudad</label>
+                      <Field name="city" />
+                      <ErrorMessage name="city" component="div" />
+                    </div>
 
-          <div>
-            <label>Código Postal</label>
-            <Field name="postalCode" type="number" />
-            <ErrorMessage name="postalCode" component="div" />
-          </div>
-        </div>
+                    <div>
+                      <label>País</label>
+                      <Field name="country" />
+                      <ErrorMessage name="country" component="div" />
+                    </div>
 
-        <button type="submit">Guardar Dirección</button>
-      </Form>
-    </Formik>
+                    <div>
+                      <label>Código Postal</label>
+                      <Field name="postalCode" type="number" />
+                      <ErrorMessage name="postalCode" component="div" />
+                    </div>
+                  </div>
+
+                  <div className={Styles.buttons}>
+                    <button className={Styles.primaryButton} type="submit">
+                      Guardar Dirección
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowForm(false)}
+                      className={Styles.secondaryButton}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </Form>
+              </div>
+            )}
+          </Formik>
+        </>
+      )}
+    </div>
   );
 };
