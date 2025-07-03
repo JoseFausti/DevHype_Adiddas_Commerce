@@ -173,8 +173,12 @@ public class CategoriesServiceImpl extends BaseServiceImpl<Categories, Long> imp
     @Transactional
     public CategoryDTO findByName(String name) throws Exception {
         try {
-            Categories category = categoriesRepository.findByName(name)
+            Categories category = categoriesRepository.findByNameWithTypes(name)
                 .orElseThrow(() -> new Exception("Categoría no encontrada con nombre: " + name));
+
+            // Filtrar los tipos eliminados
+            category.getTypes().removeIf(type -> type.isDeleted());
+
             return CategoryMapper.toDto(category);
         } catch (Exception e) {
             throw new Exception("Error al buscar categoría: " + e.getMessage());
